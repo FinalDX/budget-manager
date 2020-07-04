@@ -1,0 +1,19 @@
+.Items {
+  display: inline-block;
+  width: 200px;
+  vertical-align: top;
+  text-align: center;
+  margin: 20px 100px;
+}
+
+.Items ul {
+  list-style-type: none;
+}
+
+.Green {
+  color: rgb(27, 255, 27);
+}
+
+.Red {
+  color: rgb(255, 56, 56);
+}

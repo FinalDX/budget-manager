@@ -1,0 +1,22 @@
+.Item {
+  width: 200px;
+  overflow: auto;
+  cursor: pointer;
+}
+
+.Name {
+  float: left;
+}
+
+.Amount {
+  float: right;
+}
+
+.Amount p {
+  display: inline-block;
+  margin-right: 20px;
+}
+
+.Amount button {
+  cursor: pointer;
+}
