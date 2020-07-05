@@ -1,13 +1,14 @@
 import React from "react";
-import Budget from "../../containers/Budget/Budget";
+
+import classes from "./Layout.module.css";
 
 const layout = props => (
-  <div>
+  <div className={classes.Layout}>
     <header>
       <nav />
     </header>
     <main>
-      <Budget />
+      {props.children}
     </main>
     <footer />
   </div>

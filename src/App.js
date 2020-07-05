@@ -1,11 +1,17 @@
-import React from "react";
-import Layout from "./components/Layout/Layout";
-import "./styles.css";
+import React, { Component } from "react";
 
-export default function App() {
-  return (
-    <div className="App">
-      <Layout />
-    </div>
-  );
+import Layout from "./components/Layout/Layout";
+import Budget from './containers/Budget/Budget';
+
+
+class App extends Component {
+  render () {
+    return (
+      <Layout>
+        <Budget />
+      </Layout>
+    );
+  };
 }
+
+export default App;

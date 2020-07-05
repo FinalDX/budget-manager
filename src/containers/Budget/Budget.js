@@ -9,7 +9,7 @@ class Budget extends Component {
     this.state = {
       id: 0,
       type: "income",
-      name: 0,
+      name: "Name",
       amount: 0,
       incomes: [],
       expenses: [],
@@ -29,22 +29,27 @@ class Budget extends Component {
     this.setState({ type: e.target.value });
   };
 
+
+
   addHandler = () => {
-    // Get state.
+    // Copy state.
     let newState = { ...this.state };
     let newItems = [];
     let newItem = {
-      id: +newState.id + 1,
+      id: newState.id + 1,
       name: newState.name,
       amount: newState.amount,
       type: newState.type
     };
-    let newRemaining = +newState.remaining;
+    let newRemaining = newState.remaining;
+
+    console.log(newState);
+
     // Check type
     if (newState.type === "income") {
       newItems = [...newState.incomes];
       newItems.push(newItem);
-      newRemaining = newRemaining + +newState.amount;
+      newRemaining = newRemaining + newState.amount;
       this.setState({
         incomes: newItems,
         remaining: newRemaining,
@@ -53,7 +58,7 @@ class Budget extends Component {
     } else if (newState.type === "expense") {
       newItems = [...newState.expenses];
       newItems.push(newItem);
-      newRemaining = newRemaining - +newState.amount;
+      newRemaining = newRemaining - newState.amount;
       this.setState({
         expenses: newItems,
         remaining: newRemaining,
