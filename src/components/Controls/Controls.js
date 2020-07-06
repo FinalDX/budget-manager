@@ -65,14 +65,12 @@ class Controls extends Component {
         <input
           type="text"
           placeholder="Name"
-          name="name"
           onChange={event => this.inputHandler(event, "name")}
           required
         />
         <input
           type="number"
           placeholder="Amount"
-          name="amount"
           onChange={event => this.inputHandler(event, "amount")}
           required
         />
@@ -84,7 +82,7 @@ class Controls extends Component {
             type="radio"
             name="itemType"
             value="income"
-            checked={this.props.type === "income"}
+            checked={this.state.itemForm.type.value === "income"}
             onChange={event => this.inputHandler(event, "type")}
           />
           Income
@@ -95,7 +93,7 @@ class Controls extends Component {
             type="radio"
             name="itemType"
             value="expense"
-            checked={this.props.type === "expense"}
+            checked={this.state.itemForm.type.value === "expense"}
             onChange={event => this.inputHandler(event, "type")}
           />
           Expense

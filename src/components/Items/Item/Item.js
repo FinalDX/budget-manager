@@ -14,9 +14,9 @@ const item = props => {
     <li className={classes.Item}>
       <p className={classes.Name}>{props.name}: </p>
       <div className={addedClasses.join(" ")}>
-        <p>${Number(props.amount).toFixed(2)}</p>
+        <p>${props.amount.toFixed(2)}</p>
         <button onClick={() => props.clicked(props.itemType, props.key)}>
-          X
+          Delete
         </button>
       </div>
     </li>

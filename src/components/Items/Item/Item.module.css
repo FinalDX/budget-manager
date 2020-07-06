@@ -2,6 +2,8 @@
   width: 200px;
   overflow: auto;
   cursor: pointer;
+  border-bottom: 2px solid #ccc;
+  padding: 5px 0;
 }
 
 .Name {
