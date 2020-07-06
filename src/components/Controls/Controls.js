@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 
-import Select from '../UI/Select/Select';
+import Select from "../UI/Select/Select";
 
-import classes from './Controls.module.css';
+import classes from "./Controls.module.css";
 
 class Controls extends Component {
   constructor(props) {
@@ -10,7 +10,7 @@ class Controls extends Component {
     this.state = {
       itemForm: {
         name: {
-          value: '',
+          value: "",
           validation: {
             required: true
           },
@@ -24,14 +24,14 @@ class Controls extends Component {
           valid: false
         },
         category: {
-          value: '',
+          value: "",
           validation: {
             required: true
           },
           valid: false
         },
         type: {
-          value: 'income',
+          value: "income",
           validation: {
             required: true
           },
@@ -48,40 +48,63 @@ class Controls extends Component {
     updatedItem.value = e.target.value;
     updatedForm[inputName] = updatedItem;
 
-    console.log(this.state.itemForm);
-    this.setState({itemForm: updatedForm})
-    console.log(this.state.itemForm);
-  }
+    this.setState({ itemForm: updatedForm });
+  };
 
   render() {
     return (
-      <div className={classes.Controls}>
+      <form
+        className={classes.Controls}
+        onSubmit={event => {
+          event.preventDefault();
+          return this.props.sendData(this.state.itemForm);
+        }}
+        required
+      >
         <p>Add an income or an expense: </p>
-        <input type="text" placeholder="Name" name="name"
-          onChange={(event) => this.inputHandler(event, 'name')} />
-        <input type="number" placeholder="Amount" name="amount"
-          onChange={(event) => this.inputHandler(event, 'amount')} />
+        <input
+          type="text"
+          placeholder="Name"
+          name="name"
+          onChange={event => this.inputHandler(event, "name")}
+          required
+        />
+        <input
+          type="number"
+          placeholder="Amount"
+          name="amount"
+          onChange={event => this.inputHandler(event, "amount")}
+          required
+        />
 
-        <Select />
+        <Select changed={event => this.inputHandler(event, "category")} />
 
         <label>
-          <input type="radio" name="itemType" value="income"
+          <input
+            type="radio"
+            name="itemType"
+            value="income"
             checked={this.props.type === "income"}
-            onChange={this.props.checked} />
+            onChange={event => this.inputHandler(event, "type")}
+          />
           Income
         </label>
 
         <label>
-          <input type="radio" name="itemType" value="expense"
+          <input
+            type="radio"
+            name="itemType"
+            value="expense"
             checked={this.props.type === "expense"}
-            onChange={this.props.checked} />
+            onChange={event => this.inputHandler(event, "type")}
+          />
           Expense
         </label>
 
-        <button  onClick={this.props.clicked}>Add</button>
-      </div>
+        <button type="submit">Add</button>
+      </form>
     );
-  };
+  }
 }
 
 export default Controls;

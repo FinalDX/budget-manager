@@ -7,83 +7,34 @@ class Budget extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      id: 0,
-      type: "income",
-      name: "Name",
-      amount: 0,
       incomes: [],
       expenses: [],
       remaining: 0
     };
   }
 
-  inputHandler = e => {
-    if (e.target.name === "name") {
-      this.setState({ name: e.target.value });
-    } else if (e.target.name === "amount") {
-      this.setState({ amount: e.target.value });
-    }
-  };
-
-  radioHandler = e => {
-    this.setState({ type: e.target.value });
-  };
-
-
-
-  addHandler = () => {
-    // Copy state.
-    let newState = { ...this.state };
-    let newItems = [];
-    let newItem = {
-      id: newState.id + 1,
-      name: newState.name,
-      amount: newState.amount,
-      type: newState.type
+  addItemHandler = inputItem => {
+    const type = inputItem.type.value + "s";
+    const updatedItems = [...this.state[type]];
+    const newItem = {
+      name: inputItem.name.value,
+      amount: inputItem.amount.value,
+      category: inputItem.category.value,
+      type: inputItem.type.value
     };
-    let newRemaining = newState.remaining;
 
-    console.log(newState);
+    updatedItems.push(newItem);
 
-    // Check type
-    if (newState.type === "income") {
-      newItems = [...newState.incomes];
-      newItems.push(newItem);
-      newRemaining = newRemaining + newState.amount;
-      this.setState({
-        incomes: newItems,
-        remaining: newRemaining,
-        id: newItem.id
-      });
-    } else if (newState.type === "expense") {
-      newItems = [...newState.expenses];
-      newItems.push(newItem);
-      newRemaining = newRemaining - newState.amount;
-      this.setState({
-        expenses: newItems,
-        remaining: newRemaining,
-        id: newItem.id
-      });
-    }
+    this.setState({ [type]: updatedItems });
+    console.log(this.state);
   };
 
-  deleteItemHandler = e => {
-    let newItems = [];
-    if (e.target.name === "income") {
-      newItems = [...this.state.incomes];
-      newItems.splice(
-        this.state.incomes.findIndex(item => +item.id === +e.target.id),
-        1
-      );
-      this.setState({ incomes: newItems });
-    } else if (e.target.name === "expense") {
-      newItems = [...this.state.expenses];
-      newItems.splice(
-        this.state.incomes.findIndex(item => +item.id === +e.target.id),
-        1
-      );
-      this.setState({ expenses: newItems });
-    }
+  deleteItemHandler = (type, key) => {
+    const itemType = type + "s";
+    let updatedItems = [...this.state[itemType]];
+    updatedItems.splice(key, 1);
+    this.setState({ [itemType]: updatedItems });
+    console.log(this.state);
   };
 
   render() {
@@ -91,12 +42,7 @@ class Budget extends Component {
       <div>
         <p>Remaining Budget: </p>
         <Balance remaining={this.state.remaining} />
-        <Controls
-          changed={this.inputHandler}
-          type={this.state.type}
-          checked={this.radioHandler}
-          clicked={this.addHandler}
-        />
+        <Controls sendData={this.addItemHandler} />
         <div>
           <Items
             title={"Incomes"}

@@ -2,16 +2,25 @@ import React from "react";
 
 import classes from "./Item.module.css";
 
-const item = props => (
-  <li key={props.id} className={classes.Item}>
-    <p className={classes.Name}>{props.name}: </p>
-    <div className={classes.Amount}>
-      <p>${props.amount}</p>
-      <button id={props.id} name={props.itemType} onClick={props.clicked}>
-        X
-      </button>
-    </div>
-  </li>
-);
+const item = props => {
+  let addedClasses = [classes.Amount];
+  if (props.itemType === "income") {
+    addedClasses = [classes.Amount, classes.Green];
+  } else if (props.itemType === "expense") {
+    addedClasses = [classes.Amount, classes.Red];
+  }
+
+  return (
+    <li className={classes.Item}>
+      <p className={classes.Name}>{props.name}: </p>
+      <div className={addedClasses.join(" ")}>
+        <p>${Number(props.amount).toFixed(2)}</p>
+        <button onClick={() => props.clicked(props.itemType, props.key)}>
+          X
+        </button>
+      </div>
+    </li>
+  );
+};
 
 export default item;

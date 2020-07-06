@@ -7,7 +7,7 @@ const items = props => {
   const listItems = props.itemsList.map((cur, index) => {
     return (
       <Item
-        id={cur.id}
+        key={index}
         itemType={cur.type}
         name={cur.name}
         amount={cur.amount}
