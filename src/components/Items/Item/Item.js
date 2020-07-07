@@ -15,7 +15,7 @@ const item = props => {
       <p className={classes.Name}>{props.name}: </p>
       <div className={addedClasses.join(" ")}>
         <p>${props.amount.toFixed(2)}</p>
-        <button onClick={() => props.clicked(props.itemType, props.key)}>
+        <button onClick={() => props.clicked(props.itemType, props.index)}>
           Delete
         </button>
       </div>

@@ -1,4 +1,5 @@
 import React from "react";
+import classes from "./Select.module.css";
 
 const categories = [
   "Housing",
@@ -14,11 +15,11 @@ const categories = [
   "Entertainment"
 ];
 
-let options = categories.map(cur => <option value={cur}>{cur}</option>);
+let options = categories.map((cur, index) => <option key={index} value={cur}>{cur}</option>);
 
 const select = props => (
-  <select name={props.name} onChange={props.changed} required>
-    <option value="" disabled selected>
+  <select className={classes.Select} onChange={props.changed} required>
+    <option defaultValue="Category" disabled>
       Category
     </option>
     {options}

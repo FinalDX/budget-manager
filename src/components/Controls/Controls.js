@@ -77,27 +77,29 @@ class Controls extends Component {
 
         <Select changed={event => this.inputHandler(event, "category")} />
 
-        <label>
-          <input
-            type="radio"
-            name="itemType"
-            value="income"
-            checked={this.state.itemForm.type.value === "income"}
-            onChange={event => this.inputHandler(event, "type")}
-          />
-          Income
-        </label>
+        <div className={classes.Radio}>
+          <label>
+            <input
+              type="radio"
+              name="itemType"
+              value="income"
+              checked={this.state.itemForm.type.value === "income"}
+              onChange={event => this.inputHandler(event, "type")}
+            />
+            Income
+          </label>
 
-        <label>
-          <input
-            type="radio"
-            name="itemType"
-            value="expense"
-            checked={this.state.itemForm.type.value === "expense"}
-            onChange={event => this.inputHandler(event, "type")}
-          />
-          Expense
-        </label>
+          <label>
+            <input
+              type="radio"
+              name="itemType"
+              value="expense"
+              checked={this.state.itemForm.type.value === "expense"}
+              onChange={event => this.inputHandler(event, "type")}
+            />
+            Expense
+          </label>
+        </div>
 
         <button type="submit">Add</button>
       </form>

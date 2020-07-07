@@ -1,8 +1,9 @@
 .Item {
-  width: 200px;
+  width: 100%;
   overflow: auto;
   cursor: pointer;
   border-bottom: 2px solid #ccc;
+  margin-top: 5px;
   padding: 5px 0;
 }
 
@@ -20,12 +21,27 @@
 }
 
 .Amount button {
+  width: 0px;
+  opacity: 0;
+  background-color: rgb(253, 68, 68);
+  color: white;
+  height: 30px;
+  margin: 0;
+  border-style: none;
   cursor: pointer;
+  overflow: hidden;
+  transition: width 0.5s, opacity 0.5s;
 }
 .Green {
-  color: rgb(27, 255, 27);
+  color: rgb(0, 153, 0);
 }
 
 .Red {
-  color: rgb(255, 56, 56);
+  color: rgb(212, 4, 4);
 }
+
+.Item:hover button {
+  width: 50px;
+  opacity: 1;
+}
+

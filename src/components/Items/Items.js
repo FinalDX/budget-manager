@@ -8,6 +8,7 @@ const items = props => {
     return (
       <Item
         key={index}
+        index={index}
         itemType={cur.type}
         name={cur.name}
         amount={cur.amount}

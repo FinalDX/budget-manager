@@ -26,15 +26,16 @@ class Budget extends Component {
     updatedItems.push(newItem);
 
     this.setState({ [type]: updatedItems });
-    this.updateRemaining(newItem.type, newItem.amount);
+    this.updateRemaining('add', newItem.type, newItem.amount);
   };
 
   deleteItemHandler = (type, key) => {
     const itemType = type + "s";
     let updatedItems = [...this.state[itemType]];
-    const deletedItem = updatedItems.splice(key, 1);
+    const deletedItem = updatedItems.splice(key, 1)[0];
     this.setState({ [itemType]: updatedItems });
-    this.updateRemaining(type, deletedItem.amount);
+    console.log(deletedItem);
+    this.updateRemaining('delete', type, deletedItem.amount);
   };
 
   updateRemaining = (action, type, value) => {
@@ -42,17 +43,17 @@ class Budget extends Component {
     console.log(type);
     let updatedRemaining = this.state.remaining;
     if (action === "add") {
+      console.log("adding");
       if (type === "income") {
         updatedRemaining = updatedRemaining + value;
       } else if (type === "expense") {
-        console.log("deleting");
         updatedRemaining = updatedRemaining - value;
       }
-    } else if (action === "remove") {
+    } else if (action === "delete") {
+      console.log("deleting");
       if (type === "income") {
         updatedRemaining = updatedRemaining - value;
       } else if (type === "expense") {
-        console.log("deleting");
         updatedRemaining = updatedRemaining + value;
       }
     }

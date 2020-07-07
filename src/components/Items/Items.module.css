@@ -1,9 +1,9 @@
 .Items {
   display: inline-block;
-  width: 200px;
+  width: 300px;
   vertical-align: top;
   text-align: center;
-  margin: 20px 100px;
+  margin: 20px 50px;
 }
 
 .Items ul {
