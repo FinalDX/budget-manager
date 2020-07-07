@@ -8,6 +8,7 @@ const categories = [
   "Food",
   "Housing",
   "Insurance",
+  "Job",
   "Medical",
   "Personal",
   "Savings",

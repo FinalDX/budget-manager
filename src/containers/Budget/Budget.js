@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+
+import Chart from "../../components/Chart/Chart";
 import Balance from "../../components/Balance/Balance";
 import Controls from "../../components/Controls/Controls";
 import Items from "../../components/Items/Items";
@@ -60,6 +62,7 @@ class Budget extends Component {
   render() {
     return (
       <div>
+        <Chart data={[this.state.incomes, this.state.expenses]} />
         <p>Remaining Budget: </p>
         <Balance remaining={this.state.remaining} />
         <Controls sendData={this.addItemHandler} />
