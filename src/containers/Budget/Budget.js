@@ -14,7 +14,9 @@ class Budget extends Component {
   }
 
   addItemHandler = inputItem => {
+    // Get type and add 's' to match correct list
     const type = inputItem.type.value + "s";
+    // Copy list and create newItem
     const updatedItems = [...this.state[type]];
     const newItem = {
       name: inputItem.name.value,
@@ -22,11 +24,11 @@ class Budget extends Component {
       category: inputItem.category.value,
       type: inputItem.type.value
     };
-
+    // Add new item to copied list
     updatedItems.push(newItem);
-
+    // Update state
     this.setState({ [type]: updatedItems });
-    this.updateRemaining('add', newItem.type, newItem.amount);
+    this.updateRemaining("add", newItem.type, newItem.amount);
   };
 
   deleteItemHandler = (type, key) => {
@@ -34,23 +36,18 @@ class Budget extends Component {
     let updatedItems = [...this.state[itemType]];
     const deletedItem = updatedItems.splice(key, 1)[0];
     this.setState({ [itemType]: updatedItems });
-    console.log(deletedItem);
-    this.updateRemaining('delete', type, deletedItem.amount);
+    this.updateRemaining("delete", type, deletedItem.amount);
   };
 
   updateRemaining = (action, type, value) => {
-    console.log(value);
-    console.log(type);
     let updatedRemaining = this.state.remaining;
     if (action === "add") {
-      console.log("adding");
       if (type === "income") {
         updatedRemaining = updatedRemaining + value;
       } else if (type === "expense") {
         updatedRemaining = updatedRemaining - value;
       }
     } else if (action === "delete") {
-      console.log("deleting");
       if (type === "income") {
         updatedRemaining = updatedRemaining - value;
       } else if (type === "expense") {

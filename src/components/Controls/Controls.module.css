@@ -1,5 +1,12 @@
 .Controls {
+  width: 100%;
+  margin: auto;
+  padding: 5px;
   text-align: center;
+}
+
+.Controls > * {
+  display: inline-block;
 }
 
 .Controls input,
@@ -15,12 +22,6 @@
 
 .Controls button {
   width: 80px;
-}
-
-@media (max-width: 500px) {
-  .Controls label {
-    display: block;
-  }
 }
 
 .Radio {

@@ -32,6 +32,7 @@
   overflow: hidden;
   transition: width 0.5s, opacity 0.5s;
 }
+
 .Green {
   color: rgb(0, 153, 0);
 }
@@ -44,4 +45,3 @@
   width: 50px;
   opacity: 1;
 }
-

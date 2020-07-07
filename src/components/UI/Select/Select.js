@@ -2,24 +2,34 @@ import React from "react";
 import classes from "./Select.module.css";
 
 const categories = [
-  "Housing",
-  "Food",
-  "Transportation",
-  "Utilites",
-  "Insurance",
   "Clothing",
+  "Education",
+  "Entertainment",
+  "Food",
+  "Housing",
+  "Insurance",
   "Medical",
   "Personal",
-  "Education",
   "Savings",
-  "Entertainment"
+  "Transportation",
+  "Utilites",
+  "Other"
 ];
 
-let options = categories.map((cur, index) => <option key={index} value={cur}>{cur}</option>);
+let options = categories.map((cur, index) => (
+  <option key={index} value={cur}>
+    {cur}
+  </option>
+));
 
 const select = props => (
-  <select className={classes.Select} onChange={props.changed} required>
-    <option defaultValue="Category" disabled>
+  <select
+    defaultValue="Category"
+    className={classes.Select}
+    onChange={props.changed}
+    required
+  >
+    <option value="Category" disabled>
       Category
     </option>
     {options}

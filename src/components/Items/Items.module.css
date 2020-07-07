@@ -9,3 +9,9 @@
 .Items ul {
   list-style-type: none;
 }
+
+@media (max-width: 767px) {
+  .Items {
+    margin: 10px auto;
+  }
+}

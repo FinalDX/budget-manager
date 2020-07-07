@@ -10,32 +10,16 @@ class Controls extends Component {
     this.state = {
       itemForm: {
         name: {
-          value: "",
-          validation: {
-            required: true
-          },
-          valid: false
+          value: ""
         },
         amount: {
-          value: 0,
-          validation: {
-            required: true
-          },
-          valid: false
+          value: 0
         },
         category: {
-          value: "",
-          validation: {
-            required: true
-          },
-          valid: false
+          value: ""
         },
         type: {
-          value: "income",
-          validation: {
-            required: true
-          },
-          valid: false
+          value: "income"
         }
       }
     };
