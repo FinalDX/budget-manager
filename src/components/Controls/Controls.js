@@ -54,12 +54,11 @@ class Controls extends Component {
         />
         <input
           type="number"
+          step="0.01"
           placeholder="Amount"
           onChange={event => this.inputHandler(event, "amount")}
           required
         />
-
-        <Select changed={event => this.inputHandler(event, "category")} />
 
         <div className={classes.Radio}>
           <label>
@@ -85,7 +84,11 @@ class Controls extends Component {
           </label>
         </div>
 
-        <button type="submit">Add</button>
+        <Select changed={event => this.inputHandler(event, "category")} />
+
+        <button className={classes.Button} type="submit">
+          Add
+        </button>
       </form>
     );
   }

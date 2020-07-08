@@ -4,19 +4,34 @@ import CanvasJSReact from "../../assets/canvasjs/canvasjs.react";
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 const chart = props => {
-  //Needs work, does not group.
-  // 1. Look at category and check for existing
-  // 2. Check type to determine action
-  // 3. Add to array of category and total values.
-  // 4. Use array to create needed objects.
-  const data = [...props.data[0], ...props.data[1]];
-  const dataPoints = {};
-  for (let item of data) {
-    if (item.category in dataPoints) {
-      dataPoints[item.category] = dataPoints[item.category] + item.amount;
+  // Calculate the budget total
+  let budgetTotal = props.data
+    .map(item => {
+      return item.amount;
+    })
+    .reduce((total, num) => {
+      return total + num;
+    }, 0);
+  // Ceate an object that will onctain the total value for each category
+  let categoryTotals = {};
+  // Loop through every item in data to calculate the total values
+  for (let item of props.data) {
+    // If the category already exists, add to the total value
+    if (item.category in categoryTotals) {
+      categoryTotals[item.category] =
+        categoryTotals[item.category] + item.amount;
+      // If the category does not exist, create the category with its value
     } else {
-      dataPoints[item.category] = item.amount;
+      categoryTotals[item.category] = item.amount;
     }
+  }
+  // Create an array that will contain each dataPoint object
+  const dataPoints = [];
+  // Create each dataPoint object using the categoryTotals object
+  // and add it to the dataPoints array
+  for (const [key, value] of Object.entries(categoryTotals)) {
+    let percentage = Math.round((value / budgetTotal) * 100);
+    dataPoints.push({ y: percentage, label: key });
   }
 
   const options = {
@@ -39,7 +54,7 @@ const chart = props => {
     ]
   };
 
-  return <CanvasJSChart options={options} />;
+  return props.data.length > 0 ? <CanvasJSChart options={options} /> : null;
 };
 
 export default chart;
