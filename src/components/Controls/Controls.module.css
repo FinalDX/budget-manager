@@ -4,10 +4,15 @@
   padding: 5px;
 }
 
+.Controls > input { 
+  width: 180px;
+  font-size: inherit;
+}
+
 .Controls > input,
 .Radio {
   display: inline-block;
-  margin: 10px 10px 0;
+  margin: 20px 10px 0;
   padding: 5px;
 }
 
@@ -26,15 +31,34 @@
 
 .Button {
   display: block;
-  margin: 10px auto;
-  width: 80px;
+  margin: 30px auto;
+  width: 100px;
   border-style: none;
   padding: 10px;
-  background-color: blue;
+  background-color: #33658A;
   color: white;
+  font-size: inherit;
 }
 
 .Button:hover {
-  background-color: lightblue;
+  background-color: #86BBD8;
   color: black;
+}
+
+@media (max-width: 858px) {
+  .Controls {
+    font-size: 18px;
+  }
+
+  .Controls > input,
+  .Radio {
+    display: block;
+    margin: 10px auto 0;
+  }
+
+  .Button { margin: 20px auto 10px }
+}
+
+@media (max-width: 480px) {
+  .Controls { font-size: 16px };
 }
