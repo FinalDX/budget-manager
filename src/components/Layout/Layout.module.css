@@ -1,1 +1,4 @@
-.Layout { text-align: center; }
+.Layout { 
+    text-align: center; 
+    padding: 1px;
+}

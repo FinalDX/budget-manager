@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import Arrows from '../Icons/Arrows/Arrows';
+import Backdrop from '../../UI/Backdrop/Backdrop';
 
 import classes from './Dropdown.module.css';
 
@@ -31,6 +32,9 @@ class Dropdown extends Component {
 
         return (
             <div className={classes.Dropdown}>
+                <Backdrop show={this.state.show} 
+                    clicked={this.toggleList}
+                    layer={100}/>
                 <div className={classes.Title} onClick={this.toggleList}>
                     {this.state.title}
                     <div className={classes.Icon}>

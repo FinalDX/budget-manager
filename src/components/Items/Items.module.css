@@ -1,6 +1,6 @@
 .Items {
   display: inline-block;
-  width: 300px;
+  width: 500px;
   vertical-align: top;
   text-align: center;
   margin: 20px 50px;
@@ -13,5 +13,11 @@
 @media (max-width: 767px) {
   .Items {
     margin: 10px auto;
+  }
+}
+
+@media (max-width: 610px) {
+  .Items {
+    width: 80%;
   }
 }

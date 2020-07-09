@@ -50,6 +50,7 @@ class Controls extends Component {
           type="text"
           placeholder="Name"
           onChange={event => this.inputHandler(event, "name")}
+          maxLength="30"
           required
         />
         <input
@@ -57,6 +58,8 @@ class Controls extends Component {
           step="0.01"
           placeholder="Amount"
           onChange={event => this.inputHandler(event, "amount")}
+          min="0"
+          max="2147483647"
           required
         />
 

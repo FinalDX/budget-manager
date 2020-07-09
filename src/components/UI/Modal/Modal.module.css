@@ -1,0 +1,33 @@
+.Modal {
+    width: 400px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 400;
+    background-color: #fff;
+    padding: 10px;
+}
+
+.Title {
+    padding: 5px;
+    border-bottom: 1px solid #333;
+    width: 100%;
+    display: inline-block;
+    text-align: left;
+}
+
+.Message {
+    margin: 20px auto;
+}
+
+.Buttons {
+    float: right;
+}
+
+.Buttons button {
+    width: 90px;
+    margin-left: 20px;
+    padding: 5px;
+    cursor: pointer;
+}

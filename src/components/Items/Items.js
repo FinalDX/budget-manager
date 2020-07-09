@@ -12,7 +12,7 @@ const items = props => {
         itemType={cur.type}
         name={cur.name}
         amount={cur.amount}
-        clicked={props.clicked}
+        deleted={props.deleted}
       />
     );
   });

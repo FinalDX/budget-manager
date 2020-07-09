@@ -5,10 +5,13 @@ import Balance from "../../components/Balance/Balance";
 import Controls from "../../components/Controls/Controls";
 import Items from "../../components/Items/Items";
 
+import classes from "./Budget.module.css";
+
 class Budget extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      date: new Date().getMonth(),
       incomes: [],
       expenses: [],
       remaining: 0
@@ -60,10 +63,14 @@ class Budget extends Component {
   };
 
   render() {
+    const months = ['January', 'Febuary', 'March', 'April',
+      'May', 'June', 'July', 'August', 'September', 'October',
+      'November', 'December']
     return (
-      <div>
-        <Charts data={[...this.state.incomes, ...this.state.expenses]}/>
-        <p>Remaining Budget: </p>
+      <div className={classes.Budget}>
+        <Charts incomeData={this.state.incomes} expenseData={this.state.expenses}/>
+        <hr></hr>
+        <p style={{marginTop: '10px'}}>Remaining Budget for {months[this.state.date]}: </p>
         <Balance remaining={this.state.remaining} />
         <Controls sendData={this.addItemHandler} />
         <div>
@@ -71,13 +78,13 @@ class Budget extends Component {
             title={"Incomes"}
             type={"income"}
             itemsList={this.state.incomes}
-            clicked={this.deleteItemHandler}
+            deleted={this.deleteItemHandler}
           />
           <Items
             title={"Expenses"}
             type={"expense"}
             itemsList={this.state.expenses}
-            clicked={this.deleteItemHandler}
+            deleted={this.deleteItemHandler}
           />
         </div>
       </div>

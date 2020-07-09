@@ -1,26 +1,60 @@
-import React from "react";
+import React, { Component } from "react";
+
+import Modal from '../../UI/Modal/Modal';
 
 import classes from "./Item.module.css";
 
-const item = props => {
-  let addedClasses = [classes.Amount];
-  if (props.itemType === "income") {
-    addedClasses = [classes.Amount, classes.Green];
-  } else if (props.itemType === "expense") {
-    addedClasses = [classes.Amount, classes.Red];
+class Item extends Component {
+  constructor(props){
+    super(props);
+    this.state= { 
+      showButton: false,
+      showModal: false
+    }
   }
 
-  return (
-    <li className={classes.Item}>
-      <p className={classes.Name}>{props.name}: </p>
-      <div className={addedClasses.join(" ")}>
-        <p>${props.amount.toFixed(2)}</p>
-        <button onClick={() => props.clicked(props.itemType, props.index)}>
-          Delete
-        </button>
-      </div>
-    </li>
-  );
-};
+  toggleShow = () => this.setState({showButton: this.state.showButton ? false : true});
 
-export default item;
+  toggleShowModal = () => this.setState({showModal: this.state.showModal ? false : true});
+  
+  confirmModal = () =>  this.props.deleted(this.props.itemType, this.props.index);
+
+  render() {
+    let colorClasses = [classes.Amount];
+    if (this.props.itemType === "income") {
+      colorClasses = [classes.Amount, classes.Green];
+    } else if (this.props.itemType === "expense") {
+      colorClasses = [classes.Amount, classes.Red];
+    }
+
+    let btnClasses = [classes.Button];
+    if (this.state.showButton) {
+      btnClasses = [classes.Button, classes.Show];
+    }
+
+    return (
+      <div>
+        {this.state.showModal ? 
+          <Modal type={'confirm'}
+            title={'Confirm:'}
+            message={`Are you sure you want to delete "${this.props.name}"?`}
+            canceled={this.toggleShowModal} 
+            confirmed={this.confirmModal}/> : null }
+  
+        <li className={classes.Item} onClick={this.toggleShow}>
+          <p className={classes.Name}>{this.props.name}: </p>
+
+          <div className={colorClasses.join(" ")}>
+            <p>${this.props.amount.toFixed(2)}</p>
+            <button className={btnClasses.join(' ')} 
+              onClick={this.toggleShowModal}>
+              Delete
+            </button>
+          </div>
+        </li>
+      </div>
+    );
+  };
+}
+
+export default Item;
