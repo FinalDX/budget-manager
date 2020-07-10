@@ -17,7 +17,10 @@ class Item extends Component {
 
   toggleShowModal = () => this.setState({showModal: this.state.showModal ? false : true});
   
-  confirmModal = () =>  this.props.deleted(this.props.itemType, this.props.index);
+  confirmModal = () => {
+    this.props.deleted(this.props.itemType, this.props.index);
+    this.toggleShowModal();
+  }
 
   render() {
     let colorClasses = [classes.Amount];

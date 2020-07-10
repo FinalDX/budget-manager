@@ -1,0 +1,20 @@
+.Category { text-align: left; }
+
+.Category h3 {
+    display: inline-block;
+    font-weight: lighter;
+}
+
+.Title {
+    margin-top: 20px;
+    padding-bottom: 3px;
+    border-bottom: 2px solid #bbb;
+    width: 100%;
+}
+
+.Icon { 
+    float: right;
+    width: 40px;
+    text-align: center;
+    cursor: pointer;
+}

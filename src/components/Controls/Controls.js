@@ -10,13 +10,13 @@ class Controls extends Component {
     this.state = {
       itemForm: {
         name: {
-          value: ""
+          value: " "
         },
         amount: {
           value: 0
         },
         category: {
-          value: ""
+          value: " "
         },
         type: {
           value: "income"
@@ -41,7 +41,8 @@ class Controls extends Component {
         className={classes.Controls}
         onSubmit={event => {
           event.preventDefault();
-          return this.props.sendData(this.state.itemForm);
+          this.props.sendData(this.state.itemForm);
+          event.target.reset();
         }}
         required
       >
@@ -51,6 +52,7 @@ class Controls extends Component {
           placeholder="Name"
           onChange={event => this.inputHandler(event, "name")}
           maxLength="30"
+          pattern="[a-zA-Z ]*"
           required
         />
         <input
@@ -87,9 +89,11 @@ class Controls extends Component {
           </label>
         </div>
 
-        <Select changed={event => this.inputHandler(event, "category")} />
+        <Select changed={event => this.inputHandler(event, "category")} 
+          categories={this.props.categories}/>
 
-        <button className={classes.Button} type="submit">
+        <button className={classes.Button} 
+          type="submit">
           Add
         </button>
       </form>

@@ -14,7 +14,11 @@ class Budget extends Component {
       date: new Date().getMonth(),
       incomes: [],
       expenses: [],
-      remaining: 0
+      remaining: 0,
+      categories: ['Dependants', 'Clothing', 'Education',
+        'Entertainment', 'Food', 'Housing', 'Insurance',
+        'Job', 'Medical', 'Pets', 'Personal', 'Savings',
+        'Transportation', 'Utilities', 'Other']
     };
   }
 
@@ -72,17 +76,20 @@ class Budget extends Component {
         <hr></hr>
         <p style={{marginTop: '10px'}}>Remaining Budget for {months[this.state.date]}: </p>
         <Balance remaining={this.state.remaining} />
-        <Controls sendData={this.addItemHandler} />
+        <Controls sendData={this.addItemHandler} 
+          categories={this.state.categories}/>
         <div>
           <Items
             title={"Incomes"}
             type={"income"}
+            categories={this.state.categories}
             itemsList={this.state.incomes}
             deleted={this.deleteItemHandler}
           />
           <Items
             title={"Expenses"}
             type={"expense"}
+            categories={this.state.categories}
             itemsList={this.state.expenses}
             deleted={this.deleteItemHandler}
           />
