@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 
-import Charts from '../../components/Charts/Charts';
+import Charts from "../../components/Charts/Charts";
 import Balance from "../../components/Balance/Balance";
 import Controls from "../../components/Controls/Controls";
 import Items from "../../components/Items/Items";
+import Modal from "../../components/UI/Modal/Modal";
 
 import classes from "./Budget.module.css";
 
@@ -11,16 +12,33 @@ class Budget extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      showSaveModal: false,
       date: new Date().getMonth(),
       incomes: [],
       expenses: [],
       remaining: 0,
-      categories: ['Dependants', 'Clothing', 'Education',
-        'Entertainment', 'Food', 'Housing', 'Insurance',
-        'Job', 'Medical', 'Pets', 'Personal', 'Savings',
-        'Transportation', 'Utilities', 'Other']
+      categories: [
+        "Dependants",
+        "Clothing",
+        "Education",
+        "Entertainment",
+        "Food",
+        "Housing",
+        "Insurance",
+        "Job",
+        "Medical",
+        "Pets",
+        "Personal",
+        "Savings",
+        "Transportation",
+        "Utilities",
+        "Other"
+      ]
     };
   }
+
+  toggleSaveModal = () =>
+    this.setState({ showSaveModal: this.state.showSaveModal ? false : true });
 
   addItemHandler = inputItem => {
     // Get type and add 's' to match correct list
@@ -67,17 +85,53 @@ class Budget extends Component {
   };
 
   render() {
-    const months = ['January', 'Febuary', 'March', 'April',
-      'May', 'June', 'July', 'August', 'September', 'October',
-      'November', 'December']
+    const months = [
+      "January",
+      "Febuary",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December"
+    ];
     return (
       <div className={classes.Budget}>
-        <Charts incomeData={this.state.incomes} expenseData={this.state.expenses}/>
-        <hr></hr>
-        <p style={{marginTop: '10px'}}>Remaining Budget for {months[this.state.date]}: </p>
+        {this.state.showSaveModal ? (
+          <Modal
+            type={"alert"}
+            title={"Saved Budget"}
+            message={"This budget has been saved!"}
+            canceled={this.toggleSaveModal}
+          />
+        ) : null}
+
+        <div className={classes.Btns}>
+          <button className={classes.SaveBtn} onClick={this.toggleSaveModal}>
+            Save
+          </button>
+          <button className={classes.BackBtn} onClick={this.props.backClicked}>
+            Back
+          </button>
+        </div>
+
+        <Charts
+          incomeData={this.state.incomes}
+          expenseData={this.state.expenses}
+        />
+        <hr />
+        <p style={{ marginTop: "10px" }}>
+          Remaining Budget for {months[this.state.date]}:{" "}
+        </p>
         <Balance remaining={this.state.remaining} />
-        <Controls sendData={this.addItemHandler} 
-          categories={this.state.categories}/>
+        <Controls
+          sendData={this.addItemHandler}
+          categories={this.state.categories}
+        />
         <div>
           <Items
             title={"Incomes"}
