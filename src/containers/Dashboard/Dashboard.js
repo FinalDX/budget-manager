@@ -23,6 +23,12 @@ class Dashboard extends Component {
   toggleAddModal = () =>
     this.setState({ showAddModal: this.state.showAddModal ? false : true });
 
+  saveBudget = budget => {
+    let updatedBudgets = [...this.state.budgets];
+    updatedBudgets.push(budget);
+    this.setState({ budgets: updatedBudgets });
+  };
+
   inputDateHandler = e => {
     const enteredDate = e.target.value;
     const dateString = enteredDate.split("-");
@@ -68,7 +74,11 @@ class Dashboard extends Component {
     );
 
     return this.state.showBudgetControls ? (
-      <BudgetControls backClicked={this.toggleBudgetControls} />
+      <BudgetControls
+        saveClicked={this.saveBudget}
+        backClicked={this.toggleBudgetControls}
+        date={this.state.date}
+      />
     ) : (
       dashboard
     );

@@ -13,10 +13,12 @@ class Budget extends Component {
     super(props);
     this.state = {
       showSaveModal: false,
-      date: new Date().getMonth(),
-      incomes: [],
-      expenses: [],
-      remaining: 0,
+      budget: {
+        date: this.props.date,
+        incomes: [],
+        expenses: [],
+        remaining: 0
+      },
       categories: [
         "Dependants",
         "Clothing",
@@ -43,8 +45,10 @@ class Budget extends Component {
   addItemHandler = inputItem => {
     // Get type and add 's' to match correct list
     const type = inputItem.type.value + "s";
+    // Copy budget
+    const updatedBudget = [...this.state.budget];
     // Copy list and create newItem
-    const updatedItems = [...this.state[type]];
+    const updatedItems = [...updatedBudget[type]];
     const newItem = {
       name: inputItem.name.value,
       amount: Number(inputItem.amount.value),
@@ -53,16 +57,20 @@ class Budget extends Component {
     };
     // Add new item to copied list
     updatedItems.push(newItem);
+    updatedBudget[type] = updatedItems;
     // Update state
-    this.setState({ [type]: updatedItems });
+    this.setState({ budget: updatedBudget });
     this.updateRemaining("add", newItem.type, newItem.amount);
   };
 
   deleteItemHandler = (type, key) => {
     const itemType = type + "s";
-    let updatedItems = [...this.state[itemType]];
+    let updatedBudget = [...this.state.budget];
+    let updatedItems = [...updatedBudget[itemType]];
     const deletedItem = updatedItems.splice(key, 1)[0];
-    this.setState({ [itemType]: updatedItems });
+
+    updatedBudget[itemType] = updatedItems;
+    this.setState({ budget: updatedBudget });
     this.updateRemaining("delete", type, deletedItem.amount);
   };
 
@@ -111,7 +119,13 @@ class Budget extends Component {
         ) : null}
 
         <div className={classes.Btns}>
-          <button className={classes.SaveBtn} onClick={this.toggleSaveModal}>
+          <button
+            className={classes.SaveBtn}
+            onClick={() => {
+              this.toggleSaveModal();
+              this.props.saveClicked(this.state.budget);
+            }}
+          >
             Save
           </button>
           <button className={classes.BackBtn} onClick={this.props.backClicked}>
@@ -120,12 +134,13 @@ class Budget extends Component {
         </div>
 
         <Charts
-          incomeData={this.state.incomes}
-          expenseData={this.state.expenses}
+          incomeData={this.state.budget.incomes}
+          expenseData={this.state.budget.expenses}
         />
         <hr />
         <p style={{ marginTop: "10px" }}>
-          Remaining Budget for {months[this.state.date]}:{" "}
+          Remaining Budget for {months[this.state.budget.date.getMonth()]} of{" "}
+          {this.state.budget.date.getFullYear()}:{" "}
         </p>
         <Balance remaining={this.state.remaining} />
         <Controls
@@ -137,14 +152,14 @@ class Budget extends Component {
             title={"Incomes"}
             type={"income"}
             categories={this.state.categories}
-            itemsList={this.state.incomes}
+            itemsList={this.state.budget.incomes}
             deleted={this.deleteItemHandler}
           />
           <Items
             title={"Expenses"}
             type={"expense"}
             categories={this.state.categories}
-            itemsList={this.state.expenses}
+            itemsList={this.state.budget.expenses}
             deleted={this.deleteItemHandler}
           />
         </div>
