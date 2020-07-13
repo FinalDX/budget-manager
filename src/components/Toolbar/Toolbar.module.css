@@ -1,0 +1,14 @@
+.Toolbar {
+  text-align: center;
+  height: 40px;
+  width: 100%;
+  margin: 10px 0;
+}
+
+.Title {
+  display: inline-block;
+}
+
+.Menu {
+  float: left;
+}

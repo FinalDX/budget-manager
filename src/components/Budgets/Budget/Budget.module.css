@@ -1,0 +1,10 @@
+.Buttons {
+  opacity: 0;
+  width: 0px;
+  transition: opacity 0.4s, width 0.4s;
+}
+
+.ShowBtns {
+  opacity: 1;
+  width: 80px;
+}
