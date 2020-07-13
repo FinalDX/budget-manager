@@ -13,7 +13,7 @@ const modal = props => {
         );
     if (props.type === 'alert') {
         buttons = ( <button onClick={props.confirmed}>OK</button> );
-    }
+    } 
 
     return (
         <div>
@@ -27,7 +27,9 @@ const modal = props => {
                 <div className={classes.Message}>
                     <p>{props.message}</p>
                     {props.type === 'prompt' ?
-                        <input type="text"></input> : null}
+                        <input type={props.input}
+                            value={props.inputValue}
+                            onChange={props.changed} /> : null}
                 </div>
                 <div className={classes.Buttons}>
                     {buttons}

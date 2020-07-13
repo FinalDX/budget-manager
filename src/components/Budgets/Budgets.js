@@ -10,7 +10,7 @@ const budgets = props => {
   return (
     <div>
       <h2>Budgets</h2>
-      <button>Add</button>
+      <button onClick={props.addClicked}>Add</button>
       <ul>{budgets}</ul>
     </div>
   );
