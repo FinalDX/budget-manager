@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 
 import Select from "../UI/Select/Select";
+import FullButton from '../UI/Buttons/FullButton/FullButton';
 
 import classes from "./Controls.module.css";
 
@@ -92,10 +93,10 @@ class Controls extends Component {
         <Select changed={event => this.inputHandler(event, "category")} 
           categories={this.props.categories}/>
 
-        <button className={classes.Button} 
+        <FullButton
           type="submit">
           Add
-        </button>
+        </FullButton>
       </form>
     );
   }

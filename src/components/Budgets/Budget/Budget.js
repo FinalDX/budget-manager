@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 
+import Balance from '../../Balance/Balance';
 import SlideButton from '../../UI/Buttons/SlideButton/SlideButton';
 
 import classes from "./Budget.module.css";
@@ -37,7 +38,7 @@ class Budget extends Component {
         </div>
         <div className={classes.RightSide}>
           <div className={classes.Remaining}>
-            Remaining Budget: {this.props.budget.remaining}
+            Remaining Budget: <Balance remaining={this.props.budget.remaining} />
           </div>
           <div className={classes.Buttons}>
             <SlideButton show={this.state.showButtons}

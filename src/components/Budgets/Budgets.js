@@ -1,6 +1,7 @@
 import React from "react";
 
 import Budget from "./Budget/Budget";
+import FullButton from '../UI/Buttons/FullButton/FullButton';
 
 import classes from "./Budgets.module.css";
 
@@ -12,7 +13,7 @@ const budgets = props => {
   return (
     <div className={classes.Budgets}>
       <h2>Budget List</h2>
-      <button onClick={props.addClicked}>Add</button>
+      <FullButton clicked={props.addClicked}>Add</FullButton>
       <ul>{budgets}</ul>
     </div>
   );

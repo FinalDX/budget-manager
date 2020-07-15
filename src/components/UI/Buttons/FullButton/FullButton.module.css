@@ -1,0 +1,15 @@
+.FullButton {
+  display: block;
+  margin: 30px auto;
+  width: 100px;
+  border-style: none;
+  padding: 10px;
+  background-color: #33658a;
+  color: white;
+  font-size: inherit;
+  cursor: pointer;
+}
+
+.FullButton:hover {
+  background-color: #86bbd8;
+}
