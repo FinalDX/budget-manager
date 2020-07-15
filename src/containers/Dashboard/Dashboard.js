@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import BudgetControls from "../Budget/Budget";
+import BudgetControls from "../BudgetControls/BudgetControls";
 import Budgets from "../../components/Budgets/Budgets";
 import Modal from "../../components/UI/Modal/Modal";
 
@@ -78,6 +78,7 @@ class Dashboard extends Component {
         saveClicked={this.saveBudget}
         backClicked={this.toggleBudgetControls}
         date={this.state.date}
+        sendBudget={this.saveBudget}
       />
     ) : (
       dashboard

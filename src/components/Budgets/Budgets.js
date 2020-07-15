@@ -2,14 +2,16 @@ import React from "react";
 
 import Budget from "./Budget/Budget";
 
+import classes from "./Budgets.module.css";
+
 const budgets = props => {
   const budgets = props.budgets.map((cur, index) => (
-    <Budget key={index} month={cur.date.getMonth()} year={cur.date.getYear()} />
+    <Budget key={index} id={index} budget={cur} />
   ));
 
   return (
-    <div>
-      <h2>Budgets</h2>
+    <div className={classes.Budgets}>
+      <h2>Budget List</h2>
       <button onClick={props.addClicked}>Add</button>
       <ul>{budgets}</ul>
     </div>

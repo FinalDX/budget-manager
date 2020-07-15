@@ -3,6 +3,10 @@
   height: 40px;
   width: 100%;
   margin: 10px 0;
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+  z-index: 300;
 }
 
 .Title {
@@ -10,5 +14,6 @@
 }
 
 .Menu {
-  float: left;
+  position: absolute;
+  left: 10px;
 }

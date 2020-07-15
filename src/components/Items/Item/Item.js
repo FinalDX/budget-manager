@@ -23,11 +23,13 @@ class Item extends Component {
   }
 
   render() {
+    let sign = '+';
     let colorClasses = [classes.Amount];
     if (this.props.itemType === "income") {
       colorClasses = [classes.Amount, classes.Green];
     } else if (this.props.itemType === "expense") {
       colorClasses = [classes.Amount, classes.Red];
+      sign = '-';
     }
 
     let btnClasses = [classes.Button];
@@ -48,7 +50,7 @@ class Item extends Component {
           <p className={classes.Name}>{this.props.name}: </p>
 
           <div className={colorClasses.join(" ")}>
-            <p>${this.props.amount.toFixed(2)}</p>
+            <p>{sign}${this.props.amount.toFixed(2)}</p>
             <button className={btnClasses.join(' ')} 
               onClick={this.toggleShowModal}>
               Delete

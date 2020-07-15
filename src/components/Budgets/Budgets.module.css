@@ -1,0 +1,31 @@
+.Budgets {
+    width: 730px;
+    margin: 10px auto;
+}
+
+.Budgets ul {
+    list-style-type: none;
+    border: 1px solid #333;
+    height: 500px;
+    padding: 0;
+}
+
+.Budgets > button {
+    display: block;
+    margin: 30px auto;
+    width: 100px;
+    border-style: none;
+    padding: 10px;
+    background-color: #33658A;
+    color: white;
+    font-size: inherit;
+    cursor: pointer;
+}
+
+.Budgets button:hover {
+    background-color: #86BBD8;
+  }
+
+@media (max-width: 767px) {
+    .Budgets { width: 95%; }
+}

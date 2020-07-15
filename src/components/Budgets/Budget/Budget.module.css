@@ -1,10 +1,19 @@
-.Buttons {
-  opacity: 0;
-  width: 0px;
-  transition: opacity 0.4s, width 0.4s;
+.Budget {
+  position: relative;
+  text-align: left;
+  width: 100%;
+  margin: 10px 0px;
+  padding-top: 5px;
+  padding-left: 5px;
+  border-bottom: 1px solid #ddd;
+  overflow: auto;
+  cursor: pointer;
 }
 
-.ShowBtns {
-  opacity: 1;
-  width: 80px;
+.RightSide { text-align: right;}
+
+.Remaining {
+  display: inline-block;
+  margin: 0 20px 5px 0;
 }
+

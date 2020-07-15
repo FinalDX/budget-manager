@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 
-import Charts from "../../components/Charts/Charts";
+import Charts from "../../components/Charts/PieCharts";
 import Balance from "../../components/Balance/Balance";
 import Controls from "../../components/Controls/Controls";
 import Items from "../../components/Items/Items";
 import Modal from "../../components/UI/Modal/Modal";
 
-import classes from "./Budget.module.css";
+import classes from "./BudgetControls.module.css";
 
 class Budget extends Component {
   constructor(props) {
@@ -45,10 +45,10 @@ class Budget extends Component {
   addItemHandler = inputItem => {
     // Get type and add 's' to match correct list
     const type = inputItem.type.value + "s";
-    // Copy budget
-    const updatedBudget = [...this.state.budget];
-    // Copy list and create newItem
-    const updatedItems = [...updatedBudget[type]];
+    // Clone budget and appropriate list
+    let updatedBudget = {...this.state.budget};
+    let updatedItems = [...updatedBudget[type]];
+    // Create new item object from the input item
     const newItem = {
       name: inputItem.name.value,
       amount: Number(inputItem.amount.value),
@@ -58,38 +58,41 @@ class Budget extends Component {
     // Add new item to copied list
     updatedItems.push(newItem);
     updatedBudget[type] = updatedItems;
+    // Update remaining budget value
+    updatedBudget.remaining = this.updateRemaining("add", newItem.type, newItem.amount);
     // Update state
-    this.setState({ budget: updatedBudget });
-    this.updateRemaining("add", newItem.type, newItem.amount);
+    this.setState({budget: updatedBudget});
   };
 
   deleteItemHandler = (type, key) => {
+    // Get type and add 's' to match correct list
     const itemType = type + "s";
-    let updatedBudget = [...this.state.budget];
+    // Clone budget and appropriate list
+    let updatedBudget = {...this.state.budget};
     let updatedItems = [...updatedBudget[itemType]];
+    // Delete item from list and retrieve it
     const deletedItem = updatedItems.splice(key, 1)[0];
-
     updatedBudget[itemType] = updatedItems;
+    // Update remaining budget value
+    updatedBudget.remaining = this.updateRemaining("delete", type, deletedItem.amount);
+    // Update state
     this.setState({ budget: updatedBudget });
-    this.updateRemaining("delete", type, deletedItem.amount);
   };
 
   updateRemaining = (action, type, value) => {
-    let updatedRemaining = this.state.remaining;
-    if (action === "add") {
-      if (type === "income") {
-        updatedRemaining = updatedRemaining + value;
-      } else if (type === "expense") {
-        updatedRemaining = updatedRemaining - value;
-      }
-    } else if (action === "delete") {
-      if (type === "income") {
-        updatedRemaining = updatedRemaining - value;
-      } else if (type === "expense") {
-        updatedRemaining = updatedRemaining + value;
-      }
-    }
-    this.setState({ remaining: updatedRemaining });
+    // Clone budget and remaining value
+    let updatedBudget = {...this.state.budget};
+    let updatedRemaining = updatedBudget.remaining;
+    // Perform the appropriate change based on the given action
+    if ((action === "add" && type === "income") ||
+        (action === "delete" && type === "expense")) {
+          updatedRemaining = updatedRemaining + value;
+        }
+    else if ((action === "add" && type === "expense") ||
+             (action === "delete" && type === "income")) {
+              updatedRemaining = updatedRemaining - value;
+            }
+    return updatedRemaining;
   };
 
   render() {
@@ -118,12 +121,17 @@ class Budget extends Component {
           />
         ) : null}
 
+        <Charts
+          incomeData={this.state.budget.incomes}
+          expenseData={this.state.budget.expenses}
+        />
+        <hr />
         <div className={classes.Btns}>
           <button
             className={classes.SaveBtn}
             onClick={() => {
               this.toggleSaveModal();
-              this.props.saveClicked(this.state.budget);
+              this.props.sendBudget(this.state.budget);
             }}
           >
             Save
@@ -132,17 +140,12 @@ class Budget extends Component {
             Back
           </button>
         </div>
-
-        <Charts
-          incomeData={this.state.budget.incomes}
-          expenseData={this.state.budget.expenses}
-        />
-        <hr />
         <p style={{ marginTop: "10px" }}>
           Remaining Budget for {months[this.state.budget.date.getMonth()]} of{" "}
           {this.state.budget.date.getFullYear()}:{" "}
         </p>
-        <Balance remaining={this.state.remaining} />
+        
+        <Balance remaining={this.state.budget.remaining} />
         <Controls
           sendData={this.addItemHandler}
           categories={this.state.categories}

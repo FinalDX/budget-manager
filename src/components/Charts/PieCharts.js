@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import Dropdown from '../UI/Dropdown/Dropdown';
 import Chart from './PieChart/PieChart';
 
-import classes from './Charts.module.css';
+import classes from './PieCharts.module.css';
 
 class Charts extends Component {
     constructor(props){
