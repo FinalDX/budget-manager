@@ -7,6 +7,8 @@ const fullButton = props => (
     onClick={props.clicked}
     className={classes.FullButton}
     type={props.type}
+    style={props.style}
+    disabled={props.disabled}
   >
     {props.children}
   </button>

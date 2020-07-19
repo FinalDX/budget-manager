@@ -7,8 +7,11 @@ import classes from "./Modal.module.css";
 const modal = props => {
   let buttons = (
     <div>
-      <button key={0} onClick={props.confirmed}>
-        OK
+      <button 
+        key={0}
+        type='submit'
+        form='input-form'>
+          OK
       </button>
       <button key={1} onClick={props.canceled}>
         Cancel
@@ -28,15 +31,18 @@ const modal = props => {
         </div>
         <div className={classes.Message}>
           <p>{props.message}</p>
-          {props.type === "prompt" ? (
-            <input
-              type={props.input}
-              value={props.inputValue}
-              onChange={props.changed}
-            />
-          ) : null}
         </div>
-        <div className={classes.Buttons}>{buttons}</div>
+        <form 
+          id='input-form'
+          onSubmit={(e) => {
+            e.preventDefault();
+            props.confirmed();
+          }}>
+          {props.type === 'prompt' ? 
+            props.form
+            : null}
+          <div className={classes.Buttons}>{buttons}</div>
+        </form>
       </div>
     </div>
   );

@@ -16,36 +16,28 @@ class Budget extends Component {
   toggleShow = () => this.setState({ showButtons: this.state.showButtons ? false : true });
 
   render() {
-    const months = [
-      "January",
-      "Febuary",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December"
-    ];
 
     return (
       <li className={classes.Budget} onClick={this.toggleShow}>
         <div className={classes.Date}>
-          {months[this.props.budget.date.getMonth()]} {this.props.budget.date.getFullYear()}
+          {this.props.budget.date.month} {this.props.budget.date.year}
         </div>
         <div className={classes.RightSide}>
           <div className={classes.Remaining}>
-            Remaining Budget: <Balance remaining={this.props.budget.remaining} />
+            <Balance 
+              remaining={this.props.budget.remaining} 
+              style={{fontSize: '180%', fontWeight: 'lighter'}}/>
           </div>
-          <div className={classes.Buttons}>
-            <SlideButton show={this.state.showButtons}
-              style={{backgroundColor: '#33658A'}}>View</SlideButton>
-            <SlideButton show={this.state.showButtons}
-              style={{backgroundColor: 'rgb(253, 68, 68)'}}>Delete</SlideButton>
-          </div>
+          <SlideButton 
+            show={this.state.showButtons}
+            style={{backgroundColor: '#33658A'}}
+            clicked={() => this.props.viewClicked(this.props.budget)}>
+              View</SlideButton>
+          <SlideButton 
+            show={this.state.showButtons}
+            style={{backgroundColor: 'rgb(253, 68, 68)'}}
+            clicked={() => this.props.deleteClicked(this.props.id)}>
+              Delete</SlideButton>
         </div>
       </li>
     );

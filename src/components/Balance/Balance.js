@@ -14,7 +14,8 @@ const balance = props => {
   }
 
   return (
-    <span className={addedClasses.join(" ")}>
+    <span className={addedClasses.join(" ")}
+      style={props.style}>
       {sign}${props.remaining.toFixed(2)}
     </span>
   );

@@ -3,16 +3,43 @@ import React, { Component } from "react";
 import BudgetControls from "../BudgetControls/BudgetControls";
 import Budgets from "../../components/Budgets/Budgets";
 import Modal from "../../components/UI/Modal/Modal";
+import Select from '../../components/UI/Select/Select';
+import LineCharts from '../../components/Charts/LineCharts/LineCharts';
 
 class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
       showBudgetControls: false,
-      showAddModal: false,
-      date: new Date(),
-      budgets: []
+      date: {
+        month: new Date().toLocaleString('default', { month: 'long' }),
+        year: new Date().getFullYear() 
+      },
+      budgets: [],
+      selectedBudget: null,
+      modal: {},
+      categories: [
+        "Dependants",
+        "Clothing",
+        "Education",
+        "Entertainment",
+        "Food",
+        "Housing",
+        "Insurance",
+        "Job",
+        "Medical",
+        "Pets",
+        "Personal",
+        "Savings",
+        "Transportation",
+        "Utilities",
+        "Other"
+      ]
     };
+  }
+
+  goToBudgetControls = (budget) => {
+    this.setState({showBudgetControls: true, selectedBudget: budget});
   }
 
   toggleBudgetControls = () =>
@@ -20,55 +47,150 @@ class Dashboard extends Component {
       showBudgetControls: this.state.showBudgetControls ? false : true
     });
 
-  toggleAddModal = () =>
-    this.setState({ showAddModal: this.state.showAddModal ? false : true });
+  toggleModal = () =>
+    this.setState({ modal: this.state.modal.show ? {show: false} : {show: true}});
+
+  updateDate = (update, type) => {
+    let updatedDate = {...this.state.date};
+    updatedDate[type] = update;
+    this.setState({date: updatedDate});
+  }
+
+  createYearOptions = (from, to) => {
+    let years = [];
+    for(from; from <= to; from++) {
+      years.push(from);
+    }
+    return years;
+  }
+
+  summonAddModal = () => {
+    this.setState({modal: {
+      show: true,
+      type: 'prompt',
+      title: "Select Date",
+      message: "Please select the month and the year for the new budget.",
+      confirmed: () => {
+        if (this.findExistingBudget()) {
+          this.summonAlertModal();
+        } else {
+          this.goToBudgetControls({
+            id: this.state.budgets.length,
+            date: this.state.date,
+            incomes: [],
+            expenses: [],
+            remaining: 0
+          });
+          this.toggleModal();
+        }
+      },
+      canceled: this.toggleModal,
+      form: (
+        <div>
+          <Select
+          defaultValue={new Date().toLocaleString('default', { month: 'long' })}
+          options={['January', 'Febuary', 'March', 'April',
+            'May', 'June', 'July', 'August', 'September', 'October',
+            'November', 'December']}
+          changed={(e) => {
+            this.updateDate(e.target.value, 'month');
+          }}/>
+          <Select
+          defaultValue={new Date().getFullYear().toString()}
+          options={this.createYearOptions(1970, 2070)}
+          changed={(e) => {
+            this.updateDate(e.target.value, 'year');
+          }}/>
+        </div>
+      )
+    }});
+  };
+
+  summonDeleteModal = (index) => {
+    this.setState({modal: {
+      show: true,
+      type: 'confirm',
+      title: 'Deleting Budget',
+      message: 'This will permenately remove this budget from your budget list. Are you sure you want to delete this budget?',
+      confirmed: () => {
+        this.deleteBudget(index);
+        this.toggleModal();
+      },
+      canceled: this.toggleModal,
+      form: null
+    }});
+  };
+
+  summonAlertModal = () => {
+    this.setState({modal: {
+      show: true,
+      type: 'alert',
+      title: 'Already Exists',
+      message: 'A budget already exists for the selected month and year!',
+      canceled: this.summonAddModal,
+      form: null
+    }});
+  }
+
+  deleteBudget = index => {
+    let updatedBudgets = [...this.state.budgets];
+    updatedBudgets.splice(index, 1);
+    this.setState({budgets: updatedBudgets});
+  }
 
   saveBudget = budget => {
     let updatedBudgets = [...this.state.budgets];
-    updatedBudgets.push(budget);
+    if (budget.id < this.state.budgets.length) {
+      updatedBudgets[budget.id] = budget;
+    } else {
+      updatedBudgets.push(budget);
+    }
     this.setState({ budgets: updatedBudgets });
   };
 
-  inputDateHandler = e => {
-    const enteredDate = e.target.value;
-    const dateString = enteredDate.split("-");
-    const year = dateString[0];
-    const month = dateString[1];
-    const day = dateString[2];
-    const updatedDate = new Date(this.state.date.getTime());
-    updatedDate.setFullYear(year);
-    updatedDate.setMonth(month - 1);
-    updatedDate.setDate(day);
-    this.setState({ date: updatedDate });
-  };
+  findExistingBudget = () => {
+    for (const budget of this.state.budgets) {
+      if (budget.date.month === this.state.date.month &&
+          budget.date.year === this.state.date.year) {
+            return true;
+          }
+    }
+    return false;
+  }
 
   render() {
-    let month = this.state.date.getMonth() + 1;
-    if (month < 10) {
-      month = "0" + month;
-    }
-    let inputDate = `${this.state.date.getFullYear()}-${month}-${this.state.date.getDate()}`;
-
     const dashboard = (
       <div>
-        {this.state.showAddModal ? (
+        {this.state.modal.show ? (
           <Modal
-            type={"prompt"}
-            title={"Select Date"}
-            message={"Please select the month and the year for the new budget."}
-            confirmed={() => {
-              this.toggleBudgetControls();
-              this.toggleAddModal();
-            }}
-            canceled={this.toggleAddModal}
-            input={"date"}
-            inputValue={inputDate}
-            changed={e => this.inputDateHandler(e)}
+            type={this.state.modal.type}
+            title={this.state.modal.title}
+            message={this.state.modal.message}
+            confirmed={this.state.modal.confirmed}
+            canceled={this.state.modal.canceled}
+            form={this.state.modal.form}
           />
         ) : null}
-        <Budgets
+        <LineCharts 
           budgets={this.state.budgets}
-          addClicked={this.toggleAddModal}
+          categories={this.state.categories}
+          years={this.createYearOptions(1970, 2070)}/>
+        <hr />
+        <Budgets
+          years={this.createYearOptions(1970, 2070)}
+          months={['January', 'Febuary', 'March', 'April',
+          'May', 'June', 'July', 'August', 'September', 'October',
+          'November', 'December']}
+          budgets={this.state.budgets}
+          addClicked={() => {
+            this.setState({date: {
+              month: new Date().toLocaleString('default', { month: 'long' }),
+              year: new Date().getFullYear().toString()
+            }})
+            this.summonAddModal();
+          }}
+          viewClicked={this.goToBudgetControls}
+          deleteClicked={this.summonDeleteModal}
         />
       </div>
     );
@@ -78,7 +200,8 @@ class Dashboard extends Component {
         saveClicked={this.saveBudget}
         backClicked={this.toggleBudgetControls}
         date={this.state.date}
-        sendBudget={this.saveBudget}
+        selectedBudget={this.state.selectedBudget}
+        categories={this.state.categories}
       />
     ) : (
       dashboard

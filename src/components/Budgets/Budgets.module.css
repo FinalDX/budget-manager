@@ -1,13 +1,14 @@
 .Budgets {
     width: 730px;
     margin: 10px auto;
+    position: relative;
 }
 
 .Budgets ul {
     list-style-type: none;
     border: 1px solid #333;
-    height: 500px;
     padding: 0;
+    margin-top: 10px;
 }
 
 

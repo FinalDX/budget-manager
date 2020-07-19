@@ -11,32 +11,82 @@ class Controls extends Component {
     this.state = {
       itemForm: {
         name: {
-          value: " "
+          value: " ",
+          validation: {
+            pattern: /^[A-Za-z ]+$/,
+            maxLength: 20,
+            minLength: 1,
+            required: true
+          },
+          valid: false
         },
         amount: {
-          value: 0
+          value: 0,
+          validation: {
+            maxLength: 9,
+            required: true
+          },
+          valid: false
         },
         category: {
-          value: " "
+          value: "Category",
+          validation: {
+            selected: true
+          },
+          valid: false
         },
         type: {
-          value: "income"
+          value: "income",
+          validation: {},
+          valid: true
         }
-      }
+      },
+      formIsValid: false
     };
   }
 
+  validate = (value, validation) => {
+      let isValid = true;
+      if (validation.pattern) {
+        isValid = (value.match(validation.pattern) != null) && isValid;
+      }
+      if (validation.maxLength) {
+        isValid = value.length <= validation.maxLength && isValid;
+      }
+      if (validation.minLength) {
+        isValid = value.length >= validation.minLength && isValid;
+      }
+      if (validation.required) {
+        isValid = value.trim() !== '' && isValid;
+        console.log('required is' + isValid);
+      }
+      if (validation.selected) {
+        isValid = value !== 'Category' && isValid;
+        console.log('selected is ' + isValid);
+      }
+      return isValid;
+  }
+
   inputHandler = (e, inputName) => {
+    // Clone itemForm and the correct input object from the state
     const updatedForm = { ...this.state.itemForm };
     const updatedItem = { ...this.state.itemForm[inputName] };
 
     updatedItem.value = e.target.value;
+    updatedItem.valid = this.validate(updatedItem.value, updatedItem.validation);
     updatedForm[inputName] = updatedItem;
 
-    this.setState({ itemForm: updatedForm });
+    let formIsValid = true;
+    for (let inputName in updatedForm) {
+      formIsValid = updatedForm[inputName].valid && formIsValid;
+    }
+
+    this.setState({itemForm: updatedForm, formIsValid: formIsValid});
   };
 
   render() {
+    console.log(this.state.formIsValid);
+    let btnStyle = { margin: '30px auto' };
     return (
       <form
         className={classes.Controls}
@@ -45,7 +95,6 @@ class Controls extends Component {
           this.props.sendData(this.state.itemForm);
           event.target.reset();
         }}
-        required
       >
         <p>Add an income or an expense: </p>
         <input
@@ -90,11 +139,15 @@ class Controls extends Component {
           </label>
         </div>
 
-        <Select changed={event => this.inputHandler(event, "category")} 
-          categories={this.props.categories}/>
+        <Select 
+          haveDefaultOption={true}
+          defaultValue={"Category"}
+          changed={event => this.inputHandler(event, "category")} 
+          options={this.props.categories}/>
 
         <FullButton
-          type="submit">
+          style={btnStyle}
+          disabled={!this.state.formIsValid}>
           Add
         </FullButton>
       </form>

@@ -1,9 +1,8 @@
 .FullButton {
   display: block;
-  margin: 30px auto;
   width: 100px;
   border-style: none;
-  padding: 10px;
+  padding: 5px;
   background-color: #33658a;
   color: white;
   font-size: inherit;
@@ -12,4 +11,9 @@
 
 .FullButton:hover {
   background-color: #86bbd8;
+}
+
+.FullButton:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }

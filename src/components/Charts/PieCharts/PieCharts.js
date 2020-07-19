@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 
-import Dropdown from '../UI/Dropdown/Dropdown';
-import Chart from './PieChart/PieChart';
+import Dropdown from '../../UI/Dropdown/Dropdown';
+import PieChart from './PieChart/PieChart';
 
 import classes from './PieCharts.module.css';
 
-class Charts extends Component {
+class PieCharts extends Component {
     constructor(props){
         super(props);
         this.state = {
@@ -35,7 +35,7 @@ class Charts extends Component {
         // Ensures that the Chart componenet is only rendered if the data
         // is defined
         let chart = data[this.state.selected] ?
-            <Chart title={this.state.selected} 
+            <PieChart title={this.state.selected} 
                 data={data[this.state.selected]} /> : null;
 
         return(
@@ -53,4 +53,4 @@ class Charts extends Component {
     }
 }
 
-export default Charts;
+export default PieCharts;

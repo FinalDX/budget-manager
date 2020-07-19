@@ -18,11 +18,12 @@
 }
 
 .Message {
-    margin: 20px auto;
+    margin: 20px auto 10px;
 }
 
 .Buttons {
     float: right;
+    margin-top: 10px;
 }
 
 .Buttons button {

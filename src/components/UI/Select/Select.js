@@ -2,7 +2,7 @@ import React from "react";
 import classes from "./Select.module.css";
 
 const select = props => {
-  let options = props.categories.map((cur, index) => (
+  let options = props.options.map((cur, index) => (
     <option key={index} value={cur}>
       {cur}
     </option>
@@ -10,14 +10,15 @@ const select = props => {
 
   return (
     <select
-      defaultValue="Category"
+      defaultValue={props.defaultValue}
       className={classes.Select}
       onChange={props.changed}
       required
     >
-      <option value="Category" disabled>
-        Category
-      </option>
+      {props.haveDefaultOption ? 
+      <option value={props.defaultValue} disabled>
+        {props.defaultValue}
+      </option> : null}
       {options}
     </select>
   );

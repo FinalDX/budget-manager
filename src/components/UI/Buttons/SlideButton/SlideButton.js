@@ -9,7 +9,8 @@ const slideButton = props => {
     }
     return (
         <button className={addedClasses.join(' ')}
-            style={props.style}>{props.children}</button>
+            style={props.style}
+            onClick={props.clicked}>{props.children}</button>
     )
 }
 

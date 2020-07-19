@@ -1,0 +1,8 @@
+.LineChart {
+    width: 500px;
+    margin: 10px auto 20px;
+}
+
+@media (max-width: 500px) {
+    .LineChart { width: 99%; }
+}
