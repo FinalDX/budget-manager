@@ -6,6 +6,27 @@ import Modal from "../../components/UI/Modal/Modal";
 import Select from '../../components/UI/Select/Select';
 import LineCharts from '../../components/Charts/LineCharts/LineCharts';
 
+// Return an array of years from system date;
+// 20 years in the past and 20 years in the future.
+const createYearOptions = (date) => {
+  const from = date.getFullYear() - 20;
+  const to = date.getFullYear() + 20;
+  let years = [];
+  for(let year = from; year <= to; year++) {
+    years.push(year.toString());
+  }
+  return years;
+}
+
+const YEARS = createYearOptions(new Date());
+const MONTHS = ['January', 'Febuary', 'March', 'April',
+'May', 'June', 'July', 'August', 'September', 'October',
+'November', 'December'];
+const CATEGORIES = ["Dependants", "Clothing", "Education",
+  "Entertainment", "Food", "Housing", "Insurance",
+  "Job", "Medical", "Pets", "Personal", "Savings",
+  "Transportation", "Utilities", "Other"];
+
 class Dashboard extends Component {
   constructor(props) {
     super(props);
@@ -17,53 +38,43 @@ class Dashboard extends Component {
       },
       budgets: [],
       selectedBudget: null,
-      modal: {},
-      categories: [
-        "Dependants",
-        "Clothing",
-        "Education",
-        "Entertainment",
-        "Food",
-        "Housing",
-        "Insurance",
-        "Job",
-        "Medical",
-        "Pets",
-        "Personal",
-        "Savings",
-        "Transportation",
-        "Utilities",
-        "Other"
-      ]
+      modal: {}
     };
   }
 
+  // Show the BudgetControls componenet and pass the selectedBudget
+  // from the state to BudgetControls as a prop
   goToBudgetControls = (budget) => {
     this.setState({showBudgetControls: true, selectedBudget: budget});
   }
+  // ----------------------------------------------------------
 
+  // Show or hide the BudgetControls component
   toggleBudgetControls = () =>
     this.setState({
       showBudgetControls: this.state.showBudgetControls ? false : true
     });
+  // ----------------------------------------------------------
 
-  toggleModal = () =>
-    this.setState({ modal: this.state.modal.show ? {show: false} : {show: true}});
+  // Hide the Modal component
+  hideModal = () =>
+    this.setState({modal: {show: false}});
+  // ----------------------------------------------------------
 
-  updateDate = (update, type) => {
+  // Update the date object in the state.
+  // value is the updated value.
+  // type is the object property key; month or year.
+  updateDate = (value, type) => {
     let updatedDate = {...this.state.date};
-    updatedDate[type] = update;
+    updatedDate[type] = value;
     this.setState({date: updatedDate});
   }
+  // ----------------------------------------------------------
 
-  createYearOptions = (from, to) => {
-    let years = [];
-    for(from; from <= to; from++) {
-      years.push(from);
-    }
-    return years;
-  }
-
+  // Update the modal object in the state to display a 
+  // custom modal.
+  // This modal propmts the user to select a month and a year
+  // to create a new budget.
   summonAddModal = () => {
     this.setState({modal: {
       show: true,
@@ -81,23 +92,21 @@ class Dashboard extends Component {
             expenses: [],
             remaining: 0
           });
-          this.toggleModal();
+          this.hideModal();
         }
       },
-      canceled: this.toggleModal,
+      canceled: this.hideModal,
       form: (
         <div>
           <Select
           defaultValue={new Date().toLocaleString('default', { month: 'long' })}
-          options={['January', 'Febuary', 'March', 'April',
-            'May', 'June', 'July', 'August', 'September', 'October',
-            'November', 'December']}
+          options={MONTHS}
           changed={(e) => {
             this.updateDate(e.target.value, 'month');
           }}/>
           <Select
           defaultValue={new Date().getFullYear().toString()}
-          options={this.createYearOptions(1970, 2070)}
+          options={YEARS}
           changed={(e) => {
             this.updateDate(e.target.value, 'year');
           }}/>
@@ -105,7 +114,12 @@ class Dashboard extends Component {
       )
     }});
   };
+  // ----------------------------------------------------------
 
+  // Update the modal object in the state to display a 
+  // custom modal.
+  // This model confirms whether or not the user wants to 
+  // delete a budget from the budgets array in the state.
   summonDeleteModal = (index) => {
     this.setState({modal: {
       show: true,
@@ -114,13 +128,18 @@ class Dashboard extends Component {
       message: 'This will permenately remove this budget from your budget list. Are you sure you want to delete this budget?',
       confirmed: () => {
         this.deleteBudget(index);
-        this.toggleModal();
+        this.hideModal();
       },
-      canceled: this.toggleModal,
+      canceled: this.hideModal,
       form: null
     }});
   };
+  // ----------------------------------------------------------
 
+  // Update the modal object in the state to display a 
+  // custom modal.
+  // This modal informs the user that a budget already exists
+  // for the selected month and year.
   summonAlertModal = () => {
     this.setState({modal: {
       show: true,
@@ -131,13 +150,20 @@ class Dashboard extends Component {
       form: null
     }});
   }
+  // ----------------------------------------------------------
 
+  // Delete the budget from the budgets array in the state by 
+  // using the index.
   deleteBudget = index => {
     let updatedBudgets = [...this.state.budgets];
     updatedBudgets.splice(index, 1);
     this.setState({budgets: updatedBudgets});
   }
+  // ----------------------------------------------------------
 
+  // If the budget already exists in the budgets array in the 
+  // state, then update the existing budget.
+  // If the budget does not exist, add it to the budgets array.
   saveBudget = budget => {
     let updatedBudgets = [...this.state.budgets];
     if (budget.id < this.state.budgets.length) {
@@ -147,17 +173,28 @@ class Dashboard extends Component {
     }
     this.setState({ budgets: updatedBudgets });
   };
+  // ----------------------------------------------------------
 
+  // Find an existing budget for the selected month and year
+  // when a user tries to add a new budget.
+  // Return true if an existing budget is found; 
+  // otherwise return false.
   findExistingBudget = () => {
+    let found = false;
     for (const budget of this.state.budgets) {
       if (budget.date.month === this.state.date.month &&
           budget.date.year === this.state.date.year) {
-            return true;
+            found = true;
+            break;
           }
     }
-    return false;
+    return found;
   }
+  // ----------------------------------------------------------
 
+  // ==========================================================
+  // RENDER
+  // ==========================================================
   render() {
     const dashboard = (
       <div>
@@ -173,11 +210,11 @@ class Dashboard extends Component {
         ) : null}
         <LineCharts 
           budgets={this.state.budgets}
-          categories={this.state.categories}
-          years={this.createYearOptions(1970, 2070)}/>
+          categories={CATEGORIES}
+          years={YEARS}/>
         <hr />
         <Budgets
-          years={this.createYearOptions(1970, 2070)}
+          years={YEARS}
           months={['January', 'Febuary', 'March', 'April',
           'May', 'June', 'July', 'August', 'September', 'October',
           'November', 'December']}
@@ -195,17 +232,17 @@ class Dashboard extends Component {
       </div>
     );
 
-    return this.state.showBudgetControls ? (
+    const budgetControls = (
       <BudgetControls
         saveClicked={this.saveBudget}
         backClicked={this.toggleBudgetControls}
         date={this.state.date}
         selectedBudget={this.state.selectedBudget}
-        categories={this.state.categories}
+        categories={CATEGORIES}
       />
-    ) : (
-      dashboard
-    );
+    )
+
+    return this.state.showBudgetControls ?  budgetControls : dashboard;
   }
 }
 

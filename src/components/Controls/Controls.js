@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 import Select from "../UI/Select/Select";
-import FullButton from '../UI/Buttons/FullButton/FullButton';
+import FullButton from "../UI/Buttons/FullButton/FullButton";
 
 import classes from "./Controls.module.css";
 
@@ -23,6 +23,7 @@ class Controls extends Component {
         amount: {
           value: 0,
           validation: {
+            pattern: /^[0-9]+$/,
             maxLength: 9,
             required: true
           },
@@ -45,48 +46,54 @@ class Controls extends Component {
     };
   }
 
+  // Validates the input on the form by checking every property in the input's
+  // validation object.
   validate = (value, validation) => {
-      let isValid = true;
-      if (validation.pattern) {
-        isValid = (value.match(validation.pattern) != null) && isValid;
-      }
-      if (validation.maxLength) {
-        isValid = value.length <= validation.maxLength && isValid;
-      }
-      if (validation.minLength) {
-        isValid = value.length >= validation.minLength && isValid;
-      }
-      if (validation.required) {
-        isValid = value.trim() !== '' && isValid;
-        console.log('required is' + isValid);
-      }
-      if (validation.selected) {
-        isValid = value !== 'Category' && isValid;
-        console.log('selected is ' + isValid);
-      }
-      return isValid;
-  }
+    let isValid = true;
+    if (validation.pattern) {
+      isValid = value.match(validation.pattern) != null && isValid;
+    }
+    if (validation.maxLength) {
+      isValid = value.length <= validation.maxLength && isValid;
+    }
+    if (validation.minLength) {
+      isValid = value.length >= validation.minLength && isValid;
+    }
+    if (validation.required) {
+      isValid = value.trim() !== "" && isValid;
+    }
+    if (validation.selected) {
+      isValid = value !== "Category" && isValid;
+    }
+    return isValid;
+  };
+  // ----------------------------------------------------------
 
+  // Changes the value of an item in the itemForm based on the
+  // user's input
   inputHandler = (e, inputName) => {
     // Clone itemForm and the correct input object from the state
     const updatedForm = { ...this.state.itemForm };
     const updatedItem = { ...this.state.itemForm[inputName] };
-
+    // Update item value and validate
     updatedItem.value = e.target.value;
-    updatedItem.valid = this.validate(updatedItem.value, updatedItem.validation);
+    updatedItem.valid = this.validate(
+      updatedItem.value,
+      updatedItem.validation
+    );
     updatedForm[inputName] = updatedItem;
-
+    // Check if the entire itemForm is valid by checking if each
+    // item is valid.
     let formIsValid = true;
     for (let inputName in updatedForm) {
       formIsValid = updatedForm[inputName].valid && formIsValid;
     }
-
-    this.setState({itemForm: updatedForm, formIsValid: formIsValid});
+    this.setState({ itemForm: updatedForm, formIsValid: formIsValid });
   };
+  // ----------------------------------------------------------
 
   render() {
-    console.log(this.state.formIsValid);
-    let btnStyle = { margin: '30px auto' };
+    let btnStyle = { margin: "30px auto" };
     return (
       <form
         className={classes.Controls}
@@ -111,7 +118,7 @@ class Controls extends Component {
           placeholder="Amount"
           onChange={event => this.inputHandler(event, "amount")}
           min="0"
-          max="2147483647"
+          max="999999999"
           required
         />
 
@@ -139,15 +146,14 @@ class Controls extends Component {
           </label>
         </div>
 
-        <Select 
+        <Select
           haveDefaultOption={true}
           defaultValue={"Category"}
-          changed={event => this.inputHandler(event, "category")} 
-          options={this.props.categories}/>
+          changed={event => this.inputHandler(event, "category")}
+          options={this.props.categories}
+        />
 
-        <FullButton
-          style={btnStyle}
-          disabled={!this.state.formIsValid}>
+        <FullButton style={btnStyle} disabled={!this.state.formIsValid}>
           Add
         </FullButton>
       </form>

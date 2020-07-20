@@ -21,10 +21,12 @@ class Budget extends Component {
   toggleModal = () =>
     this.setState({ modal: this.state.modal.show ? {show: false} : {show: true}});
 
+  // 
   addItemHandler = inputItem => {
-    // Get type and add 's' to match correct list
+    // Get item type and add 's' to match the correct property 
+    // key in the budget object.
     const type = inputItem.type.value + "s";
-    // Clone budget and appropriate list
+
     let updatedBudget = {...this.state.budget};
     let updatedItems = [...updatedBudget[type]];
     // Create new item object from the input item
@@ -39,9 +41,10 @@ class Budget extends Component {
     updatedBudget[type] = updatedItems;
     // Update remaining budget value
     updatedBudget.remaining = this.updateRemaining("add", newItem.type, newItem.amount);
-    // Update state
+
     this.setState({budget: updatedBudget, saved: false});
   };
+  // ----------------------------------------------------------
 
   deleteItemHandler = (type, key) => {
     // Get type and add 's' to match correct list
