@@ -6,7 +6,18 @@ const toolbar = props => {
   return (
     <header className={classes.Toolbar}>
       <nav>
-        <div className={classes.Menu}>Menu</div>
+        <div className={classes.Top}>
+          <button
+            onClick={() => {
+              window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+              });
+            }}
+          >
+            Top
+          </button>
+        </div>
       </nav>
       <div className={classes.Title}>Budget Manager</div>
     </header>

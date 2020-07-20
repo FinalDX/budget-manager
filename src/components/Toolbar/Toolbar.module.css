@@ -13,12 +13,19 @@
   display: inline-block;
 }
 
-.Menu {
+.Top button {
   position: absolute;
-  left: 10px;
+  right: 10px;
+  text-decoration: none;
+  border: none;
+  background-color: #fff;
+  color: #33658a;
+  cursor: pointer;
+  font: inherit;
+  margin: 0 10px;
 }
 
 .Title,
-.Menu {
+.Top {
   margin: 5px 0;
 }
