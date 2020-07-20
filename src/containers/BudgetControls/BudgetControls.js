@@ -18,90 +18,130 @@ class Budget extends Component {
     };
   }
 
-  toggleModal = () =>
-    this.setState({ modal: this.state.modal.show ? {show: false} : {show: true}});
+  // Hide the Modal component
+  hideModal = () => this.setState({ modal: { show: false } });
+  // ----------------------------------------------------------
 
-  // 
+  // Create an item object from inputItem and add it to the income array
+  // or the expense array of the budget object in the state.
   addItemHandler = inputItem => {
-    // Get item type and add 's' to match the correct property 
-    // key in the budget object.
+    // Get item type and add 's' to match the correct property
+    // key in the budget object: incomes or expenses.
     const type = inputItem.type.value + "s";
 
-    let updatedBudget = {...this.state.budget};
+    let updatedBudget = { ...this.state.budget };
     let updatedItems = [...updatedBudget[type]];
-    // Create new item object from the input item
     const newItem = {
       name: inputItem.name.value,
       amount: Number(inputItem.amount.value),
       category: inputItem.category.value,
       type: inputItem.type.value
     };
-    // Add new item to copied list
     updatedItems.push(newItem);
     updatedBudget[type] = updatedItems;
-    // Update remaining budget value
-    updatedBudget.remaining = this.updateRemaining("add", newItem.type, newItem.amount);
+    // Update the value of remaining in the budget object in the state.
+    updatedBudget.remaining = this.updateRemaining(
+      "add",
+      newItem.type,
+      newItem.amount
+    );
 
-    this.setState({budget: updatedBudget, saved: false});
+    this.setState({ budget: updatedBudget, saved: false });
   };
   // ----------------------------------------------------------
 
-  deleteItemHandler = (type, key) => {
-    // Get type and add 's' to match correct list
+  // Delete an item from the either the income array or the
+  // expense array of the budget object in the state.
+  // type -- is either income or expense and specifies which array
+  // to remove the item from.
+  // id -- is used to find the item in the array to delete it.
+  deleteItemHandler = (type, id) => {
+    // Get item type and add 's' to match the correct property
+    // key in the budget object: incomes or expenses.
     const itemType = type + "s";
-    // Clone budget and appropriate list
-    let updatedBudget = {...this.state.budget};
-    let updatedItems = [...updatedBudget[itemType]];
-    // Delete item from list and retrieve it
-    const deletedItem = updatedItems.splice(key, 1)[0];
-    updatedBudget[itemType] = updatedItems;
-    // Update remaining budget value
-    updatedBudget.remaining = this.updateRemaining("delete", type, deletedItem.amount);
-    // Update state
-    this.setState({budget: updatedBudget, saved: false});
-  };
 
+    let updatedBudget = { ...this.state.budget };
+    let updatedItems = [...updatedBudget[itemType]];
+    // Delete item from list and retrieve the item to collect the amount
+    // in order to update the value of remaining.
+    const deletedItem = updatedItems.splice(id, 1)[0];
+    updatedBudget[itemType] = updatedItems;
+    // Update the value of remaining in the budget object in the state.
+    updatedBudget.remaining = this.updateRemaining(
+      "delete",
+      type,
+      deletedItem.amount
+    );
+
+    this.setState({ budget: updatedBudget, saved: false });
+  };
+  // ----------------------------------------------------------
+
+  // Update the value of the remaining property in the budget
+  // object of the state.
+  // action -- specifies whether to add or delete.
+  // type -- specifies whether it's an income or expense.
+  // value -- the amount used to update remaining.
   updateRemaining = (action, type, value) => {
     // Clone budget and remaining value
-    let updatedBudget = {...this.state.budget};
+    let updatedBudget = { ...this.state.budget };
     let updatedRemaining = updatedBudget.remaining;
     // Perform the appropriate change based on the given action
-    if ((action === "add" && type === "income") ||
-        (action === "delete" && type === "expense")) {
-          updatedRemaining = updatedRemaining + value;
-        }
-    else if ((action === "add" && type === "expense") ||
-             (action === "delete" && type === "income")) {
-              updatedRemaining = updatedRemaining - value;
-            }
+    if (
+      (action === "add" && type === "income") ||
+      (action === "delete" && type === "expense")
+    ) {
+      updatedRemaining = updatedRemaining + value;
+    } else if (
+      (action === "add" && type === "expense") ||
+      (action === "delete" && type === "income")
+    ) {
+      updatedRemaining = updatedRemaining - value;
+    }
     return updatedRemaining;
   };
+  // ----------------------------------------------------------
 
+  // Update the modal object in the state to display a
+  // custom modal.
   summonSaveModal = () => {
-    this.setState({modal: {
-      show: true,
-      type: 'alert',
-      title: 'Saved Budget',
-      message: 'This budget has been saved!',
-      canceled: this.props.backClicked
-    }, saved: true});
-  }
+    this.setState({
+      modal: {
+        show: true,
+        type: "alert",
+        title: "Saved Budget",
+        message: "This budget has been saved!",
+        canceled: this.props.backClicked
+      },
+      saved: true
+    });
+  };
+  // ----------------------------------------------------------
 
+  // Update the modal object in the state to display a
+  // custom modal.
   summonBackModal = () => {
     if (!this.state.saved) {
-      this.setState({modal: {
-        show: true,
-        type: 'confirm',
-        title: 'Unsaved Changes',
-        message: 'You currently have unsaved changes to this budget. Leaving this page will discard these changes. Do you wish to continue?',
-        canceled: this.toggleModal,
-        confirmed: this.props.backClicked
-      }})
+      this.setState({
+        modal: {
+          show: true,
+          type: "confirm",
+          title: "Unsaved Changes",
+          message:
+            "You currently have unsaved changes to this budget. Leaving this page will discard these changes. Do you wish to continue?",
+          canceled: this.hideModal,
+          confirmed: this.props.backClicked
+        }
+      });
     } else {
       this.props.backClicked();
     }
-  }
+  };
+  // ----------------------------------------------------------
 
+  // ==========================================================
+  // RENDER
+  // ==========================================================
   render() {
     return (
       <div className={classes.Budget}>
@@ -120,23 +160,15 @@ class Budget extends Component {
           expenseData={this.state.budget.expenses}
         />
         <hr />
-        <div className={classes.Btns}>
-          <button className={classes.SaveBtn}
-            onClick={() => {
-              this.summonSaveModal();
-              this.props.saveClicked(this.state.budget);
-            }}>Save
-          </button>
-          <button className={classes.BackBtn} 
-            onClick={this.summonBackModal}>Back
-          </button>
-        </div>
         <p style={{ marginTop: "10px" }}>
-          Remaining Budget for {this.state.budget.date.month} of {this.state.budget.date.year}
+          Remaining Budget for {this.state.budget.date.month} of{" "}
+          {this.state.budget.date.year}
         </p>
-        
-        <Balance remaining={this.state.budget.remaining} 
-          style={{fontSize: '200%', fontWeight: 'lighter'}}/>
+
+        <Balance
+          remaining={this.state.budget.remaining}
+          style={{ fontSize: "200%", fontWeight: "lighter" }}
+        />
         <Controls
           sendData={this.addItemHandler}
           categories={this.props.categories}
@@ -156,6 +188,21 @@ class Budget extends Component {
             itemsList={this.state.budget.expenses}
             deleted={this.deleteItemHandler}
           />
+        </div>
+
+        <div className={classes.BottomControls}>
+          <button
+            className={classes.SaveBtn}
+            onClick={() => {
+              this.summonSaveModal();
+              this.props.saveClicked(this.state.budget);
+            }}
+          >
+            Save
+          </button>
+          <button className={classes.BackBtn} onClick={this.summonBackModal}>
+            Back
+          </button>
         </div>
       </div>
     );

@@ -73,8 +73,9 @@ class Dashboard extends Component {
 
   // Update the modal object in the state to display a 
   // custom modal.
-  // This modal propmts the user to select a month and a year
+  // Prompt the user to select a month and a year
   // to create a new budget.
+  // Default selection is the system's current month and year.
   summonAddModal = () => {
     this.setState({modal: {
       show: true,
@@ -118,7 +119,7 @@ class Dashboard extends Component {
 
   // Update the modal object in the state to display a 
   // custom modal.
-  // This model confirms whether or not the user wants to 
+  // Confirm whether or not the user wants to 
   // delete a budget from the budgets array in the state.
   summonDeleteModal = (index) => {
     this.setState({modal: {
@@ -138,7 +139,7 @@ class Dashboard extends Component {
 
   // Update the modal object in the state to display a 
   // custom modal.
-  // This modal informs the user that a budget already exists
+  // Inform the user that a budget already exists
   // for the selected month and year.
   summonAlertModal = () => {
     this.setState({modal: {

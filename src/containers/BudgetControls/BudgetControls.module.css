@@ -1,20 +1,16 @@
-.Btns {
-  display: block;
-  width: 100%;
-  text-align: right;
-  margin-top: 5px;
-}
-
 .SaveBtn {
+  float: right;
   font-size: inherit;
   border: none;
   background-color: #33658a;
   color: white;
   cursor: pointer;
   padding: 2px 5px;
+  margin: 0 20px;
 }
 
 .BackBtn {
+  float: left;
   text-decoration: none;
   border: none;
   background-color: #fff;
@@ -22,4 +18,15 @@
   cursor: pointer;
   font: inherit;
   margin: 0 20px;
+}
+
+.BottomControls {
+  text-align: center;
+  height: 40px;
+  width: 100%;
+  position: sticky;
+  bottom: 0;
+  background-color: #fff;
+  z-index: 300;
+  border-bottom: 2px solid #666;
 }
