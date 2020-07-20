@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import LineChart from './LineChart/LineChart';
 import Select from '../../UI/Select/Select';
+import classes from './LineCharts.module.css';
 
 class LineCharts extends Component {
     constructor(props){
@@ -13,6 +14,9 @@ class LineCharts extends Component {
         };
     };
 
+    // Find all budgets that match the select box criteriea,
+    // then extract name, amount, and month to create objects
+    // for the dataItems array.
     budgetsToDataItems = () => {
         let dataItems = [];
         let formattedType = this.state.type.toLowerCase();
@@ -31,19 +35,20 @@ class LineCharts extends Component {
         }
         return dataItems;
     }
+    // ----------------------------------------------------------
 
+    // Create data objects for line chart by searching through
+    // dataItems in order by month and creating dataPoints for
+    // each item name.
     dataItemsToData = (dataItems) => {
         let data = [];
         let months = ['January', 'Febuary', 'March', 'April',
         'May', 'June', 'July', 'August', 'September', 'October',
         'November', 'December'];
-        // For every month of the year
         for (const month of months) {
-            // For every item object in dataItems array
             for(const item of dataItems) {
-                // Find item with current month being searched
                 if (item.month === month) {
-                    // Find if object with same name already exists in data array
+                    // Find out if object with same name already exists in data array
                     const dataIndex = data.findIndex(dataObject => dataObject.name === item.name);
                     // If it does exist, add datapoint using item object
                     if (dataIndex !== -1) {
@@ -62,6 +67,7 @@ class LineCharts extends Component {
         }
         return data;
     }
+    // ----------------------------------------------------------
 
     render() {
         let showGraph = (
@@ -101,7 +107,8 @@ class LineCharts extends Component {
                             this.setState({year: e.target.value});
                         }}/>
                 </div>
-                <div>
+                <div className={classes.ChartContainer}>
+                    {/* Only display graph once all three select criteria have been selected */}
                     {showGraph ? 
                         <LineChart 
                             data={data}

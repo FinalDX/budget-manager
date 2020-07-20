@@ -10,18 +10,20 @@ const select = props => {
 
   return (
     <select
+      style={props.style}
       defaultValue={props.defaultValue}
       className={classes.Select}
       onChange={props.changed}
       required
     >
-      {props.haveDefaultOption ? 
-      <option value={props.defaultValue} disabled>
-        {props.defaultValue}
-      </option> : null}
+      {props.haveDefaultOption ? (
+        <option value={props.defaultValue} disabled>
+          {props.defaultValue}
+        </option>
+      ) : null}
       {options}
     </select>
   );
-}
+};
 
 export default select;

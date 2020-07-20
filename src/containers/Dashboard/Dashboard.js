@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from 'react-redux';
 
 import BudgetControls from "../BudgetControls/BudgetControls";
 import Budgets from "../../components/Budgets/Budgets";
@@ -87,7 +88,7 @@ class Dashboard extends Component {
           this.summonAlertModal();
         } else {
           this.goToBudgetControls({
-            id: this.state.budgets.length,
+            id: this.props.budgets.length,
             date: this.state.date,
             incomes: [],
             expenses: [],
@@ -128,7 +129,7 @@ class Dashboard extends Component {
       title: 'Deleting Budget',
       message: 'This will permenately remove this budget from your budget list. Are you sure you want to delete this budget?',
       confirmed: () => {
-        this.deleteBudget(index);
+        this.props.deleteBudget(index);
         this.hideModal();
       },
       canceled: this.hideModal,
@@ -156,7 +157,7 @@ class Dashboard extends Component {
   // Delete the budget from the budgets array in the state by 
   // using the index.
   deleteBudget = index => {
-    let updatedBudgets = [...this.state.budgets];
+    let updatedBudgets = [...this.props.budgets];
     updatedBudgets.splice(index, 1);
     this.setState({budgets: updatedBudgets});
   }
@@ -166,8 +167,8 @@ class Dashboard extends Component {
   // state, then update the existing budget.
   // If the budget does not exist, add it to the budgets array.
   saveBudget = budget => {
-    let updatedBudgets = [...this.state.budgets];
-    if (budget.id < this.state.budgets.length) {
+    let updatedBudgets = [...this.props.budgets];
+    if (budget.id < this.props.budgets.length) {
       updatedBudgets[budget.id] = budget;
     } else {
       updatedBudgets.push(budget);
@@ -182,7 +183,7 @@ class Dashboard extends Component {
   // otherwise return false.
   findExistingBudget = () => {
     let found = false;
-    for (const budget of this.state.budgets) {
+    for (const budget of this.props.budgets) {
       if (budget.date.month === this.state.date.month &&
           budget.date.year === this.state.date.year) {
             found = true;
@@ -210,7 +211,7 @@ class Dashboard extends Component {
           />
         ) : null}
         <LineCharts 
-          budgets={this.state.budgets}
+          budgets={this.props.budgets}
           categories={CATEGORIES}
           years={YEARS}/>
         <hr />
@@ -219,7 +220,7 @@ class Dashboard extends Component {
           months={['January', 'Febuary', 'March', 'April',
           'May', 'June', 'July', 'August', 'September', 'October',
           'November', 'December']}
-          budgets={this.state.budgets}
+          budgets={this.props.budgets}
           addClicked={() => {
             this.setState({date: {
               month: new Date().toLocaleString('default', { month: 'long' }),
@@ -247,4 +248,19 @@ class Dashboard extends Component {
   }
 }
 
-export default Dashboard;
+const mapStateToProps = state => {
+  return {
+    budgets: state.budgets,
+    selectedBudget: state.selectedBudget,
+    modal: state.modal,
+    dashboard: state.dashboard
+  };
+}
+
+const mapPropsToDispatch = dispatch => {
+  return {
+    deleteBudget: (index) => dispatch({type: 'DELETE_BUDGET', index: index})
+  };
+};
+
+export default connect(mapStateToProps, mapPropsToDispatch)(Dashboard);

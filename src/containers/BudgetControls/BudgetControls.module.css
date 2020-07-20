@@ -21,12 +21,10 @@
 }
 
 .BottomControls {
-  text-align: center;
   height: 40px;
   width: 100%;
   position: sticky;
   bottom: 0;
   background-color: #fff;
-  z-index: 300;
   border-bottom: 2px solid #666;
 }

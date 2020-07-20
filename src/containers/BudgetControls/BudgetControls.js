@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from 'react-redux';
 
 import Charts from "../../components/Charts/PieCharts/PieCharts";
 import Balance from "../../components/Balance/Balance";
@@ -195,7 +196,7 @@ class Budget extends Component {
             className={classes.SaveBtn}
             onClick={() => {
               this.summonSaveModal();
-              this.props.saveClicked(this.state.budget);
+              this.props.saveBudget(this.state.budget);
             }}
           >
             Save
@@ -209,4 +210,10 @@ class Budget extends Component {
   }
 }
 
-export default Budget;
+const mapPropsToDispatch = dispatch => {
+  return {
+    saveBudget: (budget) => dispatch({type: 'SAVE_BUDGET', budget: budget}),
+  };
+};
+
+export default connect(null, mapPropsToDispatch)(Budget);
