@@ -210,10 +210,16 @@ class Budget extends Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    selectedBudget: state.selectedBudget
+  };
+}
+
 const mapPropsToDispatch = dispatch => {
   return {
-    saveBudget: (budget) => dispatch({type: 'SAVE_BUDGET', budget: budget}),
+    saveBudget: (budget) => dispatch({type: 'SAVE_BUDGET', budget: budget})
   };
 };
 
-export default connect(null, mapPropsToDispatch)(Budget);
+export default connect(mapStateToProps, mapPropsToDispatch)(Budget);

@@ -37,8 +37,6 @@ class Dashboard extends Component {
         month: new Date().toLocaleString('default', { month: 'long' }),
         year: new Date().getFullYear() 
       },
-      budgets: [],
-      selectedBudget: null,
       modal: {}
     };
   }
@@ -46,15 +44,14 @@ class Dashboard extends Component {
   // Show the BudgetControls componenet and pass the selectedBudget
   // from the state to BudgetControls as a prop
   goToBudgetControls = (budget) => {
-    this.setState({showBudgetControls: true, selectedBudget: budget});
+    this.props.selectBudget(budget);
+    this.setState({showBudgetControls: true});
   }
   // ----------------------------------------------------------
 
-  // Show or hide the BudgetControls component
-  toggleBudgetControls = () =>
-    this.setState({
-      showBudgetControls: this.state.showBudgetControls ? false : true
-    });
+  // Hide the BudgetControls component
+  hideBudgetControls = () =>
+    this.setState({showBudgetControls: false});
   // ----------------------------------------------------------
 
   // Hide the Modal component
@@ -154,29 +151,6 @@ class Dashboard extends Component {
   }
   // ----------------------------------------------------------
 
-  // Delete the budget from the budgets array in the state by 
-  // using the index.
-  deleteBudget = index => {
-    let updatedBudgets = [...this.props.budgets];
-    updatedBudgets.splice(index, 1);
-    this.setState({budgets: updatedBudgets});
-  }
-  // ----------------------------------------------------------
-
-  // If the budget already exists in the budgets array in the 
-  // state, then update the existing budget.
-  // If the budget does not exist, add it to the budgets array.
-  saveBudget = budget => {
-    let updatedBudgets = [...this.props.budgets];
-    if (budget.id < this.props.budgets.length) {
-      updatedBudgets[budget.id] = budget;
-    } else {
-      updatedBudgets.push(budget);
-    }
-    this.setState({ budgets: updatedBudgets });
-  };
-  // ----------------------------------------------------------
-
   // Find an existing budget for the selected month and year
   // when a user tries to add a new budget.
   // Return true if an existing budget is found; 
@@ -236,10 +210,8 @@ class Dashboard extends Component {
 
     const budgetControls = (
       <BudgetControls
-        saveClicked={this.saveBudget}
-        backClicked={this.toggleBudgetControls}
+        backClicked={this.hideBudgetControls}
         date={this.state.date}
-        selectedBudget={this.state.selectedBudget}
         categories={CATEGORIES}
       />
     )
@@ -251,15 +223,14 @@ class Dashboard extends Component {
 const mapStateToProps = state => {
   return {
     budgets: state.budgets,
-    selectedBudget: state.selectedBudget,
-    modal: state.modal,
-    dashboard: state.dashboard
+    selectedBudget: state.selectedBudget
   };
 }
 
 const mapPropsToDispatch = dispatch => {
   return {
-    deleteBudget: (index) => dispatch({type: 'DELETE_BUDGET', index: index})
+    deleteBudget: (index) => dispatch({type: 'DELETE_BUDGET', index: index}),
+    selectBudget: (budget) => dispatch({type: 'SELECT_BUDGET', selectedBudget: budget})
   };
 };
 

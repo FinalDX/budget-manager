@@ -6,11 +6,6 @@ import FullButton from "../UI/Buttons/FullButton/FullButton";
 import classes from "./Budgets.module.css";
 
 const budgets = props => {
-  let styleBtn = {
-    position: "absolute",
-    right: "0",
-    top: "10px"
-  };
 
   const years = props.years.reverse();
   const months = props.months.reverse();
@@ -42,10 +37,12 @@ const budgets = props => {
 
   return (
     <div className={classes.Budgets}>
-      <FullButton clicked={props.addClicked} style={styleBtn}>
-        Add
-      </FullButton>
-      <h2 style={{ display: "inline-block" }}>Budget List</h2>
+      <h2>Budget List</h2>
+      <div className={classes.AddBtn}>
+        <FullButton clicked={props.addClicked}>
+          Add
+        </FullButton>
+      </div>
       {/* Show budget list only if there is at least one budget */}
       {budgets.length ? (
         <ul>{budgets}</ul>
