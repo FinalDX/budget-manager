@@ -6,26 +6,32 @@
   top: 0;
   background-color: #fff;
   z-index: 300;
-  border-bottom: 2px solid #666;
+  margin: 0;
+  padding: 0;
+  background-color: #555;
 }
 
 .Title {
   display: inline-block;
+  margin: 5px 0;
+  color: #fff;
 }
 
-.Top button {
+.Navigation {
   position: absolute;
-  right: 10px;
+  right: 0;
+  display: flex;
+  justify-content: flex-end;
+  width: 30%;
+}
+
+.TopBtn {
   text-decoration: none;
   border: none;
   background-color: #fff;
-  color: #33658a;
+  color: #fff;
   cursor: pointer;
   font: inherit;
-  margin: 0 10px;
-}
-
-.Title,
-.Top {
-  margin: 5px 0;
+  margin: 5px 10px;
+  background-color: #555;
 }
