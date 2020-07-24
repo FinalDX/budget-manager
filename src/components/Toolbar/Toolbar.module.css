@@ -4,11 +4,11 @@
   width: 100%;
   position: sticky;
   top: 0;
-  background-color: #fff;
   z-index: 300;
   margin: 0;
   padding: 0;
   background-color: #555;
+  border: none;
 }
 
 .Title {
@@ -50,8 +50,8 @@
   background-color: #fff;
   color: #fff;
   cursor: pointer;
-  font: inherit;
-  margin: 5px 10px;
+  margin: 8px 15px;
+  font-size: 100%;
   background-color: #555;
 }
 
@@ -60,5 +60,8 @@
   .FirstName,
   .SecondName {
     display: none;
+  }
+  .TopBtn {
+    font-size: 120%;
   }
 }

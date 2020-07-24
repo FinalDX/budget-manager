@@ -32,3 +32,13 @@
     padding: 5px;
     cursor: pointer;
 }
+
+@media (max-width: 767px) {
+    .Buttons button {
+        padding: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .Modal {width: 95%}
+}

@@ -12,7 +12,10 @@ const modal = props => {
         onClick={props.confirmed}>
           OK
       </button>
-      <button key={1} onClick={props.canceled}>
+
+      <button 
+        key={1} 
+        onClick={props.canceled}>
         Cancel
       </button>
     </div>

@@ -6,17 +6,17 @@ const toolbar = props => {
   return (
     <header className={classes.Toolbar}>
       <nav className={classes.Navigation}>
-          <button  className={classes.TopBtn}
-            onClick={() => {
-              window.scrollTo({
-                top: 0,
-                behavior: "smooth"
-              });
-            }}
-          >
-            Top
-          </button>
+        <button  className={classes.TopBtn}
+          onClick={() => {
+            window.scrollTo({
+              top: 0,
+              behavior: "smooth"
+            });
+          }}>
+          Top
+        </button>
       </nav>
+      
       <div className={classes.Title}>
         <div className={classes.FirstName}>Pocket</div>
         <div className={classes.Logo}>
