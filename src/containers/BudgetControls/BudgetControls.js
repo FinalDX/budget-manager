@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { connect } from 'react-redux';
 
 import Charts from "../../components/Charts/PieCharts/PieCharts";
 import Balance from "../../components/Balance/Balance";
@@ -8,6 +7,10 @@ import Items from "../../components/Items/Items";
 import Modal from "../../components/UI/Modal/Modal";
 
 import classes from "./BudgetControls.module.css";
+import DBService from "../../services/DBService/DBService";
+
+const DB = new DBService();
+const ITEM_LIMIT = 30;
 
 class Budget extends Component {
   constructor(props) {
@@ -18,13 +21,23 @@ class Budget extends Component {
       saved: true
     };
   }
+  /* 
+  Budget object structure
+    budget: {
+              id: shortID.generate(),
+              date: {month: string, year: string},
+              incomes: [Item objects],
+              expenses: [Item Objects],
+              remaining: number
+            } 
+  */
 
   // Hide the Modal component
   hideModal = () => this.setState({ modal: { show: false } });
   // ----------------------------------------------------------
 
   // Create an item object from inputItem and add it to the income array
-  // or the expense array of the budget object in the state.
+  // or the expense array of the budget object in the local state.
   addItemHandler = inputItem => {
     // Get item type and add 's' to match the correct property
     // key in the budget object: incomes or expenses.
@@ -32,27 +45,34 @@ class Budget extends Component {
 
     let updatedBudget = { ...this.state.budget };
     let updatedItems = [...updatedBudget[type]];
-    const newItem = {
-      name: inputItem.name.value,
-      amount: Number(inputItem.amount.value),
-      category: inputItem.category.value,
-      type: inputItem.type.value
-    };
-    updatedItems.push(newItem);
-    updatedBudget[type] = updatedItems;
-    // Update the value of remaining in the budget object in the state.
-    updatedBudget.remaining = this.updateRemaining(
-      "add",
-      newItem.type,
-      newItem.amount
-    );
 
-    this.setState({ budget: updatedBudget, saved: false });
+    // Check that item amount has not exceeded limit
+    if (updatedItems.length < ITEM_LIMIT) {
+      const newItem = {
+        name: inputItem.name.value,
+        amount: Number(inputItem.amount.value),
+        category: inputItem.category.value,
+        type: inputItem.type.value
+      };
+      updatedItems.push(newItem);
+      updatedBudget[type] = updatedItems;
+      // Update the value of remaining in the budget object in the state.
+      updatedBudget.remaining = this.updateRemaining(
+        "add",
+        newItem.type,
+        newItem.amount
+      );
+      this.setState({ budget: updatedBudget, saved: false });
+    } else {
+      this.summonAlertModal('Limit Reached!',
+        'The total amount of items in this budget has been reahced.',
+        this.hideModal);
+    }
   };
   // ----------------------------------------------------------
 
   // Delete an item from the either the income array or the
-  // expense array of the budget object in the state.
+  // expense array of the budget object in the local state.
   // type -- is either income or expense and specifies which array
   // to remove the item from.
   // id -- is used to find the item in the array to delete it.
@@ -105,39 +125,62 @@ class Budget extends Component {
 
   // Update the modal object in the state to display a
   // custom modal.
-  summonSaveModal = () => {
+  summonAlertModal = (title, message, canceled) => {
     this.setState({
       modal: {
         show: true,
         type: "alert",
-        title: "Saved Budget",
-        message: "This budget has been saved!",
-        canceled: this.props.backClicked
-      },
-      saved: true
+        title: title,
+        message: message,
+        canceled: canceled
+      }
     });
   };
   // ----------------------------------------------------------
 
   // Update the modal object in the state to display a
   // custom modal.
-  summonBackModal = () => {
-    if (!this.state.saved) {
-      this.setState({
-        modal: {
-          show: true,
-          type: "confirm",
-          title: "Unsaved Changes",
-          message:
-            "You currently have unsaved changes to this budget. Leaving this page will discard these changes. Do you wish to continue?",
-          canceled: this.hideModal,
-          confirmed: this.props.backClicked
-        }
-      });
-    } else {
-      this.props.backClicked();
-    }
+  summonConfirmModal = (title, message, confirmed) => {
+    this.setState({
+      modal: {
+        show: true,
+        type: "confirm",
+        title: title,
+        message: message,
+        confirmed: confirmed,
+        canceled: this.hideModal
+      }
+    });
   };
+  // ----------------------------------------------------------
+
+  // Add budget to the database and to the budgets in the 
+  // Dashboard state, then go back to the Dashboard.
+  saveBtnHandler = () => {
+    DB.addBudget(this.state.budget).then(() => {
+      this.props.saveBudget(this.state.budget);
+      this.summonAlertModal('Saved Budget!',
+        'This budget has been saved!',
+        this.props.backToDashboard);
+    }).catch(error => {
+      console.log('Error: ' + error.message);
+    })
+  }
+  // ----------------------------------------------------------
+
+  // Check if there are any unsaved changes. If so, confirm to 
+  // the user; if not, go back to the Dashboard.
+  backBtnHandler = () => {
+    if(!this.state.saved) {
+      this.summonConfirmModal('Unsaved Changes',
+        `You currently have unsaved changes to this budget. 
+        Leaving this page will discard these changes. 
+        Do you wish to continue?`,
+        this.props.backToDashboard);
+    } else {
+      this.props.backToDashboard();
+    }
+  }
   // ----------------------------------------------------------
 
   // ==========================================================
@@ -194,14 +237,13 @@ class Budget extends Component {
         <div className={classes.BottomControls}>
           <button
             className={classes.SaveBtn}
-            onClick={() => {
-              this.summonSaveModal();
-              this.props.saveBudget(this.state.budget);
-            }}
-          >
+            onClick={this.saveBtnHandler}>
             Save
           </button>
-          <button className={classes.BackBtn} onClick={this.summonBackModal}>
+
+          <button 
+            className={classes.BackBtn} 
+            onClick={this.backBtnHandler}>
             Back
           </button>
         </div>
@@ -210,16 +252,4 @@ class Budget extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    selectedBudget: state.selectedBudget
-  };
-}
-
-const mapPropsToDispatch = dispatch => {
-  return {
-    saveBudget: (budget) => dispatch({type: 'SAVE_BUDGET', budget: budget})
-  };
-};
-
-export default connect(mapStateToProps, mapPropsToDispatch)(Budget);
+export default Budget;

@@ -17,7 +17,17 @@ const toolbar = props => {
             Top
           </button>
       </nav>
-      <div className={classes.Title}>Budget Manager</div>
+      <div className={classes.Title}>
+        <div className={classes.FirstName}>Pocket</div>
+        <div className={classes.Logo}>
+        <img
+          src={require('../../assets/images/PocketPlannerLogo.png')}
+          alt={'Pocket Planner Logo'}
+          style={{width: '30px', margin: '8px 30px 0'}}
+          />
+        </div>
+        <div className={classes.SecondName}>Planner</div>
+      </div>
     </header>
   );
 };

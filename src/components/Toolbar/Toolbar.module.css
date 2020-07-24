@@ -13,8 +13,27 @@
 
 .Title {
   display: inline-block;
-  margin: 5px 0;
   color: #fff;
+  width: 300px;
+  position: relative;
+}
+
+.FirstName {
+  position: absolute;
+  display: inline-block;
+  top: 5px;
+  left: 20px;
+}
+
+.SecondName {
+  position: absolute;
+  display: inline-block;
+  top: 5px;
+  right: 20px;
+}
+
+.Logo {
+  display: inline-block;
 }
 
 .Navigation {
@@ -34,4 +53,12 @@
   font: inherit;
   margin: 5px 10px;
   background-color: #555;
+}
+
+
+@media (max-width: 767px) {
+  .FirstName,
+  .SecondName {
+    display: none;
+  }
 }

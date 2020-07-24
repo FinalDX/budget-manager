@@ -20,11 +20,17 @@
 
 @media (max-width: 767px) {
     .Budgets { width: 95%; }
+    .AddBtn {
+        position: relative;
+        display: inline-block;
+        margin-bottom: 10px;
+    }
 }
 
 @media (max-width: 480px) {
     .AddBtn {
         position: relative;
         display: inline-block;
+        margin-bottom: 10px;
     }
 }

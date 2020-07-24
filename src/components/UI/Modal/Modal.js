@@ -9,8 +9,7 @@ const modal = props => {
     <div>
       <button 
         key={0}
-        type='submit'
-        form='input-form'>
+        onClick={props.confirmed}>
           OK
       </button>
       <button key={1} onClick={props.canceled}>
@@ -32,17 +31,12 @@ const modal = props => {
         <div className={classes.Message}>
           <p>{props.message}</p>
         </div>
-        <form 
-          id='input-form'
-          onSubmit={(e) => {
-            e.preventDefault();
-            props.confirmed();
-          }}>
+        <div>
           {props.type === 'prompt' ? 
             props.form
             : null}
           <div className={classes.Buttons}>{buttons}</div>
-        </form>
+        </div>
       </div>
     </div>
   );
