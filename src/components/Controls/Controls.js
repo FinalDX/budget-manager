@@ -13,9 +13,8 @@ class Controls extends Component {
         name: {
           value: " ",
           validation: {
-            pattern: /^[A-Za-z ]+$/,
+            pattern: /^[A-Za-z0-9 ]+$/,
             maxLength: 20,
-            minLength: 1,
             required: true
           },
           valid: false
@@ -23,7 +22,7 @@ class Controls extends Component {
         amount: {
           value: 0,
           validation: {
-            pattern: /^[0-9]+$/,
+            pattern: /^[0-9]+(\.[0-9][0-9])?$/,
             maxLength: 9,
             required: true
           },
@@ -108,8 +107,8 @@ class Controls extends Component {
           type="text"
           placeholder="Name"
           onChange={event => this.inputHandler(event, "name")}
-          maxLength="30"
-          pattern="[a-zA-Z ]*"
+          maxLength="20"
+          pattern="[a-zA-Z0-9 ]*"
           required
         />
         <input

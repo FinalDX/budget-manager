@@ -12,11 +12,16 @@ const balance = props => {
     addedClasses = [classes.Red];
     sign = "-";
   }
+  // Use absolute value to remove the negative sign
+  // that appears between the dollar sign and the 
+  // remaining value when the remaining value is a
+  // negative number.
+  let absValue = Math.abs(props.remaining).toFixed(2);
 
   return (
     <span className={addedClasses.join(" ")}
       style={props.style}>
-      {sign}${props.remaining.toFixed(2)}
+      {sign}${absValue}
     </span>
   );
 };

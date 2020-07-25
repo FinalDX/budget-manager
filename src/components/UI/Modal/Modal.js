@@ -26,7 +26,7 @@ const modal = props => {
 
   return (
     <div>
-      <Backdrop show={true} clicked={props.canceled} layer={300} />
+      <Backdrop show={true} clicked={props.canceled} layer={800} />
       <div className={classes.Modal}>
         <div className={classes.Title}>
           <p>{props.title}</p>

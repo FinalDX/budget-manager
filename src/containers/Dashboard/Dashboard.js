@@ -124,15 +124,15 @@ class Dashboard extends Component {
   // custom modal.
   // Confirm whether or not the user wants to 
   // delete a budget from the budgets array in the state.
-  summonDeleteModal = (index) => {
+  summonDeleteModal = (id) => {
     this.setState({modal: {
       show: true,
       type: 'confirm',
       title: 'Deleting Budget',
       message: 'This will permenately remove this budget from your budget list. Are you sure you want to delete this budget?',
       confirmed: () => {
-        DB.deleteBudget(index).then(() => {
-          this.deleteBudget(index);
+        DB.deleteBudget(id).then(() => {
+          this.deleteBudget(id);
         }).catch(error => {
           console.log('Error: ' + error.message);
         })
@@ -178,9 +178,10 @@ class Dashboard extends Component {
   // ----------------------------------------------------------
 
   // Delete the budget from the budgets array in the state by 
-  // using the index.
-  deleteBudget = index => {
+  // using the id to find the index.
+  deleteBudget = id => {
     let updatedBudgets = [...this.state.budgets];
+    let index = updatedBudgets.findIndex(budget => budget.id === id);
     updatedBudgets.splice(index, 1);
     this.setState({budgets: updatedBudgets});
   }
