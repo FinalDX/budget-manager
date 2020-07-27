@@ -14,7 +14,7 @@
 .AddBtn {
     position: absolute;
     right: 0;
-    top: 10px;
+    top: 0px;
 }
 
 
@@ -23,14 +23,7 @@
     .AddBtn {
         position: relative;
         display: inline-block;
-        margin-bottom: 10px;
+        margin: 10px;
     }
 }
 
-@media (max-width: 480px) {
-    .AddBtn {
-        position: relative;
-        display: inline-block;
-        margin-bottom: 10px;
-    }
-}

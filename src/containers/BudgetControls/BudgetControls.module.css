@@ -25,10 +25,9 @@
 .BottomControls {
   height: 50px;
   width: 100%;
-  position: sticky;
+  position: fixed;
   bottom: 0;
   background-color: #fff;
-  border-bottom: 2px solid #666;
 }
 
 .ActionBtns { width: 100% }

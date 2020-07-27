@@ -33,11 +33,6 @@ class Item extends Component {
       sign = '-';
     }
 
-    let btnClasses = [classes.Button];
-    if (this.state.showButton) {
-      btnClasses = [classes.Button, classes.Show];
-    }
-
     return (
       <div>
         {this.state.showModal ? 

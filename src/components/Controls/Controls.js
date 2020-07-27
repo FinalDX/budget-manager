@@ -20,7 +20,7 @@ class Controls extends Component {
           valid: false
         },
         amount: {
-          value: 0,
+          value: '',
           validation: {
             pattern: /^[0-9]+(\.[0-9][0-9])?$/,
             maxLength: 9,
@@ -91,21 +91,40 @@ class Controls extends Component {
   };
   // ----------------------------------------------------------
 
+  resetForm = () => {
+    let resetForm = {...this.state.itemForm};
+    let resetName = {...resetForm.name};
+    let resetAmount = {...resetForm.amount};
+
+    resetName.value = '';
+    resetName.valid = false;
+    resetAmount.value = '';
+    resetAmount.valid = false;
+    
+    resetForm.name = resetName;
+    resetForm.amount = resetAmount;
+
+    this.setState({itemForm: resetForm, formIsValid: false});
+  }
+
+  formSubmitHandler = event => {
+    event.preventDefault();
+    this.props.sendData(this.state.itemForm);
+    this.resetForm();
+  }
+
   render() {
     let btnStyle = { margin: "30px auto" };
     return (
       <form
         className={classes.Controls}
-        onSubmit={event => {
-          event.preventDefault();
-          this.props.sendData(this.state.itemForm);
-          event.target.reset();
-        }}
+        onSubmit={event => this.formSubmitHandler(event)}
       >
         <p>Add an income or an expense: </p>
         <input
           type="text"
           placeholder="Name"
+          value={this.state.itemForm.name.value}
           onChange={event => this.inputHandler(event, "name")}
           maxLength="20"
           pattern="[a-zA-Z0-9 ]*"
@@ -113,6 +132,7 @@ class Controls extends Component {
         />
         <input
           type="number"
+          value={this.state.itemForm.amount.value}
           step="0.01"
           placeholder="Amount"
           onChange={event => this.inputHandler(event, "amount")}

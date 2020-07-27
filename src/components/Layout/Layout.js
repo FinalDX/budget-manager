@@ -7,7 +7,7 @@ import classes from "./Layout.module.css";
 const layout = props => (
   <div className={classes.Layout}>
     <Toolbar />
-    <main>
+    <main className={classes.Main}>
       {props.children}
     </main>
     <footer />
