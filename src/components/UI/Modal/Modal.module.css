@@ -26,15 +26,40 @@
   margin-top: 10px;
 }
 
-.Buttons button {
+.OKBtn {
+    background-color: #33658a;
+    color: #fff;
+    border-style: none;
+}
+
+.OKBtn:hover {
+  background-color: #86bbd8;
+}
+
+.CancelBtn {
+    background-color: #ddd;
+    color: #333;
+    border: 1px solid #333;
+}
+
+.CancelBtn:hover {
+    background-color: #eee;
+    color: #888;
+    border-color: #888;
+}
+
+.OKBtn,
+.CancelBtn {
   width: 90px;
   margin-left: 20px;
   padding: 5px;
   cursor: pointer;
+  font-size: inherit;
+  padding: 10px;
 }
 
 @media (max-width: 767px) {
-  .Buttons button {
+  .Button {
     padding: 10px;
   }
 }

@@ -2,18 +2,29 @@
   display: block;
   width: 100px;
   border-style: none;
-  padding: 5px;
-  background-color: #33658a;
+  padding: 10px;
   color: white;
   font-size: inherit;
   cursor: pointer;
 }
 
-.FullButton:hover {
-  background-color: #86bbd8;
-}
-
 .FullButton:disabled {
   background-color: #ccc;
   cursor: not-allowed;
+}
+
+.Blue {
+  background-color: #33658a;
+}
+
+.Blue:hover:not([disabled]) {
+  background-color: #86bbd8;
+}
+
+.Purple {
+  background-color: #5D3F6A;
+}
+
+.Purple:hover:not([disabled]) {
+  background-color: rgb(131, 87, 150);
 }

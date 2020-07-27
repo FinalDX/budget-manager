@@ -31,12 +31,14 @@ class Budget extends Component {
           </div>
           <SlideButton 
             show={this.state.showButtons}
-            style={{backgroundColor: '#33658A', height: '100%'}}
+            color={'Blue'}
+            style={{height: '100%'}}
             clicked={() => this.props.viewClicked(this.props.budget)}>
               View</SlideButton>
           <SlideButton 
             show={this.state.showButtons}
-            style={{backgroundColor: 'rgb(253, 68, 68)', height: '100%'}}
+            color={'Red'}
+            style={{height: '100%'}}
             clicked={() => this.props.deleteClicked(this.props.id)}>
               Delete</SlideButton>
         </div>

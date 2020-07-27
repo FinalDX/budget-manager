@@ -14,3 +14,19 @@
     opacity: 1;
     width: 80px;
   }
+
+  .Blue {
+    background-color: #33658a;
+  }
+  
+  .Blue:hover {
+    background-color: #86bbd8;
+  }
+
+  .Red {
+    background-color: rgb(253, 68, 68);
+  }
+
+  .Red:hover {
+      background-color: rgb(245, 101, 101);
+  }

@@ -8,20 +8,22 @@ const modal = props => {
   let buttons = (
     <div>
       <button 
+        className={classes.OKBtn}
         onClick={props.confirmed}>
           OK
       </button>
 
       <button 
+        className={classes.CancelBtn}
         onClick={props.canceled}>
         Cancel
       </button>
     </div>
   );
   if (props.type === "alert") {
-    buttons = <button onClick={props.canceled}>OK</button>;
+    buttons = <button className={classes.OKBtn} onClick={props.canceled}>OK</button>;
   } else if (props.type === "action") {
-    buttons = <button onClick={props.canceled}>Cancel</button>;
+    buttons = <button className={classes.CancelBtn} onClick={props.canceled}>Cancel</button>;
   }
 
   return (

@@ -152,7 +152,11 @@ class Controls extends Component {
           options={this.props.categories}
         />
 
-        <FullButton style={btnStyle} disabled={!this.state.formIsValid}>
+        <FullButton
+          color={"Blue"}
+          style={btnStyle}
+          disabled={!this.state.formIsValid}
+        >
           Add
         </FullButton>
       </form>

@@ -7,6 +7,13 @@ const slideButton = props => {
     if (props.show) {
         addedClasses = [classes.SlideButton, classes.ShowBtn];
     }
+    if (props.color === 'Blue') {
+        addedClasses.push(classes.Blue);
+    }
+    if (props.color === 'Red') {
+        addedClasses.push(classes.Red);
+    }
+    
     return (
         <button className={addedClasses.join(' ')}
             style={props.style}

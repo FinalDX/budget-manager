@@ -38,7 +38,9 @@ class Budgets extends Component {
       <div className={classes.Budgets}>
         <h2>Budget List</h2>
         <div className={classes.AddBtn}>
-          <FullButton clicked={this.props.addClicked}>
+          <FullButton 
+            color={'Blue'}
+            clicked={this.props.addClicked}>
             Add
           </FullButton>
         </div>

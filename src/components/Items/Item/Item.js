@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 
 import Modal from '../../UI/Modal/Modal';
+import SlideButton from '../../UI/Buttons/SlideButton/SlideButton';
 
 import classes from "./Item.module.css";
 
@@ -51,10 +52,12 @@ class Item extends Component {
 
           <div className={colorClasses.join(" ")}>
             <p>{sign}${this.props.amount.toFixed(2)}</p>
-            <button className={btnClasses.join(' ')} 
+            <SlideButton 
+              show={this.state.showButton}
+              color={'Red'}
               onClick={this.toggleShowModal}>
               Delete
-            </button>
+            </SlideButton>
           </div>
         </li>
       </div>
