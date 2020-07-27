@@ -29,7 +29,7 @@ const YEARS = createYearOptions(new Date());
 const MONTHS = ['January', 'Febuary', 'March', 'April',
 'May', 'June', 'July', 'August', 'September', 'October',
 'November', 'December'];
-const CATEGORIES = ["Dependants", "Clothing", "Education",
+const CATEGORIES = ["Bills", "Debt", "Dependants", "Clothing", "Education",
   "Entertainment", "Food", "Housing", "Insurance",
   "Job", "Medical", "Pets", "Personal", "Savings",
   "Transportation", "Utilities", "Other"];
@@ -284,9 +284,7 @@ class Dashboard extends Component {
       budgets = (
         <Budgets
             years={YEARS}
-            months={['January', 'Febuary', 'March', 'April',
-            'May', 'June', 'July', 'August', 'September', 'October',
-            'November', 'December']}
+            months={MONTHS}
             budgets={this.state.budgets}
             addClicked={this.addBtnHandler}
             viewClicked={this.goToBudgetControls}

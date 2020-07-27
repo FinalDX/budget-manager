@@ -8,9 +8,10 @@ import Modal from "../../components/UI/Modal/Modal";
 
 import classes from "./BudgetControls.module.css";
 import DBService from "../../services/DBService/DBService";
+import FullButton from "../../components/UI/Buttons/FullButton/FullButton";
 
 const DB = new DBService();
-const ITEM_LIMIT = 30;
+const ITEM_LIMIT = 50;
 
 class Budget extends Component {
   constructor(props) {
@@ -36,13 +37,56 @@ class Budget extends Component {
   hideModal = () => this.setState({ modal: { show: false } });
   // ----------------------------------------------------------
 
-  // Create an item object from inputItem and add it to the income array
-  // or the expense array of the budget object in the local state.
-  addItemHandler = inputItem => {
-    // Get item type and add 's' to match the correct property
-    // key in the budget object: incomes or expenses.
-    const type = inputItem.type.value + "s";
+  checkForExistingItem = (inputItem, type) => 
+    this.state.budget[type].findIndex(item => 
+      (item.category === inputItem.category.value) &&
+      (item.name === inputItem.name.value));
+  
+  // ----------------------------------------------------------
 
+  replaceExisting = (inputItem, foundItemIndex, type) => {
+    let updatedBudget = {...this.state.budget};
+    let updatedItems = [...updatedBudget[type]];
+
+    let action = "add"
+    let difference = Number(inputItem.amount.value) - updatedItems[foundItemIndex].amount;
+    if (difference < 0) {
+      action = "delete";
+    }
+
+    updatedItems[foundItemIndex].amount = Number(inputItem.amount.value);
+    updatedBudget[type] = updatedItems;
+    // Update the value of remaining in the budget object in the state.
+    updatedBudget.remaining = this.updateRemaining(
+      action,
+      inputItem.type.value,
+      Math.abs(difference)
+    );
+
+    this.setState({budget: updatedBudget, saved: false });
+  }
+  // ----------------------------------------------------------
+
+  combineAmounts = (inputItem, foundItemIndex, type) => {
+    let updatedBudget = {...this.state.budget};
+    let updatedItems = [...updatedBudget[type]];
+
+    updatedItems[foundItemIndex].amount += Number(inputItem.amount.value);
+    updatedBudget[type] = updatedItems;
+
+    // Update the value of remaining in the budget object in the state.
+    updatedBudget.remaining = this.updateRemaining(
+      "add",
+      inputItem.type.value,
+      Number(inputItem.amount.value)
+    );
+
+    this.setState({budget: updatedBudget, saved: false });
+  }
+  
+  // ----------------------------------------------------------
+
+  addNewItem = (inputItem, type) => {
     let updatedBudget = { ...this.state.budget };
     let updatedItems = [...updatedBudget[type]];
 
@@ -56,6 +100,7 @@ class Budget extends Component {
       };
       updatedItems.push(newItem);
       updatedBudget[type] = updatedItems;
+
       // Update the value of remaining in the budget object in the state.
       updatedBudget.remaining = this.updateRemaining(
         "add",
@@ -63,10 +108,56 @@ class Budget extends Component {
         newItem.amount
       );
       this.setState({ budget: updatedBudget, saved: false });
+
     } else {
       this.summonAlertModal('Limit Reached!',
         'The total amount of items in this budget has been reahced.',
         this.hideModal);
+    }
+  }
+  // ----------------------------------------------------------
+
+  // Create an item object from inputItem and add it to the income array
+  // or the expense array of the budget object in the local state.
+  addItemHandler = inputItem => {
+    // Get item type and add 's' to match the correct property
+    // key in the budget object: incomes or expenses.
+    const type = inputItem.type.value + "s";
+
+    let foundItemIndex = this.checkForExistingItem(inputItem, type);
+
+    if (foundItemIndex !== -1) {
+      this.summonActionModal(
+        'Existing Item Found',
+        `An item with this name already exists inside
+        this budget. You can combine both item
+        amounts into a single item or you can replace the 
+        existing item with this new item. 
+        Please select an action:`,
+        (
+        <div className={classes.ActionBtns}>
+          <FullButton 
+            style={{width: '300px', margin: '20px auto 30px'}}
+            onClick={() => {
+              this.combineAmounts(inputItem, foundItemIndex, type);
+              this.hideModal();
+              }}>
+              Combine Amounts
+          </FullButton>
+          <FullButton
+            style={{width: '300px', margin: '0 auto 10px'}}
+            onClick={() => {
+              this.replaceExisting(inputItem, foundItemIndex, type)
+              this.hideModal();
+              }}>
+              Replace Existing
+          </FullButton>
+        </div>
+        ),
+        this.hideModal
+      );
+    } else {
+      this.addNewItem(inputItem, type);
     }
   };
   // ----------------------------------------------------------
@@ -122,6 +213,19 @@ class Budget extends Component {
     return updatedRemaining;
   };
   // ----------------------------------------------------------
+
+  summonActionModal = (title, message, actions, canceled) => {
+    this.setState({
+      modal: {
+        show: true,
+        type: "action",
+        title: title,
+        message: message,
+        actions: actions,
+        canceled: canceled
+      }
+    });
+  }
 
   // Update the modal object in the state to display a
   // custom modal.
@@ -196,6 +300,7 @@ class Budget extends Component {
             message={this.state.modal.message}
             canceled={this.state.modal.canceled}
             confirmed={this.state.modal.confirmed}
+            actions={this.state.modal.actions}
           />
         ) : null}
 

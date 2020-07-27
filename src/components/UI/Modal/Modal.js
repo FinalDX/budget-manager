@@ -8,13 +8,11 @@ const modal = props => {
   let buttons = (
     <div>
       <button 
-        key={0}
         onClick={props.confirmed}>
           OK
       </button>
 
       <button 
-        key={1} 
         onClick={props.canceled}>
         Cancel
       </button>
@@ -22,6 +20,8 @@ const modal = props => {
   );
   if (props.type === "alert") {
     buttons = <button onClick={props.canceled}>OK</button>;
+  } else if (props.type === "action") {
+    buttons = <button onClick={props.canceled}>Cancel</button>;
   }
 
   return (
@@ -38,6 +38,9 @@ const modal = props => {
           {props.type === 'prompt' ? 
             props.form
             : null}
+          {props.type === 'action' ?
+            props.actions :
+            null}
           <div className={classes.Buttons}>{buttons}</div>
         </div>
       </div>

@@ -11,7 +11,7 @@ class Controls extends Component {
     this.state = {
       itemForm: {
         name: {
-          value: " ",
+          value: "",
           validation: {
             pattern: /^[A-Za-z0-9 ]+$/,
             maxLength: 20,
