@@ -91,6 +91,8 @@ class Controls extends Component {
   };
   // ----------------------------------------------------------
 
+  // Clear name and amount input values and set form validation
+  // to false.
   resetForm = () => {
     let resetForm = {...this.state.itemForm};
     let resetName = {...resetForm.name};
@@ -106,12 +108,16 @@ class Controls extends Component {
 
     this.setState({itemForm: resetForm, formIsValid: false});
   }
+  // ----------------------------------------------------------
 
+  // Send input data from the form to the BudgetControls and 
+  // reset the form.
   formSubmitHandler = event => {
     event.preventDefault();
     this.props.sendData(this.state.itemForm);
     this.resetForm();
   }
+  // ----------------------------------------------------------
 
   render() {
     let btnStyle = { margin: "30px auto" };
