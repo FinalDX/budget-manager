@@ -8,8 +8,12 @@ import classes from "./Budgets.module.css";
 class Budgets extends Component {
 
   render() {
-    const years = this.props.years.reverse();
-    const months = this.props.months.reverse();
+    // Clone and reverse year an month arrays so that
+    // a sorted list can be built from future to past.
+    let years = [...this.props.years];
+    let months = [...this.props.months];
+    years.reverse();
+    months.reverse();
     const budgets = [];
 
     // Orders all budgets from the most future date to the most past date

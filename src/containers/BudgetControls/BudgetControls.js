@@ -368,7 +368,7 @@ class Budget extends Component {
           sendData={this.addItemHandler}
           categories={this.props.categories}
         />
-        <div>
+        <div className={classes.Items}>
           <Items
             title={"Incomes"}
             type={"income"}

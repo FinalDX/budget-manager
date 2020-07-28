@@ -50,7 +50,7 @@ class Item extends Component {
             <SlideButton 
               show={this.state.showButton}
               color={'Red'}
-              onClick={this.toggleShowModal}>
+              clicked={this.toggleShowModal}>
               Delete
             </SlideButton>
           </div>
