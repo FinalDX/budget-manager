@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 
 import LineChart from './LineChart/LineChart';
 import Select from '../../UI/Select/Select';
+import FullButton from '../../UI/Buttons/FullButton/FullButton';
+
 import classes from './LineCharts.module.css';
 
 class LineCharts extends Component {
@@ -10,7 +12,12 @@ class LineCharts extends Component {
         this.state = {
             category: 'Category',
             type: 'Type',
-            year: 'Year'
+            year: 'Year',
+            showBtn: {
+                show: false,
+                btnText: 'Show',
+                btnColor: 'Blue'
+            }
         };
     };
 
@@ -69,54 +76,121 @@ class LineCharts extends Component {
     }
     // ----------------------------------------------------------
 
+    // Toggle showBtn in state
+    toggleShowBtn = () => {
+        this.setState({showBtn: this.state.showBtn.show ?
+            {show: false, btnText: 'Show', btnColor: 'Blue'} :
+            {show: true, btnText: 'Hide', btnColor: 'Purple'}});
+    }
+    // ----------------------------------------------------------
+
+    // ==========================================================
+    // RENDER
+    // ==========================================================
     render() {
+        let showContent = this.state.showBtn.show;
+        let showControls = false;
+        if (this.props.budgets) {
+            showControls = this.props.budgets.length > 1;
+        }
         let showGraph = (
             this.state.category !== 'Category' &&
             this.state.type !== 'Type' &&
             this.state.year !== 'Year');
+
         let dataItems = [];
         let data = [];
+        let content = null;
+        
+        let controls = (
+            <div>
+                <Select 
+                    haveDefaultOption={true}
+                    defaultValue={'Type'}
+                    options={['Incomes', 'Expenses']}
+                    changed={(e) => {
+                        this.setState({type: e.target.value});
+                    }}/>
+                <Select 
+                    haveDefaultOption={true}
+                    defaultValue={'Category'}
+                    options={this.props.categories}
+                    changed={(e) => {
+                        this.setState({category: e.target.value});
+                    }}/>
+                <Select 
+                    haveDefaultOption={true}
+                    defaultValue={'Year'}
+                    options={this.props.years}
+                    changed={(e) => {
+                        this.setState({year: e.target.value});
+                    }}/>
+            </div>
+        );
 
-        if (showGraph) {
-            dataItems = this.budgetsToDataItems();
-            data = this.dataItemsToData(dataItems);
+        // If the show button is set to true.
+        if (showContent) {
+            // If there are at least two budgets that have been created.
+            if (showControls) {
+                content = [controls];
+                // If a selection was made in all of the select boxes inside 
+                // the controls.
+                if (showGraph) {
+                    dataItems = this.budgetsToDataItems();
+                    data = this.dataItemsToData(dataItems);
+                    // If there is at least one data item that matched the 
+                    // criteria of the select boxes.
+                    if (dataItems.length > 0) {    
+                        content.push(
+                            <div className={classes.ChartContainer}>
+                                <LineChart 
+                                    data={data}
+                                    title={`${this.state.type} for ${this.state.category} during ${this.state.year}`}
+                                    yAxis={'Dollar Amount'}/>  
+                            </div>
+                        );
+                    // If there are no data items that match the criteria
+                    // of the select boxes.
+                    } else {
+                        content.push(
+                            <div style={{margin: '10px'}}>
+                                There is no data to display for the selected type,
+                                category, and year.
+                            </div>
+                        );
+                    }
+                // If at least one selection was not made in the select boxes
+                // inside of the controls.
+                } else {
+                    content.push(
+                        <div style={{margin: '10px'}}>
+                            Select type, category, and year to see graph.
+                        </div>
+                    );
+                }
+            // If less than two budgets have been created.
+            } else {
+                content = (
+                <div style={{margin: '10px'}}>
+                    This graph displays changes in budget categories over time.
+                    Please create at least two budgets in the same year to display 
+                    this graph.
+                </div>
+                )
+            }
+        // If show button is set to false;
+        } else {
+            content = null;
         }
 
         return (
             <div>
-                <div>
-                    <Select 
-                        haveDefaultOption={true}
-                        defaultValue={'Type'}
-                        options={['Incomes', 'Expenses']}
-                        changed={(e) => {
-                            this.setState({type: e.target.value});
-                        }}/>
-                    <Select 
-                        haveDefaultOption={true}
-                        defaultValue={'Category'}
-                        options={this.props.categories}
-                        changed={(e) => {
-                            this.setState({category: e.target.value});
-                        }}/>
-                    <Select 
-                        haveDefaultOption={true}
-                        defaultValue={'Year'}
-                        options={this.props.years}
-                        changed={(e) => {
-                            this.setState({year: e.target.value});
-                        }}/>
-                </div>
-                <div className={classes.ChartContainer}>
-                    {/* Only display graph once all three select criteria have been selected */}
-                    {showGraph ? 
-                        <LineChart 
-                            data={data}
-                            title={`${this.state.type} for ${this.state.category} during ${this.state.year}`}
-                            yAxis={'Dollar Amount'}/> :
-                        <div style={{margin: '10px'}}>Select type, category, and year to see graph.</div>
-                    }
-                </div>
+                <h2>Line Graph</h2>
+                <FullButton
+                    style={{margin: '10px auto'}}
+                    color={this.state.showBtn.btnColor}
+                    clicked={this.toggleShowBtn}>{this.state.showBtn.btnText}</FullButton>
+                {content}
             </div>
         )
     }
