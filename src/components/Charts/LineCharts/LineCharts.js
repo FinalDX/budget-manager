@@ -189,7 +189,9 @@ class LineCharts extends Component {
                 <FullButton
                     style={{margin: '10px auto'}}
                     color={this.state.showBtn.btnColor}
-                    clicked={this.toggleShowBtn}>{this.state.showBtn.btnText}</FullButton>
+                    clicked={this.toggleShowBtn}>
+                        {this.state.showBtn.btnText}
+                </FullButton>
                 {content}
             </div>
         )

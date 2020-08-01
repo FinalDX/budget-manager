@@ -14,8 +14,10 @@ const chart = props => {
     .reduce((total, num) => {
       return total + num;
     }, 0);
+
   // Ceate an object that will onctain the total value for each category
   let categoryTotals = {};
+
   // Loop through every item in data to calculate the total values for each category
   for (let item of props.data) {
     // If the category already exists, add to the total value
@@ -27,8 +29,10 @@ const chart = props => {
       categoryTotals[item.category] = item.amount;
     }
   }
+
   // Create an array that will contain each dataPoint object
   const dataPoints = [];
+  
   // Create each dataPoint object using the categoryTotals object,
   // calculate the percentage using the budgetTotal,
   // and add it to the dataPoints array
