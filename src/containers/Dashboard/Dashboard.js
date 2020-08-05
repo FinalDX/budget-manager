@@ -86,8 +86,12 @@ class Dashboard extends Component {
   // ----------------------------------------------------------
 
   // Hide the Modal component
-  hideModal = () =>
-    this.setState({modal: {show: false}});
+  hideModal = () => {
+    let hideModal = {...this.state.modal};
+    hideModal.show = false;
+
+    this.setState({modal: hideModal});
+  }
   // ----------------------------------------------------------
 
   // Update the date object in the state.
@@ -296,8 +300,8 @@ class Dashboard extends Component {
     // Dashboard
     const dashboard = (
       <div>
-        {this.state.modal.show ? (
           <Modal
+            show={this.state.modal.show}
             type={this.state.modal.type}
             title={this.state.modal.title}
             message={this.state.modal.message}
@@ -305,7 +309,6 @@ class Dashboard extends Component {
             canceled={this.state.modal.canceled}
             form={this.state.modal.form}
           />
-        ) : null}
         <LineCharts 
           budgets={this.state.budgets}
           categories={CATEGORIES}

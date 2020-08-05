@@ -1,12 +1,19 @@
 .Modal {
-  width: 400px;
   position: fixed;
-  top: 50%;
+  width: 400px;
+  top: -50%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 999;
   background-color: #fff;
-  padding: 10px;
+  opacity: 0;
+  transition: all 0.5s ease-in-out;
+  padding: 5px;
+}
+
+.ShowModal {
+  top: 50%;
+  opacity: 1;
 }
 
 .Title {

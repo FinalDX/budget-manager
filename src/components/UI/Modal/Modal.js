@@ -5,31 +5,44 @@ import Backdrop from "../Backdrop/Backdrop";
 import classes from "./Modal.module.css";
 
 const modal = props => {
+  // Defualt OK and Cancel buttons for Modals
   let buttons = (
     <div>
-      <button 
-        className={classes.OKBtn}
-        onClick={props.confirmed}>
-          OK
+      <button className={classes.OKBtn} onClick={props.confirmed}>
+        OK
       </button>
 
-      <button 
-        className={classes.CancelBtn}
-        onClick={props.canceled}>
+      <button className={classes.CancelBtn} onClick={props.canceled}>
         Cancel
       </button>
     </div>
   );
+  // Display only an OK button if the Modal is an alert
   if (props.type === "alert") {
-    buttons = <button className={classes.OKBtn} onClick={props.canceled}>OK</button>;
+    buttons = (
+      <button className={classes.OKBtn} onClick={props.canceled}>
+        OK
+      </button>
+    );
+    // Display only a Cancel button if the Modal is an action
   } else if (props.type === "action") {
-    buttons = <button className={classes.CancelBtn} onClick={props.canceled}>Cancel</button>;
+    buttons = (
+      <button className={classes.CancelBtn} onClick={props.canceled}>
+        Cancel
+      </button>
+    );
+  }
+
+  // Add class to show modal using animation
+  let addedClasses = [classes.Modal];
+  if (props.show) {
+    addedClasses.push(classes.ShowModal);
   }
 
   return (
     <div>
-      <Backdrop show={true} clicked={props.canceled} layer={800} />
-      <div className={classes.Modal}>
+      <Backdrop show={props.show} clicked={props.canceled} layer={800} />
+      <div className={addedClasses.join(" ")}>
         <div className={classes.Title}>
           <p>{props.title}</p>
         </div>
@@ -37,12 +50,10 @@ const modal = props => {
           <p>{props.message}</p>
         </div>
         <div>
-          {props.type === 'prompt' ? 
-            props.form
-            : null}
-          {props.type === 'action' ?
-            props.actions :
-            null}
+          {/*Add passed in form if Modal is a prompt*/}
+          {props.type === "prompt" ? props.form : null}
+          {/*Add passed in actions if Modal is an action*/}
+          {props.type === "action" ? props.actions : null}
           <div className={classes.Buttons}>{buttons}</div>
         </div>
       </div>

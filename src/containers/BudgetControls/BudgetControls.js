@@ -339,8 +339,8 @@ class Budget extends Component {
   render() {
     return (
       <div className={classes.Budget}>
-        {this.state.modal.show ? (
           <Modal
+            show={this.state.modal.show}
             type={this.state.modal.type}
             title={this.state.modal.title}
             message={this.state.modal.message}
@@ -348,7 +348,6 @@ class Budget extends Component {
             confirmed={this.state.modal.confirmed}
             actions={this.state.modal.actions}
           />
-        ) : null}
 
         <Charts
           incomeData={this.state.budget.incomes}
