@@ -21,16 +21,17 @@
   display: inline-block;
   color: #fff;
   margin-top: 5px;
+  font-size: 120%;
 }
 
 .LeftBtn {
   position: absolute;
-  top: 5px;
+  top: 8px;
   left: 10px;
 }
 
 .RightBtn {
   position: absolute;
-  top: 5px;
+  top: 8px;
   right: 10px;
 }

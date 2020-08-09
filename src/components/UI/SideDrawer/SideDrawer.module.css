@@ -1,0 +1,16 @@
+.SideDrawer{
+  height: 100%;
+  width: 200px;
+  position: fixed;
+  z-index: 999;
+  background: #fff;
+  top: 0;
+  left: -300px;
+  transition: left 0.3s ease-in;
+}
+
+.Open {
+  left: 0;
+}
+
+

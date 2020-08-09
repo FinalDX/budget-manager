@@ -73,7 +73,11 @@ class App extends Component {
         screen = <LogIn changeScreen={this.changeScreen}/>
         break;
       case 'Dashboard':
-        screen = <Dashboard changeScreen={this.changeScreen}/>
+        screen = (
+          <Dashboard 
+            changeScreen={this.changeScreen}
+            budgets={this.props.budgets}/>
+        )
         break;
       case 'BudgetList':
         screen = (

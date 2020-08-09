@@ -1,0 +1,15 @@
+.MenuItems {
+  display: flex;
+  flex-flow: column;
+  list-style: none;
+}
+
+.MenuItems > li {
+  margin-top: 10px;
+}
+
+.Bottom {
+  position: absolute;
+  bottom: 10px;
+  left: 75px
+}
