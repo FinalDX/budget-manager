@@ -72,14 +72,64 @@ class LineCharts extends Component {
         return data;
     }
 
+    // Parse the budget data to populate the select
+    // boxes with only options that exist in the 
+    // budgets.
+    parseData = budgets => {
+        let parsedData = {
+            type: [],
+            categories: [],
+            years: []
+        }
+        for (let budget of budgets) {
+            // Find if any income or expense exists in 
+            // budgets and if any are found then add that
+            // type to parsedData.type.
+            if (!parsedData.type.find(type => type === 'Incomes') &&
+                budget.incomes.length > 0) {
+                parsedData.type.push('Incomes');
+            }
+            if (!parsedData.type.find(type => type === 'Expenses') && 
+                budget.expenses.length > 0) {
+                parsedData.type.push('Expenses');
+            }
+            // Search thu every item in a budget's income list
+            // to find any categories that do not yet exist in 
+            // parsedData.categories.
+            for (let item of budget.incomes) {
+                let foundCategory = parsedData.categories.find(category => category === item.category);
+                if (!foundCategory) {
+                    parsedData.categories.push(item.category);
+                }
+            }
+            // Search thu every item in a budget's expense list
+            // to find any categories that do not exist in 
+            // parsedData.categories.
+            for (let item of budget.expenses) {
+                let foundCategory = parsedData.categories.find(category => category === item.category);
+                if (!foundCategory) {
+                    parsedData.categories.push(item.category);
+                }
+            }
+            // Find any year that does not exist in 
+            // parsedData.years.
+            let foundYear = parsedData.years.find(year => year === budget.date.year);
+            if (!foundYear) {
+                parsedData.years.push(budget.date.year);
+            }
+        }
+        return parsedData;
+    }
+
     // ==========================================================
     // RENDER
     // ==========================================================
     render() {
+        let parsedData = this.parseData(this.props.budgets);
         // Show controls if there are at least two budgets
         let showControls;
-        if (this.props.budgets) {
-            showControls = this.props.budgets.length > 1;
+        if(this.props.budgets) {
+            showControls = this.props.budgets.length > 0;
         }
         // Show chart if all selections have been made
         let showChart = (
@@ -96,28 +146,28 @@ class LineCharts extends Component {
                 <Select 
                     haveDefaultOption={true}
                     defaultValue={'Type'}
-                    options={['Incomes', 'Expenses']}
+                    options={parsedData.type}
                     changed={(e) => {
                         this.setState({type: e.target.value});
                     }}/>
                 <Select 
                     haveDefaultOption={true}
                     defaultValue={'Category'}
-                    options={this.props.categories}
+                    options={parsedData.categories}
                     changed={(e) => {
                         this.setState({category: e.target.value});
                     }}/>
                 <Select 
                     haveDefaultOption={true}
                     defaultValue={'Year'}
-                    options={this.props.years}
+                    options={parsedData.years}
                     changed={(e) => {
                         this.setState({year: e.target.value});
                     }}/>
             </div>
         );
 
-        // If there are at least two budgets that have been
+        // If there is at least one budgets that has been
         // created, show the controls.
         if (showControls) {
             content = [controls];
@@ -126,29 +176,14 @@ class LineCharts extends Component {
             if (showChart) {
                 dataItems = this.budgetsToDataItems();
                 data = this.dataItemsToData(dataItems);
-                // If there is at least one data item that matched the 
-                // criteria of the select boxes, show the chart.
-                if (dataItems.length > 0) {    
-                    content.push(
-                        <div key={1} className={classes.ChartContainer}>
-                            <LineChart 
-                                data={data}
-                                title={`${this.state.type} 
-                                    for ${this.state.category} 
-                                    during ${this.state.year}`}
-                                yAxis={'Dollar Amount'}/>  
-                        </div>
-                    );
-                // If there are no data items that match the criteria
-                // of the select boxes, display message.
-                } else {
-                    content.push(
-                        <div key={1} style={{margin: '10px'}}>
-                            There is no data to display for the selected type,
-                            category, and year.
-                        </div>
-                    );
-                }
+                content.push(
+                    <div key={1} className={classes.ChartContainer}>
+                        <LineChart 
+                            data={data}
+                            title={`${this.state.type} for ${this.state.category} during ${this.state.year}`}
+                            yAxis={'Dollar Amount'}/>  
+                    </div>
+                );
             // If at least one selection was not made in the select boxes
             // inside of the controls.
             } else {
@@ -163,7 +198,7 @@ class LineCharts extends Component {
             content = (
             <div style={{margin: '10px'}}>
                 This graph displays changes in budget categories over time.
-                Please create at least two budgets in the same year to display 
+                Please create at least one budget to display 
                 this graph.
             </div>
             )
