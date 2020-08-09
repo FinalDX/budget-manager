@@ -134,7 +134,6 @@ class Controls extends Component {
           onChange={event => this.inputHandler(event, "name")}
           maxLength="20"
           pattern="[a-zA-Z0-9 ]*"
-          required
         />
         <input
           type="number"
@@ -144,7 +143,6 @@ class Controls extends Component {
           onChange={event => this.inputHandler(event, "amount")}
           min="0"
           max="999999999"
-          required
         />
 
         <div className={classes.Radio}>

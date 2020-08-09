@@ -1,0 +1,60 @@
+.Background {
+    position: absolute;
+    width: 100%;
+    min-height: 100vh;
+    background-image: linear-gradient(rgba(51, 101, 138, 0.5), 90%, rgba(253, 68, 68, 0.4)), url('../../assets/images/background.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+.LogIn {
+    width: 400px;
+    height: 400px;
+    display: block;
+    position: relative;
+    margin: 200px auto;
+    background-color: #fff;
+    border: 1px solid #333;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.LogIn > h1 {
+    margin-bottom: 20px;
+}
+
+.Form {
+    display: block;
+    width: 300px;
+    margin: auto;
+}
+
+.Inputs {
+    display: block;
+    width: 100%;
+}
+
+.Buttons {
+    display: block;
+    width: 100%;
+}
+
+@media (max-height: 800px) {
+    .LogIn {
+        margin-top: 150px;
+    }
+}
+
+@media (max-height: 650px) {
+    .LogIn {
+        margin-top: 100px;
+    }
+}
+
+@media (max-height: 600px) {
+    .LogIn {
+        margin-top: 50px;
+    }
+}

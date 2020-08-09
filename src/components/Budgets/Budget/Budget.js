@@ -22,19 +22,22 @@ class Budget extends Component {
         <div className={classes.Date}>
           {this.props.budget.date.month} {this.props.budget.date.year}
         </div>
+
         <div className={classes.RightSide}>
           <div className={classes.Remaining}
-          ref={this.state.ref}>
-            <Balance 
-              remaining={this.props.budget.remaining} 
-              style={{fontSize: '180%', fontWeight: 'lighter'}}/>
+            ref={this.state.ref}>
+              <Balance 
+                remaining={this.props.budget.remaining} 
+                style={{fontSize: '180%', fontWeight: 'lighter'}}/>
           </div>
+
           <SlideButton 
             show={this.state.showButtons}
             color={'Blue'}
             style={{height: '100%'}}
             clicked={() => this.props.viewClicked(this.props.budget)}>
               View</SlideButton>
+              
           <SlideButton 
             show={this.state.showButtons}
             color={'Red'}

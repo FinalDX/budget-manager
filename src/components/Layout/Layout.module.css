@@ -1,6 +1,11 @@
 .Layout { 
     text-align: center;
     position: relative;
+    height: 100vh;
 }
 
-.Main { margin-top: 70px }
+.Main { 
+    min-height: 100vh;
+    padding-top: 1px;
+    margin-top: 39px;
+}

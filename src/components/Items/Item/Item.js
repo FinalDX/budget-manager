@@ -14,7 +14,7 @@ class Item extends Component {
     }
   }
 
-  toggleShow = () => this.setState({showButton: this.state.showButton ? false : true});
+  toggleShowBtn = () => this.setState({showButton: this.state.showButton ? false : true});
 
   toggleShowModal = () => this.setState({showModal: this.state.showModal ? false : true});
   
@@ -24,6 +24,7 @@ class Item extends Component {
   }
 
   render() {
+    console.log(this.state.showModal);
     let sign = '+';
     let colorClasses = [classes.Amount];
     if (this.props.itemType === "income") {
@@ -35,14 +36,15 @@ class Item extends Component {
 
     return (
       <div>
-        {this.state.showModal ? 
-          <Modal type={'confirm'}
-            title={'Confirm:'}
-            message={`Are you sure you want to delete "${this.props.name}"?`}
-            canceled={this.toggleShowModal} 
-            confirmed={this.confirmModal}/> : null }
+        <Modal
+          show={this.state.showModal}
+          type={'confirm'}
+          title={'Confirm:'}
+          message={`Are you sure you want to delete "${this.props.name}"?`}
+          canceled={this.toggleShowModal} 
+          confirmed={this.confirmModal}/>
   
-        <li className={classes.Item} onClick={this.toggleShow}>
+        <li className={classes.Item} onClick={this.toggleShowBtn}>
           <p className={classes.Name}>{this.props.name}: </p>
 
           <div className={colorClasses.join(" ")}>

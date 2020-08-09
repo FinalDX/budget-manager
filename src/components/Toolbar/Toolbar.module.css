@@ -11,57 +11,26 @@
   border: none;
 }
 
-.Title {
-  display: inline-block;
-  color: #fff;
-  width: 300px;
+.Navigation {
+  height: 100%;
+  width: 100%;
   position: relative;
 }
 
-.FirstName {
-  position: absolute;
+.Title {
   display: inline-block;
-  top: 5px;
-  left: 20px;
-}
-
-.SecondName {
-  position: absolute;
-  display: inline-block;
-  top: 5px;
-  right: 20px;
-}
-
-.Logo {
-  display: inline-block;
-}
-
-.Navigation {
-  position: absolute;
-  right: 0;
-  display: flex;
-  justify-content: flex-end;
-  width: 30%;
-}
-
-.TopBtn {
-  text-decoration: none;
-  border: none;
-  background-color: #fff;
   color: #fff;
-  cursor: pointer;
-  margin: 8px 15px;
-  font-size: 100%;
-  background-color: #333;
+  margin-top: 5px;
 }
 
+.LeftBtn {
+  position: absolute;
+  top: 5px;
+  left: 10px;
+}
 
-@media (max-width: 480px) {
-  .FirstName,
-  .SecondName {
-    display: none;
-  }
-  .TopBtn {
-    font-size: 120%;
-  }
+.RightBtn {
+  position: absolute;
+  top: 5px;
+  right: 10px;
 }
