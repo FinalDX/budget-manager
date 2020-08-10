@@ -13,7 +13,9 @@ class LineCharts extends Component {
         this.state = {
             category: 'Category',
             type: 'Type',
-            year: 'Year'
+            year: 'Year',
+            showCategory: false,
+            showType: false
         };
     };
 
@@ -72,60 +74,98 @@ class LineCharts extends Component {
         return data;
     }
 
-    // Parse the budget data to populate the select
-    // boxes with only options that exist in the 
-    // budgets.
-    parseData = budgets => {
-        let parsedData = {
-            type: [],
-            categories: [],
-            years: []
-        }
+    parseYears = budgets => {
+        let parsedYears = [];
         for (let budget of budgets) {
-            // Find if any income or expense exists in 
-            // budgets and if any are found then add that
-            // type to parsedData.type.
-            if (!parsedData.type.find(type => type === 'Incomes') &&
-                budget.incomes.length > 0) {
-                parsedData.type.push('Incomes');
+            // Find any year that does not exist in 
+            // parsedYears and add those years to it.
+            let foundYear = parsedYears.find(year => year === budget.date.year);
+            if (!foundYear) {
+                parsedYears.push(budget.date.year);
             }
-            if (!parsedData.type.find(type => type === 'Expenses') && 
-                budget.expenses.length > 0) {
-                parsedData.type.push('Expenses');
+        }
+        return parsedYears;
+    }
+
+    parseBudgetsByYear = (budgets, year) => {
+        let parsedBudgets = [];
+        for (let budget of budgets) {
+            if (budget.date.year === year) {
+                parsedBudgets.push(budget);
             }
+        }
+        return parsedBudgets;
+    }
+
+    parseCategories = budgets => {
+        let parsedCategories = [];
+        for (let budget of budgets) {
             // Search thu every item in a budget's income list
             // to find any categories that do not yet exist in 
-            // parsedData.categories.
+            // parsedCategories and add those categories to it.
             for (let item of budget.incomes) {
-                let foundCategory = parsedData.categories.find(category => category === item.category);
+                let foundCategory = parsedCategories.find(category => category === item.category);
                 if (!foundCategory) {
-                    parsedData.categories.push(item.category);
+                    parsedCategories.push(item.category);
                 }
             }
             // Search thu every item in a budget's expense list
             // to find any categories that do not exist in 
-            // parsedData.categories.
+            // parsedCategories and add those categories to it.
             for (let item of budget.expenses) {
-                let foundCategory = parsedData.categories.find(category => category === item.category);
+                let foundCategory = parsedCategories.find(category => category === item.category);
                 if (!foundCategory) {
-                    parsedData.categories.push(item.category);
+                    parsedCategories.push(item.category);
                 }
             }
-            // Find any year that does not exist in 
-            // parsedData.years.
-            let foundYear = parsedData.years.find(year => year === budget.date.year);
-            if (!foundYear) {
-                parsedData.years.push(budget.date.year);
+        }
+        return parsedCategories;
+    }
+
+    parseBudgetsByCategory = (budgets, category) => {
+        let parsedBudgets = [];
+        for (let budget of budgets) {
+            for (let item of budget.incomes) {
+                if (item.category === category) {
+                    parsedBudgets.push(budget);
+                }
+            }
+            for (let item of budget.expenses) {
+                if (item.category === category) {
+                    parsedBudgets.push(budget);
+                }
             }
         }
-        return parsedData;
+        return parsedBudgets;
+    }
+
+    parseTypes = budgets => {
+        let parsedTypes = [];
+        let foundIncome = false;
+        let foundExpense = false;
+        for (let budget of budgets) {
+            // Find if any income or expense exists in 
+            // budgets and if any are found then add that
+            // type to parsedTypes.
+            if (!foundIncome && (budget.incomes.length > 0)) {
+                    parsedTypes.push('Incomes');
+                    foundIncome = true;
+            }
+            if (!foundExpense && (budget.expenses.length > 0)) {
+                    parsedTypes.push('Expenses');
+                    foundExpense = true;
+            }
+        }
+        return parsedTypes;
     }
 
     // ==========================================================
     // RENDER
     // ==========================================================
     render() {
-        let parsedData = this.parseData(this.props.budgets);
+        let parsedBudgets = null;
+        let parsedYears = this.parseYears(this.props.budgets);
+
         // Show controls if there are at least two budgets
         let showControls;
         if(this.props.budgets) {
@@ -141,36 +181,60 @@ class LineCharts extends Component {
         let data = [];
         let content = null;
         
-        let controls = (
-            <div key={0}>
-                <Select 
-                    haveDefaultOption={true}
-                    defaultValue={'Type'}
-                    options={parsedData.type}
-                    changed={(e) => {
-                        this.setState({type: e.target.value});
-                    }}/>
-                <Select 
+        let controls = [
+            <Select
+                key={0}
+                haveDefaultOption={true}
+                defaultValue={'Year'}
+                options={parsedYears}
+                changed={(e) => {
+                    this.setState({
+                        year: e.target.value,
+                        showCategory: true
+                    });
+                }}/>
+        ];
+    
+        if(this.state.showCategory) {
+            parsedBudgets = this.parseBudgetsByYear(this.props.budgets, this.state.year);
+            let parsedCategories = this.parseCategories(parsedBudgets);
+            controls.push(
+                <Select
+                    key={1}
                     haveDefaultOption={true}
                     defaultValue={'Category'}
-                    options={parsedData.categories}
+                    options={parsedCategories}
                     changed={(e) => {
-                        this.setState({category: e.target.value});
+                        this.setState({
+                            category: e.target.value,
+                            showType: true
+                        });
                     }}/>
-                <Select 
+            )
+        }
+
+        if(this.state.showType) {
+            parsedBudgets = this.parseBudgetsByCategory(parsedBudgets, this.state.category);
+            let parsedTypes = this.parseTypes(parsedBudgets);
+            controls.push(
+                <Select
+                    key={2}
                     haveDefaultOption={true}
-                    defaultValue={'Year'}
-                    options={parsedData.years}
+                    defaultValue={'Type'}
+                    options={parsedTypes}
                     changed={(e) => {
-                        this.setState({year: e.target.value});
+                        this.setState({
+                            type: e.target.value
+                        });
                     }}/>
-            </div>
-        );
+            )
+        }
+
 
         // If there is at least one budgets that has been
         // created, show the controls.
         if (showControls) {
-            content = [controls];
+            content = [(<div key={0}>{controls}</div>)];
             // If a selection was made in all of the select boxes inside 
             // the controls, convert the budget data to chart data.
             if (showChart) {

@@ -4,3 +4,7 @@
     font-size: inherit;
     cursor: pointer;
 }
+
+.TextButton:hover {
+    color: #33658a;
+}
