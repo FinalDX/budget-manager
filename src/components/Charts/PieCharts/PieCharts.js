@@ -70,7 +70,7 @@ class PieCharts extends Component {
     }
 
     // Ensures that the Chart componenet is only rendered if the data
-    // is defined.
+    // has at least one item.
     let chart = data[this.state.selected].length > 0 ? (
       <PieChart title={this.state.selected} dataPoints={dataPoints} />
     ) : <div>No data to display for this selection!</div>;

@@ -5,6 +5,7 @@ import SideDrawer from "../../components/UI/SideDrawer/SideDrawer";
 import Balance from "../../components/Balance/Balance";
 import Menu from "../../components/Menu/Menu";
 import MenuItems from "../../components/Menu/MenuItems/MenuItems";
+import PieChart from "../../components/Charts/PieCharts/PieChart/PieChart";
 
 class Dashboard extends Component {
   constructor(props) {
@@ -27,6 +28,35 @@ class Dashboard extends Component {
   };
 
   render() {
+    let totalBalance = this.calculateTotal(this.props.budgets);
+    let categoryTotals = {};
+
+    for (let budget of this.props.budgets) {
+      let allItems = [...budget.incomes, ...budget.expenses];
+      // Loop through every item in data to calculate the total values for each category
+      for (let item of allItems) {
+        // If the category already exists, add to the total value
+        if (item.category in categoryTotals) {
+          categoryTotals[item.category] =
+            categoryTotals[item.category] + item.amount;
+          // If the category does not exist, create the category with its value
+        } else {
+          categoryTotals[item.category] = item.amount;
+        }
+      }
+    }
+
+    // Create an array that will contain each dataPoint object
+    const dataPoints = [];
+
+    // Create each dataPoint object using the categoryTotals object,
+    // calculate the percentage using the budgetTotal,
+    // and add it to the dataPoints array
+    for (const [key, value] of Object.entries(categoryTotals)) {
+      let percentage = Math.round((value / totalBalance) * 100);
+      dataPoints.push({ y: percentage, label: key });
+    }
+
     return (
       <div>
         <Toolbar
@@ -46,9 +76,10 @@ class Dashboard extends Component {
 
           <h1>Total Balance:</h1>
           <Balance
-            remaining={this.calculateTotal(this.props.budgets)}
+            remaining={totalBalance}
             style={{ fontSize: "300%", fontWeight: "lighter" }}
           />
+          <PieChart title={null} dataPoints={dataPoints} />
         </main>
       </div>
     );
