@@ -123,54 +123,54 @@ class LineCharts extends Component {
     }
 
     parseBudgetsByCategory = (budgets, category) => {
-        let parsedBudgets = [];
+        let data = {
+            parsedBudgets: [],
+            foundIncome: false,
+            foundExpense: false
+        }
         for (let budget of budgets) {
             for (let item of budget.incomes) {
                 if (item.category === category) {
-                    parsedBudgets.push(budget);
+                    data.parsedBudgets.push(budget);
+                    data.foundIncome = true;
                 }
             }
             for (let item of budget.expenses) {
                 if (item.category === category) {
-                    parsedBudgets.push(budget);
+                    data.parsedBudgets.push(budget);
+                    data.foundExpense = true;
                 }
             }
         }
-        return parsedBudgets;
-    }
-
-    parseTypes = budgets => {
-        let parsedTypes = [];
-        let foundIncome = false;
-        let foundExpense = false;
-        for (let budget of budgets) {
-            // Find if any income or expense exists in 
-            // budgets and if any are found then add that
-            // type to parsedTypes.
-            if (!foundIncome && (budget.incomes.length > 0)) {
-                    parsedTypes.push('Incomes');
-                    foundIncome = true;
-            }
-            if (!foundExpense && (budget.expenses.length > 0)) {
-                    parsedTypes.push('Expenses');
-                    foundExpense = true;
-            }
-        }
-        return parsedTypes;
+        return data;
     }
 
     // ==========================================================
     // RENDER
     // ==========================================================
     render() {
+        let message = 'Please select year to see chart.'
         let parsedBudgets = null;
+
+        // Get all years that exists in budgets
         let parsedYears = this.parseYears(this.props.budgets);
 
-        // Show controls if there are at least two budgets
+        // Show controls if there are at least one budget
         let showControls;
         if(this.props.budgets) {
             showControls = this.props.budgets.length > 0;
         }
+
+        if (this.state.type === 'Type') {
+            message = 'Please select type to see chart.'
+            if (this.state.category === 'Category') {
+                message = 'Please select category to see chart.'
+                if (this.state.year === 'Year') {
+                    message = 'Please select year to see chart.'
+                }
+            }
+        }
+
         // Show chart if all selections have been made
         let showChart = (
             this.state.category !== 'Category' &&
@@ -190,37 +190,52 @@ class LineCharts extends Component {
                 changed={(e) => {
                     this.setState({
                         year: e.target.value,
-                        showCategory: true
+                        showCategory: true,
+                        showType: false,
+                        category: 'Category',
+                        type: 'Type'
                     });
                 }}/>
         ];
     
         if(this.state.showCategory) {
+            // Get all budgets that are in the selected year.
             parsedBudgets = this.parseBudgetsByYear(this.props.budgets, this.state.year);
+            // Get all categories that exist in the parsed budgets.
             let parsedCategories = this.parseCategories(parsedBudgets);
             controls.push(
                 <Select
                     key={1}
-                    haveDefaultOption={true}
                     defaultValue={'Category'}
+                    disabled={false}
                     options={parsedCategories}
                     changed={(e) => {
                         this.setState({
                             category: e.target.value,
-                            showType: true
+                            showType: true,
+                            type: 'Type'
                         });
                     }}/>
             )
         }
 
         if(this.state.showType) {
-            parsedBudgets = this.parseBudgetsByCategory(parsedBudgets, this.state.category);
-            let parsedTypes = this.parseTypes(parsedBudgets);
+            // Get all budgets that have the selected category and see if that
+            // category exists in an income list, an expense list, or both.
+            data = this.parseBudgetsByCategory(parsedBudgets, this.state.category);
+            parsedBudgets = data.parsedBudgets;
+            let parsedTypes = [];
+            if (data.foundIncome) {
+                parsedTypes.push('Incomes');
+            }
+            if (data.foundExpense) {
+                parsedTypes.push('Expenses');
+            }
             controls.push(
                 <Select
                     key={2}
-                    haveDefaultOption={true}
                     defaultValue={'Type'}
+                    disabled={false}
                     options={parsedTypes}
                     changed={(e) => {
                         this.setState({
@@ -253,7 +268,7 @@ class LineCharts extends Component {
             } else {
                 content.push(
                     <div key={1} style={{margin: '10px'}}>
-                        Select type, category, and year to see graph.
+                        {message}
                     </div>
                 );
             }

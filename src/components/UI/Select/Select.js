@@ -12,12 +12,14 @@ const select = props => {
     <select
       style={props.style}
       defaultValue={props.defaultValue}
+      value={props.value}
       className={classes.Select}
       onChange={props.changed}
+      placeholder={'placeholder'}
       required
     >
-      {props.haveDefaultOption ? (
-        <option value={props.defaultValue} disabled>
+      {props.defaultValue ? (
+        <option value={props.defaultValue} disabled={props.disabled}>
           {props.defaultValue}
         </option>
       ) : null}

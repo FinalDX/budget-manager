@@ -170,10 +170,10 @@ class Controls extends Component {
         </div>
 
         <Select
-          haveDefaultOption={true}
           defaultValue={"Category"}
           changed={event => this.inputHandler(event, "category")}
           options={this.props.categories}
+          disabled={true}
         />
 
         <FullButton
