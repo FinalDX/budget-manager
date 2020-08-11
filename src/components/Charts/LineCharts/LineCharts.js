@@ -74,8 +74,9 @@ class LineCharts extends Component {
         return data;
     }
 
+    // Create an array of years that exist in budgets.
     parseYears = budgets => {
-        let parsedYears = [];
+        let parsedYears = ['Year'];
         for (let budget of budgets) {
             // Find any year that does not exist in 
             // parsedYears and add those years to it.
@@ -87,6 +88,8 @@ class LineCharts extends Component {
         return parsedYears;
     }
 
+    // Parse budgets and return an array of only
+    // the budgets that match the selected year.
     parseBudgetsByYear = (budgets, year) => {
         let parsedBudgets = [];
         for (let budget of budgets) {
@@ -97,8 +100,10 @@ class LineCharts extends Component {
         return parsedBudgets;
     }
 
+    // Create an array of categories that exist in 
+    // budgets.
     parseCategories = budgets => {
-        let parsedCategories = [];
+        let parsedCategories = ['Category'];
         for (let budget of budgets) {
             // Search thu every item in a budget's income list
             // to find any categories that do not yet exist in 
@@ -122,6 +127,10 @@ class LineCharts extends Component {
         return parsedCategories;
     }
 
+    // Parse budgets and return an object that contains
+    // an array of only the budgets that match the 
+    // selected category and whether that category was
+    // found in the budgets income list or expense list.
     parseBudgetsByCategory = (budgets, category) => {
         let data = {
             parsedBudgets: [],
@@ -149,18 +158,24 @@ class LineCharts extends Component {
     // RENDER
     // ==========================================================
     render() {
+        // Default values
+        let dataItems = [];
+        let data = [];
+        let content = null;
         let message = 'Please select year to see chart.'
         let parsedBudgets = null;
 
-        // Get all years that exists in budgets
+        // Get all years that exist in budgets.
         let parsedYears = this.parseYears(this.props.budgets);
 
-        // Show controls if there are at least one budget
+        // Show controls if there is at least one budget
         let showControls;
         if(this.props.budgets) {
             showControls = this.props.budgets.length > 0;
         }
 
+        // Display appropriate message based on what is and 
+        // what is not selected.
         if (this.state.type === 'Type') {
             message = 'Please select type to see chart.'
             if (this.state.category === 'Category') {
@@ -176,16 +191,11 @@ class LineCharts extends Component {
             this.state.category !== 'Category' &&
             this.state.type !== 'Type' &&
             this.state.year !== 'Year');
-
-        let dataItems = [];
-        let data = [];
-        let content = null;
         
         let controls = [
             <Select
                 key={0}
-                haveDefaultOption={true}
-                defaultValue={'Year'}
+                value={this.state.year}
                 options={parsedYears}
                 changed={(e) => {
                     this.setState({
@@ -206,8 +216,7 @@ class LineCharts extends Component {
             controls.push(
                 <Select
                     key={1}
-                    defaultValue={'Category'}
-                    disabled={false}
+                    value={this.state.category}
                     options={parsedCategories}
                     changed={(e) => {
                         this.setState({
@@ -224,7 +233,7 @@ class LineCharts extends Component {
             // category exists in an income list, an expense list, or both.
             data = this.parseBudgetsByCategory(parsedBudgets, this.state.category);
             parsedBudgets = data.parsedBudgets;
-            let parsedTypes = [];
+            let parsedTypes = ['Type'];
             if (data.foundIncome) {
                 parsedTypes.push('Incomes');
             }
@@ -234,7 +243,7 @@ class LineCharts extends Component {
             controls.push(
                 <Select
                     key={2}
-                    defaultValue={'Type'}
+                    value={this.state.type}
                     disabled={false}
                     options={parsedTypes}
                     changed={(e) => {

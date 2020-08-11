@@ -15,7 +15,6 @@ const select = props => {
       value={props.value}
       className={classes.Select}
       onChange={props.changed}
-      placeholder={'placeholder'}
       required
     >
       {props.defaultValue ? (

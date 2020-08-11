@@ -24,7 +24,6 @@ class Item extends Component {
   }
 
   render() {
-    console.log(this.state.showModal);
     let sign = '+';
     let colorClasses = [classes.Amount];
     if (this.props.itemType === "income") {
