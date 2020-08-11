@@ -32,11 +32,48 @@ class PieCharts extends Component {
       Expenses: [...this.props.expenseData],
       Incomes: [...this.props.incomeData]
     };
+
+    // Calculate the budget total by first using map to get an array
+    // of amount values, then using reduce to add them all up.
+    let budgetTotal = data[this.state.selected].map(
+      item => {
+        return item.amount;
+      }).reduce(
+        (total, num) => {
+          return total + num;
+        }, 0);
+
+    // Ceate an object that will onctain the total value for each category
+    let categoryTotals = {};
+
+    // Loop through every item in data to calculate the total values for each category
+    for (let item of data[this.state.selected]) {
+      // If the category already exists, add to the total value
+      if (item.category in categoryTotals) {
+        categoryTotals[item.category] =
+          categoryTotals[item.category] + item.amount;
+      // If the category does not exist, create the category with its value
+      } else {
+        categoryTotals[item.category] = item.amount;
+      }
+    }
+
+    // Create an array that will contain each dataPoint object
+    const dataPoints = [];
+
+    // Create each dataPoint object using the categoryTotals object,
+    // calculate the percentage using the budgetTotal,
+    // and add it to the dataPoints array
+    for (const [key, value] of Object.entries(categoryTotals)) {
+      let percentage = Math.round((value / budgetTotal) * 100);
+      dataPoints.push({ y: percentage, label: key });
+    }
+
     // Ensures that the Chart componenet is only rendered if the data
     // is defined.
-    let chart = data[this.state.selected] ? (
-      <PieChart title={this.state.selected} data={data[this.state.selected]} />
-    ) : null;
+    let chart = data[this.state.selected].length > 0 ? (
+      <PieChart title={this.state.selected} dataPoints={dataPoints} />
+    ) : <div>No data to display for this selection!</div>;
 
     // Show the content if there is at least one item inside
     // incomes or expenses.
@@ -45,11 +82,14 @@ class PieCharts extends Component {
         <div className={classes.Charts}>
           <Select
             style={{ width: "250px" }}
-            defaultValue={"Pie Charts (hidden)"}
+            value={this.state.selected}
             changed={(e) => this.chartSelected(e.target.value)}
             options={["Incomes and Expenses", "Incomes", "Expenses"]}
           />
-          <div className={classes.ChartContainer}>{chart}</div>
+
+          <div className={classes.ChartContainer}>
+            {chart}
+          </div>
         </div>
       );
       // If there are no items, display a message.

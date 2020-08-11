@@ -43,6 +43,7 @@ class Dashboard extends Component {
           >
             <MenuItems changeScreen={this.props.changeScreen} />
           </SideDrawer>
+
           <h1>Total Balance:</h1>
           <Balance
             remaining={this.calculateTotal(this.props.budgets)}

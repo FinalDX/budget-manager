@@ -1,15 +1,14 @@
 import React, { Component } from "react";
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 
 import Balance from "../../components/Balance/Balance";
 import Controls from "../../components/Controls/Controls";
 import Items from "../../components/Items/Items";
 import Modal from "../../components/UI/Modal/Modal";
-import Toolbar from '../../components/Toolbar/Toolbar';
-import PieCharts from '../../components/Charts/PieCharts/PieCharts';
+import Toolbar from "../../components/Toolbar/Toolbar";
+import PieCharts from "../../components/Charts/PieCharts/PieCharts";
 
-import * as actionTypes from '../../store/actions/actions';
-
+import * as actionTypes from "../../store/actions/actions";
 
 import classes from "./BudgetControls.module.css";
 import FullButton from "../../components/UI/Buttons/FullButton/FullButton";
@@ -45,7 +44,7 @@ class Budget extends Component {
   // Create an item object from inputItem and add it to the income array
   // or the expense array of the budget object in the local state.
   // inputItem -- new item collected from user input.
-  addItemHandler = inputItem => {
+  addItemHandler = (inputItem) => {
     // Get item type and add 's' to match the correct property
     // key in the budget object: incomes or expenses.
     const type = inputItem.type.value + "s";
@@ -75,8 +74,9 @@ class Budget extends Component {
             clicked={() => {
               this.combineAmounts(inputItem, foundItemIndex, type);
               this.hideModal();
-            }}>
-              Combine Amounts
+            }}
+          >
+            Combine Amounts
           </FullButton>
 
           {/* Replace Existing action */}
@@ -90,8 +90,9 @@ class Budget extends Component {
             clicked={() => {
               this.replaceExisting(inputItem, foundItemIndex, type);
               this.hideModal();
-            }}>
-              Replace Existing
+            }}
+          >
+            Replace Existing
           </FullButton>
         </div>,
         // Canceled
@@ -110,10 +111,10 @@ class Budget extends Component {
   // budget; otherwise -1.
   checkForExistingItem = (inputItem, type) =>
     this.state.budget[type].findIndex(
-      item =>
+      (item) =>
         item.category === inputItem.category.value &&
         item.name === inputItem.name.value
-  );
+    );
 
   // ----------------------------------------------------------
   // Combine the existing item amount with the new item amount.
@@ -309,9 +310,9 @@ class Budget extends Component {
     if (this.state.changesMade) {
       this.summonActionModal(
         // Title
-        'Save Changes',
+        "Save Changes",
         // Message
-        'Would you like to save the changes made to this budget?',
+        "Would you like to save the changes made to this budget?",
         // ActionButton
         <div className={classes.ActionBtns}>
           {/* Save changes action */}
@@ -326,10 +327,11 @@ class Budget extends Component {
               this.props.saveBudget(this.state.budget);
               // TODO
               // Check if save was successfull before changing screens
-              this.props.changeScreen('BudgetList');
+              this.props.changeScreen("BudgetList");
               this.hideModal();
-            }}>
-              Save changes
+            }}
+          >
+            Save changes
           </FullButton>
 
           {/* Continue without saving action */}
@@ -341,17 +343,18 @@ class Budget extends Component {
               padding: "10px"
             }}
             clicked={() => {
-              this.props.changeScreen('BudgetList');
+              this.props.changeScreen("BudgetList");
               this.hideModal();
-            }}>
-              Continue without saving
+            }}
+          >
+            Continue without saving
           </FullButton>
         </div>,
         // Canceled
         this.hideModal
-      )
+      );
     } else {
-      this.props.changeScreen('BudgetList');
+      this.props.changeScreen("BudgetList");
     }
   };
 
@@ -362,20 +365,22 @@ class Budget extends Component {
   render() {
     const pieCharts = (
       <PieCharts
-        changeScreen={() => this.setState({showChart: false})}
+        changeScreen={() => this.setState({ showChart: false })}
         incomeData={this.state.budget.incomes}
-        expenseData={this.state.budget.expenses}/>
+        expenseData={this.state.budget.expenses}
+      />
     );
 
     const budget = (
       <div>
-        <Toolbar 
+        <Toolbar
           title={`${this.state.budget.date.month} ${this.state.budget.date.year}`}
-          leftBtnTitle={'< Back'}
+          leftBtnTitle={"< Back"}
           leftBtnAction={this.backBtnHandler}
-          rightBtnTitle={'Graph'}
-          rightBtnAction={() => this.setState({showChart: true})}/>
-        <main style={{paddingTop: '1px', marginTop: '39px'}}>
+          rightBtnTitle={"Charts"}
+          rightBtnAction={() => this.setState({ showChart: true })}
+        />
+        <main style={{ paddingTop: "1px", marginTop: "39px" }}>
           <div className={classes.Budget}>
             <Modal
               show={this.state.modal.show}
@@ -386,11 +391,12 @@ class Budget extends Component {
               confirmed={this.state.modal.confirmed}
               actions={this.state.modal.actions}
             />
-    
+
             <p style={{ marginTop: "10px" }}>
               Remaining Balance for {this.state.budget.date.month} of{" "}
               {this.state.budget.date.year}
             </p>
+
             <Balance
               remaining={this.state.budget.remaining}
               style={{ fontSize: "200%", fontWeight: "lighter" }}
@@ -424,10 +430,10 @@ class Budget extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     saveBudget: (budget) => dispatch(actionTypes.saveBudget(budget))
-  }
-}
+  };
+};
 
 export default connect(null, mapDispatchToProps)(Budget);

@@ -277,7 +277,7 @@ class BudgetList extends Component {
           title={'Budget List'}
           leftBtnTitle={'< Back'}
           leftBtnAction={() => this.props.changeScreen('Dashboard')}
-          rightBtnTitle={'Graph'}
+          rightBtnTitle={'Charts'}
           rightBtnAction={() => this.props.changeScreen('LineCharts')}/>
         <main style={{paddingTop: '1px', marginTop: '39px'}}>
           {budgetList}
