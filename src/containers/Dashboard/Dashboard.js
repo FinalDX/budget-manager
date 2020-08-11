@@ -79,7 +79,20 @@ class Dashboard extends Component {
             remaining={totalBalance}
             style={{ fontSize: "300%", fontWeight: "lighter" }}
           />
-          <PieChart title={null} dataPoints={dataPoints} />
+          {dataPoints.length > 0 ? (
+            <PieChart title={null} dataPoints={dataPoints} />
+          ) : (
+            <div>
+              <p>To add a budget: </p>
+              <ol>
+                <li>
+                  Select 'Budget List' at the top <br /> right corner of this
+                  screen.
+                </li>
+                <li>Press 'Add'.</li>
+              </ol>
+            </div>
+          )}
         </main>
       </div>
     );
