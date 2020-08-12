@@ -1,6 +1,6 @@
 import React from "react";
 
-import CanvasJSReact from "../../../../assets/canvasjs/canvasjs.react";
+import CanvasJSReact from "../../../assets/canvasjs/canvasjs.react";
 import classes from "./Chart.module.css";
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 

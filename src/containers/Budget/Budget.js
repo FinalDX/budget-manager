@@ -2,15 +2,15 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 import Balance from "../../components/Balance/Balance";
-import Controls from "../../components/Controls/Controls";
+import Controls from "../../components/BudgetControls/BudgetControls";
 import Items from "../../components/Items/Items";
 import Modal from "../../components/UI/Modal/Modal";
 import Toolbar from "../../components/Toolbar/Toolbar";
-import PieCharts from "../../components/Charts/PieCharts/PieCharts";
+import PieCharts from "../BudgetChart/BudgetChart";
 
 import * as actionTypes from "../../store/actions/actions";
 
-import classes from "./BudgetControls.module.css";
+import classes from "./Budget.module.css";
 import FullButton from "../../components/UI/Buttons/FullButton/FullButton";
 
 const ITEM_LIMIT = 50;
@@ -377,7 +377,7 @@ class Budget extends Component {
           title={`${this.state.budget.date.month} ${this.state.budget.date.year}`}
           leftBtnTitle={"< Back"}
           leftBtnAction={this.backBtnHandler}
-          rightBtnTitle={"Charts"}
+          rightBtnTitle={"Chart"}
           rightBtnAction={() => this.setState({ showChart: true })}
         />
         <main style={{ paddingTop: "1px", marginTop: "39px" }}>

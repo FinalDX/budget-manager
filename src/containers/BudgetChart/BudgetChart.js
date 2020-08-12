@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 
-import PieChart from "./PieChart/PieChart";
-import Toolbar from "../../Toolbar/Toolbar";
-import Select from "../../UI/Select/Select";
+import PieChart from "../../components/Charts/PieChart/PieChart";
+import Toolbar from "../../components/Toolbar/Toolbar";
+import Select from "../../components/UI/Select/Select";
 
-import classes from "./PieCharts.module.css";
+import classes from "./BudgetChart.module.css";
 
 class PieCharts extends Component {
   constructor(props) {
@@ -105,7 +105,7 @@ class PieCharts extends Component {
     return (
       <div>
         <Toolbar
-          title={"Pie Charts"}
+          title={"Budget Chart"}
           leftBtnTitle={"< Back"}
           leftBtnAction={this.props.changeScreen}
         />

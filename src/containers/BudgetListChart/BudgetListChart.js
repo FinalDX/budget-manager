@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import LineChart from './LineChart/LineChart';
-import Toolbar from '../../Toolbar/Toolbar';
-import Select from '../../UI/Select/Select';
+import LineChart from '../../components/Charts/LineChart/LineChart';
+import Toolbar from '../../components/Toolbar/Toolbar';
+import Select from '../../components/UI/Select/Select';
 
-import classes from './LineCharts.module.css';
+import classes from './BudgetListChart.module.css';
 
 class LineCharts extends Component {
     constructor(props){
@@ -295,7 +295,7 @@ class LineCharts extends Component {
         return (
             <div>
                 <Toolbar 
-                    title={'Line Charts'}
+                    title={'Budget List Chart'}
                     leftBtnTitle={'< Back'}
                     leftBtnAction ={() => this.props.changeScreen('BudgetList')}/>
                 <main style={{paddingTop: '1px', marginTop: '39px'}}>

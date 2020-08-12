@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 
 import LogIn from './components/LogIn/LogIn';
 import BudgetList from './containers/BudgetList/BudgetList';
-import LineCharts from './components/Charts/LineCharts/LineCharts';
-import BudgetControls from './containers/BudgetControls/BudgetControls';
+import LineCharts from './containers/BudgetListChart/BudgetListChart';
+import Budget from './containers/Budget/Budget';
 import * as actionTypes from './store/actions/actions';
 
 import DBService from './services/DBService/DBService';
@@ -58,10 +58,10 @@ class App extends Component {
   }
 
   // ----------------------------------------------------------
-  // Show the BudgetControls componenet and pass the selectedBudget
-  // from the state to BudgetControls as a prop
-  goToBudgetControls = (budget) => {
-    this.setState({selectedBudget: budget, screen: 'BudgetControls'});
+  // Show the Budget componenet and pass the selectedBudget
+  // from the state to Budget as a prop
+  goToBudget = (budget) => {
+    this.setState({selectedBudget: budget, screen: 'Budget'});
   }
 
   // ----------------------------------------------------------
@@ -83,7 +83,7 @@ class App extends Component {
         screen = (
           <BudgetList 
             changeScreen={this.changeScreen}
-            goToBudgetControls={this.goToBudgetControls}
+            goToBudget={this.goToBudget}
             years={YEARS}
             DB={DB}/>
           );
@@ -96,9 +96,9 @@ class App extends Component {
             years={YEARS}/>
           );
         break;
-      case 'BudgetControls':
+      case 'Budget':
         screen = (
-          <BudgetControls
+          <Budget
             changeScreen={this.changeScreen}
             selectedBudget={this.state.selectedBudget}
             categories={CATEGORIES}

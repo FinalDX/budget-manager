@@ -2,7 +2,7 @@ import React from "react";
 
 import classes from './LineChart.module.css';
 
-import CanvasJSReact from "../../../../assets/canvasjs/canvasjs.react";
+import CanvasJSReact from "../../../assets/canvasjs/canvasjs.react";
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
     

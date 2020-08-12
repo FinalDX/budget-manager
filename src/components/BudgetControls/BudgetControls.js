@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import Select from "../UI/Select/Select";
 import FullButton from "../UI/Buttons/FullButton/FullButton";
 
-import classes from "./Controls.module.css";
+import classes from "./BudgetControls.module.css";
 
 class Controls extends Component {
   constructor(props) {

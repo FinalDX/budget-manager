@@ -5,7 +5,7 @@ import SideDrawer from "../../components/UI/SideDrawer/SideDrawer";
 import Balance from "../../components/Balance/Balance";
 import Menu from "../../components/Menu/Menu";
 import MenuItems from "../../components/Menu/MenuItems/MenuItems";
-import PieChart from "../../components/Charts/PieCharts/PieChart/PieChart";
+import PieChart from "../../components/Charts/PieChart/PieChart";
 
 class Dashboard extends Component {
   constructor(props) {

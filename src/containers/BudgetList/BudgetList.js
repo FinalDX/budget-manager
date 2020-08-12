@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import shortID from 'shortid';
 
-import Budgets from "../../components/Budgets/Budgets";
+import Budgets from "../../components/BudgetListItems/BudgetListItems";
 import Modal from "../../components/UI/Modal/Modal";
 import Select from '../../components/UI/Select/Select';
 import Toolbar from '../../components/Toolbar/Toolbar';
@@ -19,7 +19,7 @@ class BudgetList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showBudgetControls: false,
+      showBudget: false,
       date: {
         month: new Date().toLocaleString('default', { month: 'long' }),
         year: new Date().getFullYear() 
@@ -51,9 +51,9 @@ class BudgetList extends Component {
   );
 
   // ----------------------------------------------------------
-  // Hide the BudgetControls component
-  hideBudgetControls = () =>
-    this.setState({showBudgetControls: false});
+  // Hide the Budget component
+  hideBudget = () =>
+    this.setState({showBudget: false});
 
   // ----------------------------------------------------------
   // Hide the Modal component
@@ -179,7 +179,7 @@ class BudgetList extends Component {
 
   // ----------------------------------------------------------
   // Check if there is an existing budget with the same date.
-  // If so, alert the user; if not, go to BudgetControls with 
+  // If so, alert the user; if not, go to Budget with 
   // a new budget object.
   checkForExisting = () => {
     // If budget already exists, alert user then re-summon prompt
@@ -212,8 +212,8 @@ class BudgetList extends Component {
       this.props.addBudget(newBudget);
       // TODO
       // Add check to see if addBudget was successful
-      // befor going to budgetControls
-      this.props.goToBudgetControls(newBudget);
+      // before going to Budget
+      this.props.goToBudget(newBudget);
       this.hideModal();
     }
   }
@@ -249,7 +249,7 @@ class BudgetList extends Component {
             months={MONTHS}
             budgets={this.props.budgets}
             addClicked={this.addBtnHandler}
-            viewClicked={this.props.goToBudgetControls}
+            viewClicked={this.props.goToBudget}
             deleteClicked={this.summonDeleteModal}
         />
       );
@@ -277,7 +277,7 @@ class BudgetList extends Component {
           title={'Budget List'}
           leftBtnTitle={'< Back'}
           leftBtnAction={() => this.props.changeScreen('Dashboard')}
-          rightBtnTitle={'Charts'}
+          rightBtnTitle={'Chart'}
           rightBtnAction={() => this.props.changeScreen('LineCharts')}/>
         <main style={{paddingTop: '1px', marginTop: '39px'}}>
           {budgetList}
