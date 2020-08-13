@@ -16,7 +16,7 @@
 
 .LogIn {
   width: 400px;
-  height: 400px;
+  height: 600px;
   display: block;
   position: relative;
   margin: 200px auto;
@@ -28,6 +28,13 @@
 
 .LogIn > h1 {
   margin-bottom: 20px;
+}
+
+.Keypad {
+  margin: 10px auto;
+  display: block;
+  height: 300px;
+  width: 250px;
 }
 
 .Form {

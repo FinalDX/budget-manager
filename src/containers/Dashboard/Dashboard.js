@@ -71,7 +71,7 @@ class Dashboard extends Component {
             show={this.state.showSideDrawer}
             toggleShow={this.toggleSideDrawer}
           >
-            <MenuItems changeScreen={this.props.changeScreen} />
+            <MenuItems logOut={this.props.logOut} />
           </SideDrawer>
 
           <h1>Total Balance:</h1>

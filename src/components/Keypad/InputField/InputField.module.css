@@ -1,0 +1,10 @@
+.InputField {
+  width: 100%;
+}
+
+.Field {
+  display: inline-block;
+  width: 20%;
+  margin: 0 5px;
+  border-bottom: 2px solid #333;
+}

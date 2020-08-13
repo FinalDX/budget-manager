@@ -23,7 +23,7 @@ const menuItems = (props) => {
         </li>
       </ul>
       <div className={classes.Bottom}>
-        <TextButton clicked={() => props.changeScreen("LogIn")} color={"#333"}>
+        <TextButton clicked={props.logOut} color={"#333"}>
           Log out
         </TextButton>
       </div>
