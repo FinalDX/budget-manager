@@ -298,7 +298,7 @@ class LineCharts extends Component {
                     title={'Budget List Chart'}
                     leftBtnTitle={'< Back'}
                     leftBtnAction ={() => this.props.changeScreen('BudgetList')}/>
-                <main style={{paddingTop: '1px', marginTop: '39px'}}>
+                <main style={{paddingTop: '1px', marginTop: '49px'}}>
                     {content}
                 </main>
             </div>

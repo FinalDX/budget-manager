@@ -109,7 +109,7 @@ class PieCharts extends Component {
           leftBtnTitle={"< Back"}
           leftBtnAction={this.props.changeScreen}
         />
-        <main style={{ paddingTop: "1px", marginTop: "39px" }}>{content}</main>
+        <main style={{ paddingTop: "1px", marginTop: "49px" }}>{content}</main>
       </div>
     );
   }

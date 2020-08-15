@@ -380,7 +380,7 @@ class Budget extends Component {
           rightBtnTitle={"Chart"}
           rightBtnAction={() => this.setState({ showChart: true })}
         />
-        <main style={{ paddingTop: "1px", marginTop: "39px" }}>
+        <main style={{ paddingTop: "1px", marginTop: "49px" }}>
           <div className={classes.Budget}>
             <Modal
               show={this.state.modal.show}

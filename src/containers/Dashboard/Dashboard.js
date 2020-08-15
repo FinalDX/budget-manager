@@ -66,7 +66,7 @@ class Dashboard extends Component {
           leftBtnTitle={<Menu />}
           leftBtnAction={this.toggleSideDrawer}
         />
-        <main style={{ paddingTop: "1px", marginTop: "39px" }}>
+        <main style={{ paddingTop: "1px", marginTop: "49px" }}>
           <SideDrawer
             show={this.state.showSideDrawer}
             toggleShow={this.toggleSideDrawer}

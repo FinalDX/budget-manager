@@ -2,7 +2,8 @@ import * as actionTypes from './actions/actions';
 
 const initialState = {
     budgets: null,
-    selectedBudget: null
+    selectedBudget: null,
+    passcode: null
 }
 
 const reducer = (state = initialState, action) => {
@@ -38,6 +39,11 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 budgets: action.budgets
             };
+        case actionTypes.SET_PASSCODE:
+            return {
+                ...state,
+                passcode: action.passcode.passcode
+            }
         default:
             return state;
     }

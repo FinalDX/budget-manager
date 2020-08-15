@@ -7,8 +7,18 @@
   background-color: #333;
   border: none;
   cursor: pointer;
+  font-size: 20px;
 }
 
-.Key:hover {
+.Key:hover,
+.Key:focus,
+.Key:active {
   background-color: #666;
+  border: none;
+}
+
+@media (max-width: 767px) {
+  .Key {
+    font-size: 40px;
+  }
 }

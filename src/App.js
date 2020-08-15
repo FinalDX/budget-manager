@@ -56,8 +56,7 @@ class App extends Component {
     this.state = {
       selectedBudget: null,
       loggedIn: false,
-      screen: "LogIn",
-      time: null
+      screen: "LogIn"
     };
   }
 
@@ -81,6 +80,7 @@ class App extends Component {
   componentDidMount() {
     if (DB.checkBrowserSupport()) {
       this.props.initBudgets();
+      this.props.initPasscode();
     } else {
       console.log("No support");
     }
@@ -97,11 +97,10 @@ class App extends Component {
   // RENDER
   // ==========================================================
   render() {
-
     let screen = null;
     switch (true) {
       case this.state.screen === "LogIn" || !this.state.loggedIn:
-        screen = <LogIn logIn={this.logIn} />;
+        screen = <LogIn logIn={this.logIn}/>;
         break;
       case this.state.screen === "Dashboard" && this.state.loggedIn:
         screen = (
@@ -157,7 +156,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    initBudgets: () => dispatch(actionTypes.initBudgets())
+    initBudgets: () => dispatch(actionTypes.initBudgets()),
+    initPasscode: () => dispatch(actionTypes.initPasscode())
   };
 };
 
