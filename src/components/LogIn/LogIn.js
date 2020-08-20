@@ -14,23 +14,29 @@ class LogIn extends Component {
         }
     }
 
+    // ----------------------------------------------------------
+    // 'Create Passcode:', 'Enter Passcode:'.
     setMessage = message => {
         this.setState({message: message});
     }
 
+    // ----------------------------------------------------------
+    // Set passcode in indexeddb.
     setPasscode = passcode => {
         this.props.setPasscode(passcode);
     }
 
+    // ----------------------------------------------------------
+    // If no passcode exists in indexeddb then prompt the user
+    // to create a passcode.
     componentDidMount () {
         if (!this.props.passcode) {
             this.setState({message: 'Create Passcode:'});
         }
     }
 
-    render() {
-        
 
+    render() {    
         return (
             <div className={classes.Background}>
                 <div className={classes.LogIn}>

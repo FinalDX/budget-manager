@@ -61,6 +61,10 @@
     font-size: 300%;
   }
 
+  .LogIn > h3 {
+    font-size: 150%;
+  }
+
   .Keypad {
     position: absolute;
     bottom: 0;

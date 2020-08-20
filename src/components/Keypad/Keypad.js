@@ -20,6 +20,9 @@ class Keypad extends Component  {
     }
   }
 
+  // ----------------------------------------------------------
+  // Detect if the 'Clear' or the 'Back' button were pressed
+  // and call the appropriate function.
   buttonPressed = value => {
     if (value === 'Clear') {
       this.clearAllFields();
@@ -30,6 +33,9 @@ class Keypad extends Component  {
     }
   }
 
+  // ----------------------------------------------------------
+  // Set the next available input field. 
+  // If none are available then do nothing.
   setNextField = (value) => {
     switch(true) {
       case !this.state.fieldOne:
@@ -49,6 +55,9 @@ class Keypad extends Component  {
     }
   }
 
+  // ----------------------------------------------------------
+  // Remove the last input field.
+  // If no input exists in the fields then do nothing.
   removeLastField = () => {
     switch(true) {
       case this.state.fieldFour !== null:
@@ -68,6 +77,8 @@ class Keypad extends Component  {
     }
   }
 
+  // ----------------------------------------------------------
+  // Remove all inputs from all fields.
   clearAllFields = () => {
     this.setState({
       fieldOne: null,
@@ -77,6 +88,9 @@ class Keypad extends Component  {
     });
   }
 
+  // ----------------------------------------------------------
+  // Detect whether all fields contain input.
+  // Return: true or false.
   allFieldsInput = values => {
     for (let value of values) {
       if (value === null) {
@@ -86,6 +100,10 @@ class Keypad extends Component  {
     return true;
   }
 
+  // ----------------------------------------------------------
+  // Check if the entered passcode matches the user's saved
+  // passcode.
+  // Return: true or false.
   checkPasscode = (passcode) => {
     let isValid = false;
     if(passcode) {
@@ -99,6 +117,9 @@ class Keypad extends Component  {
     return isValid;
   }
 
+  // ----------------------------------------------------------
+  // Prompt the user to re-enter the passcode to ensure accuracy.
+  // Clear all fields and set state status to re-entering.
   createPasscode = (values) => {
     // Prompt user to re-enter passcode.
     this.props.setMessage('Re-enter Passcode:');
@@ -110,9 +131,16 @@ class Keypad extends Component  {
     });
   }
 
+  // ----------------------------------------------------------
+  // Clear all fields and check if the re-entered passcode 
+  // matches the previously entered passcode.
+  // If there is a match, set the passcode in indexeddb;
+  // if there is no match, inform the user that the passcodes
+  // did not match.
   reEnterPasscode = values => {
     this.clearAllFields();
     let allMatch = true;
+    // Check if passcodes match.
     for (let i = 0; i < values.length; i++) {
       if (values[i] !== this.state.createdSet[i]) {
         allMatch = false;
@@ -120,12 +148,15 @@ class Keypad extends Component  {
       }
     }
     if (allMatch) {
+      // Set passcode in indexeddb
       this.props.setPasscode({
         id: shortID.generate(), 
         passcode: values.join('')
       });
+      // Log in to app
       this.props.verified();
     } else {
+      // Alert user of no match
       this.props.setMessage('Create Passcode:')
       this.setState({
         message: 'Did not match!',
@@ -134,6 +165,11 @@ class Keypad extends Component  {
     }
   }
 
+  // ----------------------------------------------------------
+  // Check that the entered passcode matches the user's saved
+  // pascode.
+  // If there is a match, log in; if there is no match, inform
+  // the user that the entered passcode was invalid.
   verifyPasscode = () => {
     // Check that the entered passcode is correct
     if (this.checkPasscode(this.props.passcode)) {
@@ -148,6 +184,9 @@ class Keypad extends Component  {
     }
   }
 
+  // ----------------------------------------------------------
+  // Set the current status based on whether or not the user
+  // has a saved passcode.
   componentDidMount () {
     if (!this.props.passcode) {
       this.setState({status: 'creating'});
@@ -156,6 +195,8 @@ class Keypad extends Component  {
     }
   }
 
+  // ----------------------------------------------------------
+  // Check to see if all fields have input.
   componentDidUpdate () {
     let values = [
       this.state.fieldOne,

@@ -5,20 +5,23 @@
   height: 25%;
   color: #fff;
   background-color: #333;
-  border: none;
+  border: 1px solid #fff;
   cursor: pointer;
   font-size: 20px;
+  outline: none;
 }
 
 .Key:hover,
-.Key:focus,
-.Key:active {
+.Key:focus {
   background-color: #666;
-  border: none;
+}
+
+.Key:active {
+  background-color: #333;
 }
 
 @media (max-width: 767px) {
   .Key {
-    font-size: 40px;
+    font-size: 30px;
   }
 }

@@ -5,13 +5,15 @@
 }
 
 .Input {
-  height: 15%;
+  padding-top: 40px;
+  height: 25%;
 }
 
 .Message {
+  padding-top: 20px;
   font-size: 20px;
   color: red;
-  height: 10%;
+  height: 15%;
 
 }
 
