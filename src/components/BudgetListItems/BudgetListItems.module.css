@@ -1,30 +1,25 @@
 .Budgets {
-    width: 730px;
-    margin: 10px auto;
-    position: relative;
-    padding-bottom: 300px;
+  width: 730px;
+  margin: 10px auto;
+  position: relative;
+  padding-bottom: 300px;
 }
 
 .Budgets ul {
-    list-style-type: none;
-    border: 1px solid #333;
-    padding: 0;
-    margin-top: 10px;
+  list-style-type: none;
+  border: 1px solid #333;
+  padding: 0;
+  margin-top: 10px;
 }
 
 .AddBtn {
-    position: absolute;
-    right: 0;
-    top: 0px;
+  position: relative;
+  display: inline-block;
+  margin: 10px;
 }
-
 
 @media (max-width: 767px) {
-    .Budgets { width: 95%; }
-    .AddBtn {
-        position: relative;
-        display: inline-block;
-        margin: 10px;
-    }
+  .Budgets {
+    width: 95%;
+  }
 }
-

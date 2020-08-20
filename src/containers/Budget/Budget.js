@@ -8,7 +8,7 @@ import Modal from "../../components/UI/Modal/Modal";
 import Toolbar from "../../components/Toolbar/Toolbar";
 import PieCharts from "../BudgetChart/BudgetChart";
 
-import * as actionTypes from "../../store/actions/actions";
+import * as actionCreators from "../../store/actions/actionCreators";
 
 import classes from "./Budget.module.css";
 import FullButton from "../../components/UI/Buttons/FullButton/FullButton";
@@ -432,7 +432,7 @@ class Budget extends Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    saveBudget: (budget) => dispatch(actionTypes.saveBudget(budget))
+    saveBudget: (budget) => dispatch(actionCreators.saveBudget(budget))
   };
 };
 

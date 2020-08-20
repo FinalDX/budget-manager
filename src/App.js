@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import LogIn from "./components/LogIn/LogIn";
+import LogIn from "./containers/LogIn/LogIn";
 import BudgetList from "./containers/BudgetList/BudgetList";
 import LineCharts from "./containers/BudgetListChart/BudgetListChart";
 import Budget from "./containers/Budget/Budget";
-import * as actionTypes from "./store/actions/actions";
+import * as actionCreators from "./store/actions/actionCreators";
 
 import DBService from "./services/DBService/DBService";
 import Dashboard from "./containers/Dashboard/Dashboard";
@@ -79,8 +79,7 @@ class App extends Component {
   // Get all budgets from the database and set budgets in state.
   componentDidMount() {
     if (DB.checkBrowserSupport()) {
-      this.props.initBudgets();
-      this.props.initPasscode();
+      this.props.initData();
     } else {
       console.log("No support");
     }
@@ -156,8 +155,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    initBudgets: () => dispatch(actionTypes.initBudgets()),
-    initPasscode: () => dispatch(actionTypes.initPasscode())
+    initData: () => dispatch(actionCreators.initData())
   };
 };
 

@@ -44,9 +44,9 @@ class DBService {
         await db.delete("Budget_Store", id);
     }
 
-    async getPasscode(id) {
+    async getPasscode() {
         const db = await openDB(DATABASE_NAME);
-        const userPasscode = await db.get('User_Store', id);
+        const userPasscode = await db.getAll('User_Store');
         return userPasscode;
     }
 

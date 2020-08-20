@@ -6,7 +6,7 @@ import Budgets from "../../components/BudgetListItems/BudgetListItems";
 import Modal from "../../components/UI/Modal/Modal";
 import Select from '../../components/UI/Select/Select';
 import Toolbar from '../../components/Toolbar/Toolbar';
-import * as actionTypes from '../../store/actions/actions';
+import * as actionCreators from '../../store/actions/actionCreators';
 
 const MONTHS = ['January', 'Febuary', 'March', 'April',
 'May', 'June', 'July', 'August', 'September', 'October',
@@ -35,14 +35,14 @@ class BudgetList extends Component {
   SELECT_DATE_FORM = (
     <div>
       <Select
-        defaultValue={new Date().toLocaleString('default', { month: 'long' })}
+        value={new Date().toLocaleString('default', { month: 'long' })}
         options={MONTHS}
         changed={(e) => {
         this.updateDate(e.target.value, 'month');
       }}/>
   
       <Select
-        defaultValue={new Date().getFullYear().toString()}
+        value={new Date().getFullYear().toString()}
         options={this.props.years}
         changed={(e) => {
         this.updateDate(e.target.value, 'year');
@@ -295,8 +295,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    addBudget: (budget) => dispatch(actionTypes.addBudget(budget)),
-    deleteBudget: (id) => dispatch(actionTypes.deleteBudget(id))
+    addBudget: (budget) => dispatch(actionCreators.saveBudget(budget)),
+    deleteBudget: (id) => dispatch(actionCreators.deleteBudget(id))
   }
 }
 
