@@ -9,19 +9,28 @@ export const DELETE_BUDGET = 'DELETE_BUDGET';
 export const SAVE_BUDGET = 'SAVE_BUDGET';
 export const SET_ALL_BUDGETS = 'SET_ALL_BUDGETS';
 export const SET_PASSCODE = 'SET_PASSCODE';
+export const DATA_LOADED = 'DATA_LOADED';
 
-// ----------------------------------------------------------
-// Async action creator that fetches all budgets from 
-// indexeddb and initializes the budgets in the reducer.
-export const initBudgets = () => {
-    return dispatch => {
-        DB.getAllBudgets().then(result => {
+// Action creator
+export const initData = () => {
+    return async dispatch => {
+        let budgets = DB.getAllBudgets().then(result => {
             dispatch(setAllBudgets(result));
           }).catch(error => {
             console.log('Error: ' + error.message);
-          })
+          });
+
+        let passcode = DB.getPasscode().then(result => {
+            dispatch(setPasscodeInState(result));
+          }).catch(error => {
+            console.log('Error: ' + error.message);
+          });
+        
+        await Promise.all([budgets, passcode]);
+        dispatch(setLoading());
     }
 }
+
 // Sync action creator dispatched by initBudgets if 
 // budgets were successfully fetched from indexeddb.
 export const setAllBudgets = (budgets) => {
@@ -30,31 +39,6 @@ export const setAllBudgets = (budgets) => {
         budgets: budgets
     };
 };
-
-// ----------------------------------------------------------
-// Async action creator that fetches the passcode from 
-// indexeddb and initializes the passcode in the reducer.
-export const initPasscode = () => {
-    return dispatch => {
-        DB.getPasscode().then(result => {
-            dispatch(setPasscodeInState(result));
-          }).catch(error => {
-            console.log('Error: ' + error.message);
-          })
-    }
-}
-
-// Async action creator that sets the passcode in 
-// indexeddb and initializes the passcode in the reducer.
-export const setPasscode = passcode => {
-    return dispatch => {
-        DB.setPasscode(passcode).then(() => {
-            dispatch(setPasscodeInState(passcode));
-        }).catch(error => {
-            console.log("Error: " + error.message);
-        });
-    }
-}
 
 // Sync action creator dispatched by initPasscode if 
 // the passcode was successfully fetched from indexeddb
@@ -66,6 +50,13 @@ export const setPasscodeInState = (passcode) => {
         passcode: passcode
     };
 };
+
+export const setLoading = () => {
+    return {
+        type: DATA_LOADED,
+        dataLoading: true
+    }
+}
 
 // ----------------------------------------------------------
 export const addBudget = budget => {

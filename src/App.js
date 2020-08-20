@@ -79,8 +79,7 @@ class App extends Component {
   // Get all budgets from the database and set budgets in state.
   componentDidMount() {
     if (DB.checkBrowserSupport()) {
-      this.props.initBudgets();
-      this.props.initPasscode();
+      this.props.initData();
     } else {
       console.log("No support");
     }
@@ -156,8 +155,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    initBudgets: () => dispatch(actionTypes.initBudgets()),
-    initPasscode: () => dispatch(actionTypes.initPasscode())
+    initData: () => dispatch(actionTypes.initData())
   };
 };
 
